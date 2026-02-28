@@ -10,7 +10,6 @@
     @font-face { font-family:'GoogleSans'; src:url('GoogleSans-Bold.ttf')    format('truetype'); font-weight:700; }
     @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
 
-    /* ── VARIABLES ── */
     :root {
       --bg:      #050505;
       --panel:   #0a0a0a;
@@ -41,7 +40,6 @@
       max-width:300px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
     }
     .nav-folder i { color:var(--red); margin-right:5px; }
-
     .nbtn {
       background:transparent; border:1px solid var(--border2); color:var(--muted);
       padding:5px 13px; border-radius:3px; font-family:'Fira Code',monospace;
@@ -73,11 +71,10 @@
     .d-stop { background:var(--muted); animation:none; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.15} }
     #scan-lbl { font-weight:700; font-family:'GoogleSans',sans-serif; font-size:.82rem; }
-
     .badge { background:var(--red); color:var(--white); border-radius:10px; padding:1px 8px; font-size:.67rem; font-family:'Fira Code',monospace; font-weight:700; }
     .badge.z { background:var(--dim); color:var(--muted); }
 
-    /* ── RESIZABLE DIVIDERS ── */
+    /* ── DIVIDERS ── */
     .divider {
       width:5px; flex-shrink:0; background:transparent; cursor:col-resize;
       position:relative; z-index:20; transition:background .15s; user-select:none;
@@ -87,10 +84,7 @@
 
     /* ── LEFT PANEL: FEED ── */
     #panel-left { width:270px; border-right:1px solid var(--border); }
-    #feed {
-      flex:1; overflow:hidden; padding:8px 12px;
-      font-family:'Fira Code',monospace; font-size:.68rem; line-height:1.75;
-    }
+    #feed { flex:1; overflow:hidden; padding:8px 12px; font-family:'Fira Code',monospace; font-size:.68rem; line-height:1.75; }
     .fl { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .fl-dir   { color:var(--white); opacity:.85; }
     .fl-file  { color:var(--muted); }
@@ -106,59 +100,38 @@
     #dupes-scroll::-webkit-scrollbar { width:5px; }
     #dupes-scroll::-webkit-scrollbar-thumb { background:var(--red); border-radius:3px; }
 
-    /* ── HOME SCREEN ── */
-    #home {
-      height:100%; display:flex; flex-direction:column;
-      align-items:center; justify-content:center; gap:20px; padding:40px; text-align:center;
-    }
+    /* ── HOME ── */
+    #home { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; padding:40px; text-align:center; }
     .home-icon { font-size:2.8rem; color:var(--red); opacity:.3; }
     #home h2 { font-size:1.4rem; font-weight:700; }
-    #home p { color:var(--muted); font-size:.85rem; line-height:1.75; max-width:310px; }
+    #home p { color:var(--muted); font-size:.85rem; line-height:1.75; max-width:320px; }
     .home-note { font-family:'Fira Code',monospace; font-size:.65rem; color:var(--dim); }
+    .home-note-mobile {
+      font-family:'Fira Code',monospace; font-size:.63rem; color:var(--red);
+      border:1px solid rgba(255,0,51,.25); background:var(--red-dim);
+      padding:6px 12px; border-radius:3px; max-width:320px; line-height:1.65;
+    }
 
     /* ── CONFIRM STEP ── */
-    #confirm-step {
-      display:none; height:100%; flex-direction:column;
-      align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center;
-    }
+    #confirm-step { display:none; height:100%; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center; }
     #confirm-step h3 { font-size:1.1rem; font-weight:700; }
     #confirm-step p  { color:var(--muted); font-size:.83rem; line-height:1.7; max-width:320px; }
-    .confirm-path {
-      font-family:'Fira Code',monospace; font-size:.78rem; color:var(--red);
-      background:var(--red-dim); border:1px solid rgba(255,0,51,.2);
-      padding:8px 16px; border-radius:3px; max-width:360px; word-break:break-all; text-align:center;
-    }
+    .confirm-path { font-family:'Fira Code',monospace; font-size:.78rem; color:var(--red); background:var(--red-dim); border:1px solid rgba(255,0,51,.2); padding:8px 16px; border-radius:3px; max-width:360px; word-break:break-all; text-align:center; }
     .confirm-btns { display:flex; gap:12px; }
 
-    /* ── GENERIC BUTTONS ── */
-    .btn-primary {
-      display:inline-flex; align-items:center; gap:9px;
-      padding:11px 22px; background:transparent; border:1px solid var(--red); color:var(--white);
-      font-family:'Fira Code',monospace; font-size:.88rem; cursor:pointer; border-radius:3px; transition:all .25s;
-    }
+    /* ── BUTTONS ── */
+    .btn-primary { display:inline-flex; align-items:center; gap:9px; padding:11px 22px; background:transparent; border:1px solid var(--red); color:var(--white); font-family:'Fira Code',monospace; font-size:.88rem; cursor:pointer; border-radius:3px; transition:all .25s; }
     .btn-primary:hover { background:var(--red-dim); transform:translateY(-1px); }
-    .btn-secondary {
-      display:inline-flex; align-items:center; gap:9px;
-      padding:11px 22px; background:transparent; border:1px solid var(--border2); color:var(--muted);
-      font-family:'Fira Code',monospace; font-size:.88rem; cursor:pointer; border-radius:3px; transition:all .25s;
-    }
+    .btn-secondary { display:inline-flex; align-items:center; gap:9px; padding:11px 22px; background:transparent; border:1px solid var(--border2); color:var(--muted); font-family:'Fira Code',monospace; font-size:.88rem; cursor:pointer; border-radius:3px; transition:all .25s; }
     .btn-secondary:hover { border-color:var(--muted); color:var(--white); }
 
     /* ── DUPLICATE GROUPS ── */
     .dg { margin:10px 12px; border:1px solid var(--border); border-radius:3px; overflow:hidden; animation:si .3s ease; }
     @keyframes si { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
-    .dg-hdr {
-      background:rgba(255,0,51,.04); padding:7px 13px; border-bottom:1px solid var(--border);
-      font-family:'Fira Code',monospace; font-size:.7rem; color:var(--muted);
-      display:flex; justify-content:space-between; align-items:center;
-    }
+    .dg-hdr { background:rgba(255,0,51,.04); padding:7px 13px; border-bottom:1px solid var(--border); font-family:'Fira Code',monospace; font-size:.7rem; color:var(--muted); display:flex; justify-content:space-between; align-items:center; }
     .dg-hdr .h  { color:var(--red); }
     .dg-hdr .sv { color:var(--white); font-weight:700; }
-
-    .df {
-      padding:8px 12px; border-bottom:1px solid #0e0e0e;
-      display:flex; align-items:center; gap:9px; transition:background .1s;
-    }
+    .df { padding:8px 12px; border-bottom:1px solid #0e0e0e; display:flex; align-items:center; gap:9px; transition:background .1s; }
     .df:last-child { border-bottom:none; }
     .df:hover { background:#0c0c0c; }
     .df.sel  { background:var(--red-dim); border-left:2px solid var(--red); }
@@ -174,26 +147,14 @@
     .btn-eye:hover { border-color:var(--red); color:var(--red); }
 
     /* ── STATS BAR ── */
-    #stats-bar {
-      height:40px; flex-shrink:0; display:flex; align-items:center; gap:10px;
-      padding:0 10px; border-top:1px solid var(--border); background:var(--panel);
-      font-family:'Fira Code',monospace; font-size:.7rem; color:var(--muted);
-    }
+    #stats-bar { height:40px; flex-shrink:0; display:flex; align-items:center; gap:10px; padding:0 10px; border-top:1px solid var(--border); background:var(--panel); font-family:'Fira Code',monospace; font-size:.7rem; color:var(--muted); }
     #stats-bar span { color:var(--white); font-weight:700; }
     .sbar-stat { white-space:nowrap; }
     .sbar-sep  { color:var(--dim); }
     .sbar-btns { display:flex; gap:6px; margin-left:auto; }
-    .sbar-btn {
-      background:transparent; border:1px solid var(--border2); color:var(--muted);
-      padding:3px 9px; border-radius:3px; font-family:'Fira Code',monospace;
-      font-size:.66rem; cursor:pointer; transition:all .18s; white-space:nowrap;
-    }
+    .sbar-btn { background:transparent; border:1px solid var(--border2); color:var(--muted); padding:3px 9px; border-radius:3px; font-family:'Fira Code',monospace; font-size:.66rem; cursor:pointer; transition:all .18s; white-space:nowrap; }
     .sbar-btn:hover { border-color:var(--white); color:var(--white); }
-    #btn-del {
-      background:transparent; border:1px solid var(--red); color:var(--red);
-      padding:3px 10px; border-radius:3px; font-family:'Fira Code',monospace;
-      font-size:.66rem; cursor:pointer; transition:all .18s; display:none; white-space:nowrap;
-    }
+    #btn-del { background:transparent; border:1px solid var(--red); color:var(--red); padding:3px 10px; border-radius:3px; font-family:'Fira Code',monospace; font-size:.66rem; cursor:pointer; transition:all .18s; display:none; white-space:nowrap; }
     #btn-del:hover { background:var(--red-dim); }
 
     /* ── RIGHT PANEL: PREVIEW ── */
@@ -206,29 +167,15 @@
     #prev-content::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
     .pv-meta { font-family:'Fira Code',monospace; font-size:.65rem; color:var(--muted); margin-bottom:12px; line-height:1.7; }
     .pv-meta .ac { color:var(--red); }
-
-    /* close preview button */
-    #btn-close-prev {
-      background:transparent; border:none; color:var(--dim); cursor:pointer;
-      font-size:.78rem; padding:4px 6px; border-radius:3px; transition:color .15s; line-height:1;
-    }
+    #btn-close-prev { background:transparent; border:none; color:var(--dim); cursor:pointer; font-size:.78rem; padding:4px 6px; border-radius:3px; transition:color .15s; line-height:1; }
     #btn-close-prev:hover { color:var(--red); }
 
     /* ── FORMAT FILTER BAR ── */
-    #filter-bar {
-      display:none; flex-shrink:0; padding:7px 12px;
-      border-bottom:1px solid var(--border); background:var(--panel);
-      overflow-x:auto; scrollbar-width:none; gap:6px; flex-wrap:wrap; align-items:center;
-    }
+    #filter-bar { display:none; flex-shrink:0; padding:7px 12px; border-bottom:1px solid var(--border); background:var(--panel); overflow-x:auto; scrollbar-width:none; gap:6px; flex-wrap:wrap; align-items:center; }
     #filter-bar::-webkit-scrollbar { display:none; }
     #filter-bar.visible { display:flex; }
     .filter-label { font-family:'Fira Code',monospace; font-size:.65rem; color:var(--muted); margin-right:4px; white-space:nowrap; }
-    .fmt-chip {
-      font-family:'Fira Code',monospace; font-size:.65rem;
-      border:1px solid var(--border2); color:var(--muted);
-      padding:2px 9px; border-radius:12px; cursor:pointer;
-      transition:all .18s; white-space:nowrap; background:transparent; user-select:none;
-    }
+    .fmt-chip { font-family:'Fira Code',monospace; font-size:.65rem; border:1px solid var(--border2); color:var(--muted); padding:2px 9px; border-radius:12px; cursor:pointer; transition:all .18s; white-space:nowrap; background:transparent; user-select:none; }
     .fmt-chip:hover  { border-color:var(--white); color:var(--white); }
     .fmt-chip.active { border-color:var(--red); color:var(--red); background:var(--red-dim); }
     .fmt-chip.all    { border-color:var(--muted); }
@@ -250,30 +197,25 @@
     .btn-confirm:hover { background:rgba(255,0,51,.18); }
     .btn-confirm:disabled { opacity:.3; cursor:not-allowed; }
 
-    /* ── LANG SWITCH ── */
-    .lang-switch {
-      cursor:pointer; color:var(--muted); font-size:.78rem;
-      display:flex; align-items:center; gap:6px; font-family:'Fira Code',monospace;
-      border:1px solid var(--border2); padding:4px 10px; border-radius:3px; transition:.3s; background:transparent;
-    }
+    /* ── LANG ── */
+    .lang-switch { cursor:pointer; color:var(--muted); font-size:.78rem; display:flex; align-items:center; gap:6px; font-family:'Fira Code',monospace; border:1px solid var(--border2); padding:4px 10px; border-radius:3px; transition:.3s; background:transparent; }
     .lang-switch:hover { color:var(--red); border-color:var(--red); background:var(--red-dim); }
     .lang-switch.pulse { animation:slowPulse 2s ease-out; }
-    @keyframes slowPulse {
-      0%,15%  { border-color:var(--red); color:var(--red); background:var(--red-dim); }
-      100%    { border-color:var(--border2); color:var(--muted); background:transparent; }
-    }
-
-    /* ── LANGUAGE TOGGLE ── */
+    @keyframes slowPulse { 0%,15%{border-color:var(--red);color:var(--red);background:var(--red-dim)} 100%{border-color:var(--border2);color:var(--muted);background:transparent} }
     body.es .en { display:none !important; }
     body.en .es { display:none !important; }
 
-    /* ── EMPTY / OK SCREEN ── */
+    /* ── OK SCREEN ── */
     .ok-screen { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center; }
     .ok-screen h2 { font-size:1.3rem; font-weight:700; }
     .ok-screen p  { color:var(--muted); font-size:.84rem; line-height:1.7; max-width:300px; }
+
+    #mobile-input { display:none; }
   </style>
 </head>
 <body class="es">
+
+<input type="file" id="mobile-input" webkitdirectory multiple accept="*/*">
 
 <!-- NAV -->
 <nav>
@@ -283,9 +225,7 @@
   </div>
   <div class="nav-right">
     <button class="lang-switch" id="lang-btn" onclick="toggleLang()">
-      <i class="fas fa-globe"></i>
-      <span class="es">ESP</span>
-      <span class="en">ENG</span>
+      <i class="fas fa-globe"></i><span class="es">ESP</span><span class="en">ENG</span>
     </button>
     <div class="nav-folder" id="nav-folder" style="display:none;">
       <i class="fas fa-folder"></i><span id="nav-folder-name"></span>
@@ -341,8 +281,6 @@
       </div>
 
       <div id="dupes-scroll">
-
-        <!-- HOME SCREEN -->
         <div id="home">
           <div class="home-icon"><i class="fas fa-copy"></i></div>
           <h2>DupeCleaner</h2>
@@ -354,50 +292,33 @@
           </button>
           <p class="home-note es">Chrome / Edge 86+ · Las carpetas del sistema se ignoran automáticamente</p>
           <p class="home-note en">Chrome / Edge 86+ · System folders are automatically ignored</p>
+          <div id="mobile-warn" style="display:none;" class="home-note-mobile">
+            <span class="es">⚠ Modo móvil: escaneo disponible, <strong>eliminación desactivada</strong>.<br>Para borrar usa Chrome en escritorio.</span>
+            <span class="en">⚠ Mobile mode: scanning available, <strong>deletion disabled</strong>.<br>Use desktop Chrome to delete files.</span>
+          </div>
         </div>
-
-        <!-- CONFIRMATION STEP -->
         <div id="confirm-step">
           <div class="home-icon" style="font-size:2rem;"><i class="fas fa-folder-open"></i></div>
           <h3><span class="es">Carpeta seleccionada</span><span class="en">Folder selected</span></h3>
           <div class="confirm-path" id="confirm-path-text"></div>
-          <p class="es">Se escanearán todos los archivos de esta carpeta y subcarpetas buscando duplicados exactos. Las carpetas del sistema serán ignoradas.</p>
-          <p class="en">All files in this folder and subfolders will be scanned for exact duplicates. System folders will be ignored.</p>
+          <p class="es">Se escanearán todos los archivos de esta carpeta y subcarpetas. Solo se omitirán las carpetas críticas del sistema operativo.</p>
+          <p class="en">All files in this folder and subfolders will be scanned. Only critical OS system folders will be skipped.</p>
           <div class="confirm-btns">
-            <button class="btn-secondary" onclick="cancelPick()">
-              <i class="fas fa-xmark"></i> <span class="es">Cancelar</span><span class="en">Cancel</span>
-            </button>
-            <button class="btn-primary" onclick="beginScan()">
-              <i class="fas fa-magnifying-glass"></i> <span class="es">Iniciar escaneo</span><span class="en">Start scan</span>
-            </button>
+            <button class="btn-secondary" onclick="cancelPick()"><i class="fas fa-xmark"></i> <span class="es">Cancelar</span><span class="en">Cancel</span></button>
+            <button class="btn-primary"   onclick="beginScan()"><i class="fas fa-magnifying-glass"></i> <span class="es">Iniciar escaneo</span><span class="en">Start scan</span></button>
           </div>
         </div>
-
       </div>
 
       <!-- STATS BAR -->
       <div id="stats-bar">
-        <div class="sbar-stat">
-          <span class="es">archivos escaneados:</span><span class="en">scanned files:</span> <span id="st-files">0</span>
-        </div>
+        <div class="sbar-stat"><span class="es">archivos escaneados:</span><span class="en">scanned files:</span> <span id="st-files">0</span></div>
         <span class="sbar-sep">·</span>
-        <div class="sbar-stat">
-          <span class="es">espacio a recuperar:</span><span class="en">space to free:</span> <span id="st-size">—</span>
-        </div>
+        <div class="sbar-stat"><span class="es">espacio a recuperar:</span><span class="en">space to free:</span> <span id="st-size">—</span></div>
         <div class="sbar-btns">
-          <button class="sbar-btn" onclick="selectAll()">
-            <i class="fas fa-check-double"></i>
-            <span class="es">Seleccionar todos</span><span class="en">Select all</span>
-          </button>
-          <button class="sbar-btn" onclick="deselectAll()">
-            <i class="fas fa-xmark"></i>
-            <span class="es">Deseleccionar todos</span><span class="en">Deselect all</span>
-          </button>
-          <button id="btn-del" onclick="openModal()">
-            <i class="fas fa-trash-alt"></i>
-            <span class="es">Eliminar</span><span class="en">Delete</span>
-            (<span id="sel-cnt">0</span>)
-          </button>
+          <button class="sbar-btn" onclick="selectAll()"><i class="fas fa-check-double"></i> <span class="es">Seleccionar todos</span><span class="en">Select all</span></button>
+          <button class="sbar-btn" onclick="deselectAll()"><i class="fas fa-xmark"></i> <span class="es">Deseleccionar todos</span><span class="en">Deselect all</span></button>
+          <button id="btn-del" onclick="openModal()"><i class="fas fa-trash-alt"></i> <span class="es">Eliminar</span><span class="en">Delete</span> (<span id="sel-cnt">0</span>)</button>
         </div>
       </div>
     </div>
@@ -407,15 +328,10 @@
     <!-- RIGHT: PREVIEW -->
     <div class="panel" id="panel-right">
       <div class="ph">
-        <div class="ph-l">
-          <i class="fas fa-eye" style="font-size:.78rem;color:var(--red);"></i>
-          <span><span class="es">vista previa</span><span class="en">preview</span></span>
-        </div>
+        <div class="ph-l"><i class="fas fa-eye" style="font-size:.78rem;color:var(--red);"></i> <span><span class="es">vista previa</span><span class="en">preview</span></span></div>
         <div style="display:flex;align-items:center;gap:6px;">
           <span id="prev-lbl" style="font-family:'Fira Code',monospace;font-size:.65rem;color:var(--muted);font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px;"></span>
-          <button id="btn-close-prev" onclick="closePreview()" title="Cerrar / Close" style="display:none;">
-            <i class="fas fa-xmark"></i>
-          </button>
+          <button id="btn-close-prev" onclick="closePreview()" style="display:none;"><i class="fas fa-xmark"></i></button>
         </div>
       </div>
       <div id="prev-body">
@@ -436,10 +352,8 @@
 <!-- DELETE MODAL -->
 <div id="modal-ov">
   <div class="mbox">
-    <h3>
-      <i class="fas fa-triangle-exclamation" style="color:var(--red);margin-right:7px;"></i>
-      <span class="es">Eliminar permanentemente</span><span class="en">Permanently delete</span>
-    </h3>
+    <h3><i class="fas fa-triangle-exclamation" style="color:var(--red);margin-right:7px;"></i>
+      <span class="es">Eliminar permanentemente</span><span class="en">Permanently delete</span></h3>
     <p class="es">Estos archivos se borrarán definitivamente. <strong>Sin papelera, sin marcha atrás.</strong></p>
     <p class="en">These files will be permanently deleted. <strong>No recycle bin, no undo.</strong></p>
     <div class="mlist" id="modal-list"></div>
@@ -447,13 +361,8 @@
     <p class="en">Type <strong style="color:var(--red)">CONFIRM</strong> to enable the button:</p>
     <input type="text" class="minput" id="modal-input" placeholder="CONFIRMAR" oninput="checkConfirm(this.value)">
     <div class="mactions">
-      <button class="btn-cancel" onclick="closeModal()">
-        <span class="es">Cancelar</span><span class="en">Cancel</span>
-      </button>
-      <button class="btn-confirm" id="btn-confirm" disabled onclick="execDelete()">
-        <i class="fas fa-trash-alt"></i>
-        <span class="es">Eliminar</span><span class="en">Delete</span>
-      </button>
+      <button class="btn-cancel" onclick="closeModal()"><span class="es">Cancelar</span><span class="en">Cancel</span></button>
+      <button class="btn-confirm" id="btn-confirm" disabled onclick="execDelete()"><i class="fas fa-trash-alt"></i> <span class="es">Eliminar</span><span class="en">Delete</span></button>
     </div>
   </div>
 </div>
@@ -462,17 +371,14 @@
 'use strict';
 
 // ══════════════════════════════════════════════════════
-//  BLOCKED SYSTEM PATHS
+//  CRITICAL SYSTEM PATHS ONLY — never user folders
 // ══════════════════════════════════════════════════════
 const BLOCKED = new Set([
   'windows','system32','syswow64','program files','program files (x86)',
-  'programdata','appdata','local','roaming','system volume information',
-  '$recycle.bin','recovery','boot','efi','winsxs','drivers','assembly',
-  'windowsapps','windowspowershell','microsoft.net','servicing','installer',
-  'inf','help','fonts','cursors','media','speech','tasks','prefetch',
-  'hiberfil.sys','pagefile.sys','swapfile.sys',
+  'programdata','system volume information','$recycle.bin','recovery',
+  'boot','efi','winsxs','drivers','assembly','windowsapps','windowspowershell',
+  'microsoft.net','servicing','installer','prefetch',
 ]);
-
 function isBlocked(path) {
   return path.toLowerCase().replace(/\\/g,'/').split('/').some(p => BLOCKED.has(p));
 }
@@ -480,51 +386,52 @@ function isBlocked(path) {
 // ══════════════════════════════════════════════════════
 //  STATE
 // ══════════════════════════════════════════════════════
-let dirHandle = null;
-let cancelled = false;
-let scanning  = false;
-let fileCount = 0;
-let skipCount = 0;
-let feedCount = 0;
-const MAX_FEED = 200;
+let dirHandle  = null;
+let cancelled  = false;
+let scanning   = false;
+let mobileMode = false;
+let fileCount  = 0;
+let skipCount  = 0;
+let feedCount  = 0;
+const MAX_FEED = 300;
 
-const FILES  = new Map();  // fullPath → { handle, size, name, dir, hash, _sid }
-const GROUPS = new Map();  // hash     → [ ...fileInfo ]
-const SEL    = new Set();  // selected fullPaths
+const FILES  = new Map();
+const GROUPS = new Map();
+const SEL    = new Set();
 
 // ══════════════════════════════════════════════════════
 //  HELPERS
 // ══════════════════════════════════════════════════════
 const t = (es, en) => document.body.classList.contains('es') ? es : en;
-
 const fmtSize = b =>
-  b < 1024        ? b + ' B'
-  : b < 1048576   ? (b / 1024).toFixed(1)      + ' KB'
-  : b < 1073741824 ? (b / 1048576).toFixed(2)  + ' MB'
-  :                  (b / 1073741824).toFixed(2) + ' GB';
+  b < 1024         ? b + ' B'
+  : b < 1048576    ? (b/1024).toFixed(1)      + ' KB'
+  : b < 1073741824 ? (b/1048576).toFixed(2)   + ' MB'
+  :                  (b/1073741824).toFixed(2) + ' GB';
 
 const ICONS = {
-  jpg:'fa-file-image', jpeg:'fa-file-image', png:'fa-file-image', gif:'fa-file-image',
-  webp:'fa-file-image', bmp:'fa-file-image', heic:'fa-file-image', svg:'fa-file-image',
+  jpg:'fa-file-image',jpeg:'fa-file-image',png:'fa-file-image',gif:'fa-file-image',
+  webp:'fa-file-image',bmp:'fa-file-image',heic:'fa-file-image',svg:'fa-file-image',
   pdf:'fa-file-pdf',
-  mp4:'fa-file-video', mkv:'fa-file-video', avi:'fa-file-video', mov:'fa-file-video',
-  mp3:'fa-file-audio', wav:'fa-file-audio', flac:'fa-file-audio', ogg:'fa-file-audio',
-  zip:'fa-file-zipper', rar:'fa-file-zipper', '7z':'fa-file-zipper', gz:'fa-file-zipper',
-  doc:'fa-file-word', docx:'fa-file-word',
-  xls:'fa-file-excel', xlsx:'fa-file-excel',
-  js:'fa-file-code', ts:'fa-file-code', py:'fa-file-code',
-  html:'fa-file-code', css:'fa-file-code', json:'fa-file-code',
-  txt:'fa-file-lines', md:'fa-file-lines', csv:'fa-file-lines', log:'fa-file-lines',
+  mp4:'fa-file-video',mkv:'fa-file-video',avi:'fa-file-video',mov:'fa-file-video',
+  mp3:'fa-file-audio',wav:'fa-file-audio',flac:'fa-file-audio',ogg:'fa-file-audio',
+  zip:'fa-file-zipper',rar:'fa-file-zipper','7z':'fa-file-zipper',gz:'fa-file-zipper',
+  doc:'fa-file-word',docx:'fa-file-word',
+  xls:'fa-file-excel',xlsx:'fa-file-excel',
+  js:'fa-file-code',ts:'fa-file-code',py:'fa-file-code',
+  html:'fa-file-code',css:'fa-file-code',json:'fa-file-code',
+  txt:'fa-file-lines',md:'fa-file-lines',csv:'fa-file-lines',log:'fa-file-lines',
 };
 const getIcon = n => 'fas ' + (ICONS[n.split('.').pop().toLowerCase()] || 'fa-file');
 const isImg   = n => /\.(jpe?g|png|gif|webp|bmp|svg)$/i.test(n);
 const isTxt   = n => /\.(txt|md|json|js|ts|py|html|css|log|csv|xml|sh|bat|c|cpp|h|java|rb|php)$/i.test(n);
+const frame   = () => new Promise(r => requestAnimationFrame(r));
 
-// Yields a full frame to the browser (guarantees repaint)
-const frame = () => new Promise(r => requestAnimationFrame(r));
+const isMobileDevice     = () => /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+const hasDirectoryPicker = () => 'showDirectoryPicker' in window;
 
 // ══════════════════════════════════════════════════════
-//  LANGUAGE TOGGLE
+//  LANGUAGE
 // ══════════════════════════════════════════════════════
 function toggleLang() {
   const isEs = document.body.classList.contains('es');
@@ -532,69 +439,47 @@ function toggleLang() {
   document.body.classList.toggle('en',  isEs);
   document.documentElement.lang = isEs ? 'en' : 'es';
   document.getElementById('modal-input').placeholder = isEs ? 'CONFIRM' : 'CONFIRMAR';
-
   const btn = document.getElementById('lang-btn');
-  btn.classList.remove('pulse');
-  void btn.offsetWidth;
-  btn.classList.add('pulse');
+  btn.classList.remove('pulse'); void btn.offsetWidth; btn.classList.add('pulse');
   setTimeout(() => btn.classList.remove('pulse'), 2000);
 }
 
 // ══════════════════════════════════════════════════════
-//  FORMAT FILTER — multi-select
+//  FILTER — multi-select, reads data-ext from .dg elements
 // ══════════════════════════════════════════════════════
-const activeFilters = new Set();  // empty = show all
+const activeFilters = new Set();
 const detectedExts  = new Set();
 
 function addExtToFilter(ext) {
   ext = ext.toLowerCase();
   if (detectedExts.has(ext)) return;
   detectedExts.add(ext);
-
   const bar  = document.getElementById('filter-bar');
   bar.classList.add('visible');
-
   const chip = document.createElement('button');
-  chip.className    = 'fmt-chip';
-  chip.dataset.ext  = ext;
-  chip.textContent  = '.' + ext;
-  chip.onclick      = () => setFilter(ext, chip);
+  chip.className = 'fmt-chip'; chip.dataset.ext = ext; chip.textContent = '.' + ext;
+  chip.onclick = () => setFilter(ext, chip);
   bar.appendChild(chip);
 }
 
 function setFilter(ext, el) {
   if (ext === 'all') {
-    // Clear all active format filters, activate "all"
     activeFilters.clear();
     document.querySelectorAll('.fmt-chip').forEach(c => c.classList.remove('active'));
     el.classList.add('active');
   } else {
-    // Toggle this extension
-    if (activeFilters.has(ext)) {
-      activeFilters.delete(ext);
-      el.classList.remove('active');
-    } else {
-      activeFilters.add(ext);
-      el.classList.add('active');
-    }
-    // Manage "all" chip state
+    activeFilters.has(ext) ? activeFilters.delete(ext) : activeFilters.add(ext);
+    el.classList.toggle('active', activeFilters.has(ext));
     const allChip = document.querySelector('.fmt-chip.all');
-    if (activeFilters.size === 0) {
-      allChip?.classList.add('active');
-    } else {
-      allChip?.classList.remove('active');
-    }
+    allChip?.classList.toggle('active', activeFilters.size === 0);
   }
   applyFilter();
 }
 
+// Reads data-ext stored on the .dg element — never parses text from the DOM
 function applyFilter() {
   document.querySelectorAll('.dg').forEach(grp => {
-    if (activeFilters.size === 0) { grp.style.display = ''; return; }
-    const nameEl = grp.querySelector('.df-name');
-    if (!nameEl) { grp.style.display = 'none'; return; }
-    const grpExt = nameEl.textContent.trim().split('.').pop().toLowerCase();
-    grp.style.display = activeFilters.has(grpExt) ? '' : 'none';
+    grp.style.display = (activeFilters.size === 0 || activeFilters.has(grp.dataset.ext)) ? '' : 'none';
   });
 }
 
@@ -602,125 +487,108 @@ function applyFilter() {
 //  RESIZABLE PANELS
 // ══════════════════════════════════════════════════════
 function makeDivider(divId, leftId, rightId) {
-  const div   = document.getElementById(divId);
-  const left  = document.getElementById(leftId);
-  const right = document.getElementById(rightId);
-
+  const div = document.getElementById(divId);
+  const L   = document.getElementById(leftId);
+  const R   = document.getElementById(rightId);
   div.addEventListener('mousedown', e => {
     e.preventDefault();
-    const x0  = e.clientX;
-    const w0L = left.getBoundingClientRect().width;
-    const w0R = right.getBoundingClientRect().width;
+    const x0 = e.clientX, w0L = L.getBoundingClientRect().width, w0R = R.getBoundingClientRect().width;
     div.classList.add('drag');
-
     const mv = ev => {
-      const dx = ev.clientX - x0;
-      left.style.cssText  += `;flex:none;width:${Math.max(100, w0L + dx)}px`;
-      right.style.cssText += `;flex:none;width:${Math.max(100, w0R - dx)}px`;
+      L.style.cssText += `;flex:none;width:${Math.max(100, w0L + ev.clientX - x0)}px`;
+      R.style.cssText += `;flex:none;width:${Math.max(100, w0R - (ev.clientX - x0))}px`;
     };
-    const up = () => {
-      div.classList.remove('drag');
-      document.removeEventListener('mousemove', mv);
-      document.removeEventListener('mouseup',   up);
-    };
+    const up = () => { div.classList.remove('drag'); document.removeEventListener('mousemove',mv); document.removeEventListener('mouseup',up); };
     document.addEventListener('mousemove', mv);
     document.addEventListener('mouseup',   up);
   });
 }
-makeDivider('div-1', 'panel-left', 'panel-mid');
-makeDivider('div-2', 'panel-mid',  'panel-right');
+makeDivider('div-1','panel-left','panel-mid');
+makeDivider('div-2','panel-mid', 'panel-right');
 
 // ══════════════════════════════════════════════════════
 //  FEED
 // ══════════════════════════════════════════════════════
 const $feed = document.getElementById('feed');
-
 function feedLine(text, cls) {
   document.getElementById('feed-ph')?.remove();
-
   const el = document.createElement('div');
-  el.className   = 'fl fl-' + cls;
-  el.textContent = text;
-  $feed.appendChild(el);
-  feedCount++;
-
-  if (feedCount > MAX_FEED) {
-    $feed.querySelector('.fl')?.remove();
-    feedCount--;
-  }
+  el.className = 'fl fl-' + cls; el.textContent = text;
+  $feed.appendChild(el); feedCount++;
+  if (feedCount > MAX_FEED) { $feed.querySelector('.fl')?.remove(); feedCount--; }
   $feed.scrollTop = $feed.scrollHeight;
 }
 
 // ══════════════════════════════════════════════════════
 //  SHA-256
 // ══════════════════════════════════════════════════════
-async function sha256(handle) {
+async function sha256(fi) {
   try {
-    const file = await handle.getFile();
-    const buf  = await file.arrayBuffer();
-    const hash = await crypto.subtle.digest('SHA-256', buf);
+    const file = fi.fileObj ? fi.fileObj : await fi.handle.getFile();
+    const hash = await crypto.subtle.digest('SHA-256', await file.arrayBuffer());
     return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
   } catch { return null; }
 }
 
 // ══════════════════════════════════════════════════════
-//  STEP 1 — PICK FOLDER
+//  PICK FOLDER
 // ══════════════════════════════════════════════════════
 async function pickFolder() {
-  if (!('showDirectoryPicker' in window)) {
-    alert(t(
-      'Necesitas Google Chrome o Microsoft Edge 86+.\nFirefox y Safari no soportan el acceso al sistema de archivos local.',
-      'You need Google Chrome or Microsoft Edge 86+.\nFirefox and Safari do not support the local File System Access API.'
-    ));
-    return;
+  if (hasDirectoryPicker() && !isMobileDevice()) {
+    // Desktop: File System Access API
+    mobileMode = false;
+    try { dirHandle = await window.showDirectoryPicker({ mode:'readwrite' }); }
+    catch { return; }
+    try {
+      const p = await dirHandle.requestPermission({ mode:'readwrite' });
+      if (p !== 'granted') { alert(t('Se necesita permiso de acceso.','Access permission required.')); return; }
+    } catch {}
+    document.getElementById('home').style.display = 'none';
+    document.getElementById('confirm-step').style.display = 'flex';
+    document.getElementById('confirm-path-text').textContent = dirHandle.name;
+  } else {
+    // Mobile / fallback: <input webkitdirectory>
+    mobileMode = true;
+    document.getElementById('mobile-warn').style.display = 'block';
+    document.getElementById('mobile-input').click();
   }
-  try {
-    dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
-  } catch { return; }
-
-  try {
-    const p = await dirHandle.requestPermission({ mode: 'readwrite' });
-    if (p !== 'granted') {
-      alert(t(
-        'Se necesita permiso de acceso.\nSelecciona la carpeta y acepta el permiso del navegador.',
-        'Access permission required.\nSelect the folder and accept the browser permission prompt.'
-      ));
-      return;
-    }
-  } catch { /* already has permission */ }
-
-  document.getElementById('home').style.display = 'none';
-  const cs = document.getElementById('confirm-step');
-  cs.style.display = 'flex';
-  document.getElementById('confirm-path-text').textContent = dirHandle.name;
 }
+
+document.getElementById('mobile-input').addEventListener('change', function() {
+  const files = Array.from(this.files);
+  if (!files.length) return;
+  const rootName = files[0].webkitRelativePath.split('/')[0];
+  dirHandle = { name: rootName, _mobileFiles: files };
+  document.getElementById('home').style.display = 'none';
+  document.getElementById('confirm-step').style.display = 'flex';
+  document.getElementById('confirm-path-text').textContent = rootName;
+});
 
 function cancelPick() {
   dirHandle = null;
   document.getElementById('confirm-step').style.display = 'none';
-  document.getElementById('home').style.display = 'flex';
+  document.getElementById('home').style.display         = 'flex';
+  document.getElementById('mobile-input').value         = '';
 }
 
 // ══════════════════════════════════════════════════════
-//  STEP 2 — BEGIN SCAN
+//  BEGIN SCAN
 // ══════════════════════════════════════════════════════
 async function beginScan() {
   if (!dirHandle) return;
-
   FILES.clear(); GROUPS.clear(); SEL.clear();
   fileCount = 0; skipCount = 0; cancelled = false; scanning = true; feedCount = 0;
   activeFilters.clear(); detectedExts.clear();
 
   document.getElementById('confirm-step').style.display = 'none';
-  document.getElementById('dupes-scroll').innerHTML = '';
+  document.getElementById('dupes-scroll').innerHTML     = '';
 
   const fb = document.getElementById('filter-bar');
   fb.classList.remove('visible');
   fb.querySelectorAll('.fmt-chip:not(.all)').forEach(c => c.remove());
   fb.querySelector('.fmt-chip.all').classList.add('active');
 
-  $feed.innerHTML = '';
-  feedCount = 0;
+  $feed.innerHTML = ''; feedCount = 0;
 
   document.getElementById('nav-folder').style.display     = 'flex';
   document.getElementById('nav-folder-name').textContent  = dirHandle.name;
@@ -736,109 +604,114 @@ async function beginScan() {
   document.getElementById('prev-lbl').textContent         = '';
   updateStats();
 
-  setDot('run', t('recopilando archivos…', 'collecting files…'));
+  setDot('run', t('recopilando archivos…','collecting files…'));
   await frame();
-
   feedLine('📂  ' + dirHandle.name, 'dir');
   await frame();
 
-  // Phase 1: collect
-  await collect(dirHandle, dirHandle.name);
+  if (mobileMode) {
+    await collectFromInput(dirHandle._mobileFiles);
+  } else {
+    await collect(dirHandle, dirHandle.name);
+  }
   if (cancelled) { finishStopped(); return; }
 
-  // Phase 2: SHA-256 comparison
-  setDot('run', t('calculando SHA-256…', 'computing SHA-256…'));
+  setDot('run', t('calculando SHA-256…','computing SHA-256…'));
   await frame();
   await findDupes();
   if (cancelled) { finishStopped(); return; }
 
-  // Done
   scanning = false;
-  setDot('idle', t('completado', 'done'));
+  setDot('idle', t('completado','done'));
   document.getElementById('pbar').style.width        = '100%';
   document.getElementById('btn-stop').style.display  = 'none';
   document.getElementById('btn-reset').style.display = 'block';
 
   feedLine('─────────────────────────────', 'info');
   const gs = [...GROUPS.values()].filter(g => g.length > 1);
-  feedLine('✓  ' + fileCount + ' ' + t('archivos', 'files') + ' · ' + gs.length + ' ' + t('grupos', 'groups') +
-    (skipCount ? ' · ' + skipCount + ' ' + t('carpetas del sistema ignoradas', 'system folders skipped') : ''), 'ok');
+  feedLine('✓  ' + fileCount + ' ' + t('archivos','files') + ' · ' + gs.length + ' ' + t('grupos','groups') +
+    (skipCount ? ' · ' + skipCount + ' ' + t('carpetas del sistema ignoradas','system folders skipped') : ''), 'ok');
 
   if (gs.length === 0) {
     document.getElementById('dupes-scroll').innerHTML = `
       <div class="ok-screen">
         <div class="home-icon" style="font-size:2.5rem;"><i class="fas fa-circle-check"></i></div>
-        <h2 class="es">¡Sin duplicados!</h2>
-        <h2 class="en">No duplicates!</h2>
+        <h2 class="es">¡Sin duplicados!</h2><h2 class="en">No duplicates!</h2>
         <p class="es">No se encontraron archivos idénticos en <strong>${dirHandle.name}</strong>.</p>
         <p class="en">No identical files found in <strong>${dirHandle.name}</strong>.</p>
-        <button class="btn-primary" onclick="resetApp()">
-          <i class="fas fa-rotate-left"></i>
-          <span class="es">Nuevo escaneo</span><span class="en">New scan</span>
-        </button>
-      </div>
-    `;
+        <button class="btn-primary" onclick="resetApp()"><i class="fas fa-rotate-left"></i> <span class="es">Nuevo escaneo</span><span class="en">New scan</span></button>
+      </div>`;
   }
 }
 
 function finishStopped() {
-  scanning = false;
-  setDot('stop', t('detenido', 'stopped'));
+  scanning = false; setDot('stop', t('detenido','stopped'));
   document.getElementById('btn-stop').style.display  = 'none';
   document.getElementById('btn-reset').style.display = 'block';
-  feedLine(t('— Escaneo detenido por el usuario —', '— Scan stopped by user —'), 'info');
+  feedLine(t('— Escaneo detenido por el usuario —','— Scan stopped by user —'), 'info');
 }
 
 // ══════════════════════════════════════════════════════
-//  RECURSIVE COLLECTION
+//  COLLECT — desktop (FileSystemDirectoryHandle)
 // ══════════════════════════════════════════════════════
 async function collect(dh, path) {
   for await (const [name, handle] of dh.entries()) {
     if (cancelled) return;
     const fullPath = path + '/' + name;
-
     if (handle.kind === 'directory') {
-      if (isBlocked(fullPath)) {
-        feedLine('✗  ' + name + '  [' + t('sistema', 'system') + ']', 'skip');
-        skipCount++;
-        await frame();
-        continue;
-      }
+      if (isBlocked(fullPath)) { feedLine('✗  ' + name + '  [' + t('sistema','system') + ']', 'skip'); skipCount++; await frame(); continue; }
       feedLine('▸  ' + fullPath, 'dir');
       await frame();
       await collect(handle, fullPath);
-
     } else {
       feedLine('   ' + name, 'file');
       try {
         const file = await handle.getFile();
-        FILES.set(fullPath, { handle, size: file.size, name, dir: path, hash: null, _sid: null });
+        FILES.set(fullPath, { handle, size:file.size, name, dir:path, hash:null, _sid:null, canDelete:true });
         fileCount++;
-        document.getElementById('scan-cnt').textContent = fileCount + ' ' + t('archivos', 'files');
-      } catch { /* no permission for this file, skip */ }
-
+        document.getElementById('scan-cnt').textContent = fileCount + ' ' + t('archivos','files');
+      } catch {}
       if (fileCount % 15 === 0) await frame();
     }
   }
 }
 
 // ══════════════════════════════════════════════════════
-//  DUPLICATE DETECTION
+//  COLLECT — mobile (FileList from <input webkitdirectory>)
+// ══════════════════════════════════════════════════════
+async function collectFromInput(files) {
+  const seenDirs = new Set();
+  for (let i = 0; i < files.length; i++) {
+    if (cancelled) return;
+    const file     = files[i];
+    const relPath  = file.webkitRelativePath;
+    const parts    = relPath.split('/');
+    const name     = parts[parts.length - 1];
+    const dir      = parts.slice(0,-1).join('/');
+    if (!seenDirs.has(dir)) { seenDirs.add(dir); feedLine('▸  ' + dir, 'dir'); }
+    feedLine('   ' + name, 'file');
+    FILES.set(relPath, { fileObj:file, handle:null, size:file.size, name, dir, hash:null, _sid:null, canDelete:false });
+    fileCount++;
+    document.getElementById('scan-cnt').textContent = fileCount + ' ' + t('archivos','files');
+    if (fileCount % 30 === 0) await frame();
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  FIND DUPLICATES
 // ══════════════════════════════════════════════════════
 async function findDupes() {
-  // Fast phase: group by size (no content read)
   const bySize = new Map();
   for (const [key, fi] of FILES) {
     if (!bySize.has(fi.size)) bySize.set(fi.size, []);
     bySize.get(fi.size).push({ key, ...fi });
   }
-
   const candidates = [...bySize.values()].filter(g => g.length > 1);
-  const total = candidates.reduce((s, g) => s + g.length, 0);
+  const total = candidates.reduce((s,g) => s + g.length, 0);
   if (total === 0) return;
 
   feedLine('─────────────────────────────', 'info');
-  feedLine('SHA-256: ' + total + ' ' + t('candidatos', 'candidates'), 'info');
+  feedLine('SHA-256: ' + total + ' ' + t('candidatos','candidates'), 'info');
   await frame();
 
   let done = 0;
@@ -848,24 +721,14 @@ async function findDupes() {
     if (cancelled) return;
     for (const fi of group) {
       if (cancelled) return;
-
       feedLine('  ⚡ ' + fi.name, 'file');
-      const hash = await sha256(fi.handle);
+      const hash = await sha256(fi);
       if (!hash) { done++; continue; }
-
       fi.hash = hash;
       if (FILES.has(fi.key)) FILES.get(fi.key).hash = hash;
-
       if (!GROUPS.has(hash)) GROUPS.set(hash, []);
       GROUPS.get(hash).push(fi);
-
-      const grp = GROUPS.get(hash);
-      if (grp.length >= 2) {
-        feedLine('💥 ' + t('DUPLICADO', 'DUPLICATE') + ': ' + fi.name, 'match');
-        renderGroup(hash);
-        await frame();
-      }
-
+      if (GROUPS.get(hash).length >= 2) { feedLine('💥 ' + t('DUPLICADO','DUPLICATE') + ': ' + fi.name, 'match'); renderGroup(hash); await frame(); }
       done++;
       $pbar.style.width = Math.round(done / total * 100) + '%';
       updateStats();
@@ -879,68 +742,63 @@ async function findDupes() {
 function renderGroup(hash) {
   const files = GROUPS.get(hash);
   if (!files || files.length < 2) return;
-
   const scroll = document.getElementById('dupes-scroll');
   document.getElementById('grp-' + hash)?.remove();
 
+  const ext = files[0].name.split('.').pop().toLowerCase();
+
   const el = document.createElement('div');
-  el.className = 'dg';
-  el.id        = 'grp-' + hash;
-  el.innerHTML = `
+  el.className   = 'dg';
+  el.id          = 'grp-' + hash;
+  el.dataset.ext = ext;   // ← FILTER READS THIS, not the text content
+  el.innerHTML   = `
     <div class="dg-hdr">
       <span><span class="h">${hash.substring(0,14)}…</span> · ${files.length} ${t('copias','copies')} · ${fmtSize(files[0].size)} c/u</span>
       <span class="sv">↩ ${fmtSize(files[0].size * (files.length - 1))}</span>
-    </div>
-  `;
+    </div>`;
 
   files.forEach((fi, i) => {
-    const isOrig = i === 0;
+    const isOrig    = i === 0;
+    const canDelete = !mobileMode && fi.canDelete !== false;
     let h = 5381;
-    for (let j = 0; j < fi.key.length; j++) h = ((h << 5) + h) ^ fi.key.charCodeAt(j);
-    const sid = 'r' + (h >>> 0).toString(36);
+    for (let j = 0; j < fi.key.length; j++) h = ((h<<5)+h) ^ fi.key.charCodeAt(j);
+    const sid = 'r' + (h>>>0).toString(36);
     fi._sid = sid;
     if (FILES.has(fi.key)) FILES.get(fi.key)._sid = sid;
 
-    const row    = document.createElement('div');
+    const row     = document.createElement('div');
     row.className = 'df' + (isOrig ? ' orig' : '');
     row.id        = sid;
     const keyEsc  = fi.key.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    const chkAttr = (isOrig || !canDelete) ? `disabled title="${t('Original: no se puede eliminar','Original: cannot be deleted')}"` : '';
     row.innerHTML = `
-      <input type="checkbox" ${isOrig ? `disabled title="${t('El original no se puede eliminar','The original cannot be deleted')}"` : ''}
-        onchange="toggleSel('${keyEsc}',this.checked)">
+      <input type="checkbox" ${chkAttr} onchange="toggleSel('${keyEsc}',this.checked)">
       <i class="${getIcon(fi.name)} df-icon"></i>
       <div class="df-info">
         <div class="df-name">${fi.name}${isOrig ? `<span class="orig-tag">${t('original','original')}</span>` : ''}</div>
         <div class="df-path">${fi.dir}</div>
       </div>
-      <button class="btn-eye" onclick="previewFile('${keyEsc}')"><i class="fas fa-eye"></i></button>
-    `;
+      <button class="btn-eye" onclick="previewFile('${keyEsc}')"><i class="fas fa-eye"></i></button>`;
     el.appendChild(row);
   });
 
   scroll.appendChild(el);
-
-  // Register extension in filter
-  const ext = files[0].name.split('.').pop().toLowerCase();
   addExtToFilter(ext);
 
-  // Apply current active filters to the new group
-  if (activeFilters.size > 0 && !activeFilters.has(ext)) {
-    el.style.display = 'none';
-  }
+  // Immediately apply filter to the new group
+  if (activeFilters.size > 0 && !activeFilters.has(ext)) el.style.display = 'none';
 
   updateStats();
-
-  const n     = [...GROUPS.values()].filter(g => g.length > 1).length;
+  const n = [...GROUPS.values()].filter(g => g.length > 1).length;
   const badge = document.getElementById('dupe-badge');
-  badge.textContent = n;
-  badge.classList.toggle('z', n === 0);
+  badge.textContent = n; badge.classList.toggle('z', n === 0);
 }
 
 // ══════════════════════════════════════════════════════
 //  SELECTION
 // ══════════════════════════════════════════════════════
 function toggleSel(key, checked) {
+  if (mobileMode) return;
   checked ? SEL.add(key) : SEL.delete(key);
   const fi = FILES.get(key);
   if (fi && fi._sid) document.getElementById(fi._sid)?.classList.toggle('sel', checked);
@@ -950,16 +808,13 @@ function toggleSel(key, checked) {
 }
 
 function selectAll() {
+  if (mobileMode) return;
   for (const [, files] of GROUPS) {
     if (files.length < 2) continue;
     files.forEach((fi, i) => {
-      if (i === 0) return;
-      if (SEL.has(fi.key)) return;
+      if (i === 0 || SEL.has(fi.key)) return;
       SEL.add(fi.key);
-      if (fi._sid) {
-        const row = document.getElementById(fi._sid);
-        if (row) { row.classList.add('sel'); const chk = row.querySelector('input[type=checkbox]'); if (chk) chk.checked = true; }
-      }
+      if (fi._sid) { const row = document.getElementById(fi._sid); if (row) { row.classList.add('sel'); const chk = row.querySelector('input[type=checkbox]'); if(chk) chk.checked=true; } }
     });
   }
   const n = SEL.size;
@@ -970,10 +825,7 @@ function selectAll() {
 function deselectAll() {
   for (const key of [...SEL]) {
     const fi = FILES.get(key);
-    if (fi && fi._sid) {
-      const row = document.getElementById(fi._sid);
-      if (row) { row.classList.remove('sel'); const chk = row.querySelector('input[type=checkbox]'); if (chk) chk.checked = false; }
-    }
+    if (fi && fi._sid) { const row = document.getElementById(fi._sid); if (row) { row.classList.remove('sel'); const chk = row.querySelector('input[type=checkbox]'); if(chk) chk.checked=false; } }
   }
   SEL.clear();
   document.getElementById('btn-del').style.display = 'none';
@@ -986,66 +838,56 @@ function deselectAll() {
 function updateStats() {
   document.getElementById('st-files').textContent = fileCount;
   const gs = [...GROUPS.values()].filter(g => g.length > 1);
-  const w  = gs.reduce((s, g) => s + g[0].size * (g.length - 1), 0);
+  const w  = gs.reduce((s,g) => s + g[0].size*(g.length-1), 0);
   document.getElementById('st-size').textContent = w > 0 ? fmtSize(w) : '—';
   const badge = document.getElementById('dupe-badge');
-  badge.textContent = gs.length;
-  badge.classList.toggle('z', gs.length === 0);
+  badge.textContent = gs.length; badge.classList.toggle('z', gs.length === 0);
 }
 
 // ══════════════════════════════════════════════════════
 //  PREVIEW
 // ══════════════════════════════════════════════════════
 async function previewFile(key) {
-  const fi = FILES.get(key);
-  if (!fi) return;
-
+  const fi = FILES.get(key); if (!fi) return;
   document.getElementById('prev-empty').style.display     = 'none';
   document.getElementById('btn-close-prev').style.display = 'block';
   const $c = document.getElementById('prev-content');
   $c.style.display = 'block';
   document.getElementById('prev-lbl').textContent = fi.name;
-
   $c.innerHTML = `
     <div style="margin-bottom:12px;">
       <div style="font-size:.9rem;font-weight:700;word-break:break-all;margin-bottom:4px;">${fi.name}</div>
       <div class="pv-meta">${fi.dir} &nbsp;·&nbsp; <span class="ac">${fmtSize(fi.size)}</span></div>
     </div>
-    <div id="pv-loading" style="color:var(--dim);font-family:'Fira Code',monospace;font-size:.72rem;text-align:center;padding:20px;">${t('Cargando…','Loading…')}</div>
-  `;
+    <div id="pv-loading" style="color:var(--dim);font-family:'Fira Code',monospace;font-size:.72rem;text-align:center;padding:20px;">${t('Cargando…','Loading…')}</div>`;
 
   try {
-    const file = await fi.handle.getFile();
+    const file = fi.fileObj ? fi.fileObj : await fi.handle.getFile();
     document.getElementById('pv-loading')?.remove();
 
     if (isImg(fi.name)) {
       const url  = URL.createObjectURL(file);
-      const wrap = document.createElement('div');
-      wrap.style.cssText = 'text-align:center;';
+      const wrap = document.createElement('div'); wrap.style.cssText = 'text-align:center;';
       const img  = document.createElement('img');
-      img.style.cssText  = 'max-width:100%;max-height:calc(100vh - 160px);border-radius:3px;border:1px solid var(--border);display:block;margin:0 auto;';
-      img.src = url; img.alt = fi.name;
-      img.onload = () => URL.revokeObjectURL(url);
-      wrap.appendChild(img);
-      $c.appendChild(wrap);
+      img.style.cssText = 'max-width:100%;max-height:calc(100vh - 160px);border-radius:3px;border:1px solid var(--border);display:block;margin:0 auto;';
+      img.src = url; img.alt = fi.name; img.onload = () => URL.revokeObjectURL(url);
+      wrap.appendChild(img); $c.appendChild(wrap);
 
-    } else if (isTxt(fi.name) && fi.size < 1024 * 1024) {
+    } else if (isTxt(fi.name) && fi.size < 1024*1024) {
       const text = await file.text();
       const ext  = fi.name.split('.').pop().toLowerCase();
       const pre  = document.createElement('pre');
       pre.style.cssText = `font-family:'Fira Code',monospace;font-size:.73rem;line-height:1.65;color:var(--white);background:#060606;padding:14px;border-radius:3px;border:1px solid var(--border);white-space:pre-wrap;word-break:break-all;max-height:calc(100vh - 160px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--red) transparent;`;
-      pre.textContent = text.length > 12000 ? text.substring(0, 12000) + '\n… (' + t('truncado', 'truncated') + ')' : text;
+      pre.textContent = text.length > 12000 ? text.substring(0,12000)+'\n… ('+t('truncado','truncated')+')' : text;
       $c.appendChild(pre);
       const note = document.createElement('div');
       note.style.cssText = 'font-family:"Fira Code",monospace;font-size:.62rem;color:var(--dim);margin-top:6px;text-align:right;';
-      note.textContent = '.' + ext + ' · ' + fmtSize(fi.size);
-      $c.appendChild(note);
+      note.textContent = '.'+ext+' · '+fmtSize(fi.size); $c.appendChild(note);
 
     } else if (fi.name.toLowerCase().endsWith('.pdf')) {
-      const url   = URL.createObjectURL(file);
+      const url = URL.createObjectURL(file);
       const embed = document.createElement('embed');
-      embed.src   = url;
-      embed.type  = 'application/pdf';
+      embed.src = url; embed.type = 'application/pdf';
       embed.style.cssText = 'width:100%;height:calc(100vh - 160px);border:1px solid var(--border);border-radius:3px;';
       $c.appendChild(embed);
 
@@ -1053,20 +895,12 @@ async function previewFile(key) {
       const ext = fi.name.split('.').pop().toUpperCase();
       const d   = document.createElement('div');
       d.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:14px;padding:30px 16px;text-align:center;';
-      d.innerHTML = `
-        <i class="${getIcon(fi.name)}" style="font-size:3.5rem;color:var(--dim);"></i>
+      d.innerHTML = `<i class="${getIcon(fi.name)}" style="font-size:3.5rem;color:var(--dim);"></i>
         <div style="font-size:1rem;font-weight:700;color:var(--white);">.${ext}</div>
         <div style="font-size:1.4rem;font-weight:700;color:var(--red);">${fmtSize(fi.size)}</div>
-        <div style="font-family:'Fira Code',monospace;font-size:.65rem;color:var(--muted);max-width:220px;line-height:1.6;">
-          ${t(
-            'Archivo binario — el contenido es idéntico al de las otras copias (mismo hash SHA-256)',
-            'Binary file — content is identical to all other copies (same SHA-256 hash)'
-          )}
-        </div>
-      `;
+        <div style="font-family:'Fira Code',monospace;font-size:.65rem;color:var(--muted);max-width:220px;line-height:1.6;">${t('Archivo binario — contenido idéntico al de las otras copias (mismo SHA-256)','Binary file — identical content to all other copies (same SHA-256)')}</div>`;
       $c.appendChild(d);
     }
-
   } catch(e) {
     document.getElementById('pv-loading')?.remove();
     $c.innerHTML += `<div style="color:var(--red);font-size:.72rem;font-family:'Fira Code',monospace;margin-top:8px;">${t('Error al cargar','Error loading')}: ${e.message}</div>`;
@@ -1084,24 +918,21 @@ function closePreview() {
 //  STATUS DOT
 // ══════════════════════════════════════════════════════
 function setDot(state, label) {
-  document.getElementById('scan-dot').className = 'dot d-' + state;
+  document.getElementById('scan-dot').className   = 'dot d-' + state;
   document.getElementById('scan-lbl').textContent = label;
 }
 
-// ══════════════════════════════════════════════════════
-//  STOP
-// ══════════════════════════════════════════════════════
 function stopScan() { cancelled = true; }
 
 // ══════════════════════════════════════════════════════
 //  RESET
 // ══════════════════════════════════════════════════════
 function resetApp() {
-  cancelled = true; scanning = false;
-  dirHandle = null;
-  FILES.clear(); GROUPS.clear(); SEL.clear();
+  cancelled = true; scanning = false; mobileMode = false;
+  dirHandle = null; FILES.clear(); GROUPS.clear(); SEL.clear();
   fileCount = 0; skipCount = 0; feedCount = 0;
   activeFilters.clear(); detectedExts.clear();
+  document.getElementById('mobile-input').value = '';
 
   const fb = document.getElementById('filter-bar');
   fb.classList.remove('visible');
@@ -1114,25 +945,24 @@ function resetApp() {
       <h2>DupeCleaner</h2>
       <p class="es">Selecciona una carpeta. La app escanea todo el contenido con SHA-256 y te muestra únicamente los duplicados exactos.</p>
       <p class="en">Select a folder. The app scans all content with SHA-256 and shows only exact duplicates.</p>
-      <button class="btn-primary" onclick="pickFolder()">
-        <i class="fas fa-folder-open"></i>
-        <span class="es">Seleccionar carpeta</span><span class="en">Select folder</span>
-      </button>
+      <button class="btn-primary" onclick="pickFolder()"><i class="fas fa-folder-open"></i> <span class="es">Seleccionar carpeta</span><span class="en">Select folder</span></button>
       <p class="home-note es">Chrome / Edge 86+ · Las carpetas del sistema se ignoran automáticamente</p>
       <p class="home-note en">Chrome / Edge 86+ · System folders are automatically ignored</p>
+      <div id="mobile-warn" style="display:none;" class="home-note-mobile">
+        <span class="es">⚠ Modo móvil: escaneo disponible, <strong>eliminación desactivada</strong>.<br>Para borrar usa Chrome en escritorio.</span>
+        <span class="en">⚠ Mobile mode: scanning available, <strong>deletion disabled</strong>.<br>Use desktop Chrome to delete files.</span>
+      </div>
     </div>
-    <div id="confirm-step" style="display:none;"></div>
-  `;
+    <div id="confirm-step" style="display:none;"></div>`;
 
   $feed.innerHTML = `
     <div id="feed-ph" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--dim);font-size:.75rem;text-align:center;pointer-events:none;font-family:'Fira Code',monospace;">
       <i class="fas fa-terminal" style="font-size:1.8rem;"></i>
       <span class="es">El feed aparecerá<br>aquí durante el escaneo</span>
       <span class="en">The feed will appear<br>here during the scan</span>
-    </div>
-  `;
+    </div>`;
 
-  setDot('idle', t('inactivo', 'idle'));
+  setDot('idle', t('inactivo','idle'));
   document.getElementById('scan-cnt').textContent          = '';
   document.getElementById('pbar').style.width              = '0%';
   document.getElementById('dupe-badge').textContent        = '0';
@@ -1145,6 +975,9 @@ function resetApp() {
   document.getElementById('prev-content').style.display    = 'none';
   document.getElementById('btn-close-prev').style.display  = 'none';
   document.getElementById('prev-lbl').textContent          = '';
+  if (isMobileDevice() || !hasDirectoryPicker()) {
+    document.getElementById('mobile-warn').style.display = 'block';
+  }
   updateStats();
 }
 
@@ -1152,40 +985,45 @@ function resetApp() {
 //  MODAL
 // ══════════════════════════════════════════════════════
 function openModal() {
+  if (mobileMode) return;
   const list = document.getElementById('modal-list');
   list.innerHTML = '';
   for (const key of SEL) {
     const fi = FILES.get(key);
-    if (fi) { const d = document.createElement('div'); d.textContent = fi.dir + '/' + fi.name; list.appendChild(d); }
+    if (fi) { const d = document.createElement('div'); d.textContent = fi.dir+'/'+fi.name; list.appendChild(d); }
   }
-  document.getElementById('modal-input').value     = '';
-  document.getElementById('btn-confirm').disabled  = true;
+  document.getElementById('modal-input').value    = '';
+  document.getElementById('btn-confirm').disabled = true;
   document.getElementById('modal-ov').classList.add('on');
 }
-
-function checkConfirm(v) {
-  document.getElementById('btn-confirm').disabled = v !== t('CONFIRMAR', 'CONFIRM');
-}
-
-function closeModal() { document.getElementById('modal-ov').classList.remove('on'); }
+function checkConfirm(v) { document.getElementById('btn-confirm').disabled = v !== t('CONFIRMAR','CONFIRM'); }
+function closeModal()    { document.getElementById('modal-ov').classList.remove('on'); }
 
 async function execDelete() {
+  if (mobileMode) return;
   closeModal();
   for (const key of [...SEL]) {
     const fi = FILES.get(key);
-    if (!fi) continue;
+    if (!fi || !fi.handle) continue;
     try {
       await fi.handle.remove();
-      feedLine('🗑  ' + t('Eliminado', 'Deleted') + ': ' + fi.name, 'match');
+      feedLine('🗑  ' + t('Eliminado','Deleted') + ': ' + fi.name, 'match');
       if (fi._sid) document.getElementById(fi._sid)?.remove();
       FILES.delete(key); SEL.delete(key);
     } catch(e) {
-      feedLine('✗  ' + t('Error', 'Error') + ': ' + fi.name + ' — ' + e.message, 'err');
+      feedLine('✗  ' + t('Error','Error') + ': ' + fi.name + ' — ' + e.message, 'err');
     }
   }
   document.getElementById('btn-del').style.display = 'none';
   document.getElementById('sel-cnt').textContent   = '0';
   updateStats();
+}
+
+// ══════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════
+if (isMobileDevice() || !hasDirectoryPicker()) {
+  document.getElementById('mobile-warn').style.display = 'block';
 }
 </script>
 </body>
