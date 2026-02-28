@@ -10,7 +10,7 @@
     @font-face { font-family:'GoogleSans'; src:url('GoogleSans-Bold.ttf')    format('truetype'); font-weight:700; }
     @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
 
-    /* ── LIGHT (default) ── */
+    /* ── TOKENS: LIGHT (default) ── */
     :root {
       --bg:       #f5f5f5;
       --panel:    #ffffff;
@@ -25,7 +25,8 @@
       --code-bg:  #f0f0f0;
       --shadow:   0 1px 4px rgba(0,0,0,.08);
     }
-    /* ── DARK ── */
+
+    /* ── TOKENS: DARK ── */
     body.dark {
       --bg:      #050505;
       --panel:   #0a0a0a;
@@ -50,9 +51,9 @@
       padding:0 22px; background:var(--panel); border-bottom:1px solid var(--border);
       box-shadow:var(--shadow); z-index:100; position:relative;
     }
-    .logo { font-family:'Fira Code',monospace; font-size:1.25rem; font-weight:700; color:var(--white); }
-    .logo span { color:var(--red); }
-    .nav-right { display:flex; align-items:center; gap:8px; }
+    .logo       { font-family:'Fira Code',monospace; font-size:1.25rem; font-weight:700; color:var(--white); }
+    .logo span  { color:var(--red); }
+    .nav-right  { display:flex; align-items:center; gap:8px; }
     .nav-folder {
       font-family:'Fira Code',monospace; font-size:.7rem; color:var(--muted);
       border:1px solid var(--border); padding:3px 10px; border-radius:4px;
@@ -61,19 +62,17 @@
     }
     .nav-folder i { color:var(--red); margin-right:5px; }
 
-    /* small nav buttons */
+    /* All three nav controls share the same 32px height so they sit flush */
     .nbtn {
       background:transparent; border:1px solid var(--border2); color:var(--muted);
-      /* TAREA 1: altura fija igual que icon-btn y lang-switch */
       height:32px; padding:0 12px; border-radius:4px; font-family:'Fira Code',monospace;
       font-size:.72rem; cursor:pointer; transition:all .2s; display:none; white-space:nowrap;
       align-items:center; gap:5px;
     }
     .nbtn:hover { border-color:var(--red); color:var(--red); background:var(--red-dim); }
-    #btn-stop { border-color:var(--red); color:var(--red); }
+    #btn-stop       { border-color:var(--red); color:var(--red); }
     #btn-stop:hover { background:var(--red-dim); }
 
-    /* TAREA 1: icon-btn altura fija 32px — simétrico con lang-switch */
     .icon-btn {
       background:transparent; border:1px solid var(--border2); color:var(--muted);
       width:32px; height:32px; border-radius:4px; font-size:.82rem; cursor:pointer;
@@ -81,7 +80,6 @@
     }
     .icon-btn:hover { border-color:var(--red); color:var(--red); background:var(--red-dim); }
 
-    /* TAREA 1: lang-switch altura fija 32px — simétrico con icon-btn */
     .lang-switch {
       cursor:pointer; color:var(--muted); font-size:.75rem;
       display:flex; align-items:center; gap:5px; font-family:'Fira Code',monospace;
@@ -90,11 +88,11 @@
     }
     .lang-switch:hover { color:var(--red); border-color:var(--red); background:var(--red-dim); }
 
-    /* ── PROGRESS ── */
+    /* ── PROGRESS BAR ── */
     #pbar-wrap { height:2px; background:var(--border); flex-shrink:0; }
     #pbar { height:100%; background:var(--red); width:0%; transition:width .25s ease; box-shadow:0 0 8px var(--red); }
 
-    /* ── LAYOUT ── */
+    /* ── THREE-PANEL LAYOUT ── */
     .app-body   { display:flex; flex-direction:column; height:calc(100vh - 54px); }
     .panels-row { flex:1; display:flex; overflow:hidden; }
     .panel      { display:flex; flex-direction:column; overflow:hidden; min-width:100px; }
@@ -105,285 +103,283 @@
       padding:0 14px; background:var(--panel); border-bottom:1px solid var(--border);
       font-family:'GoogleSans',sans-serif; font-size:.82rem; font-weight:700; color:var(--white);
     }
-    .ph-l { display:flex; align-items:center; gap:8px; overflow:hidden; }
-    .ph-l span { white-space:nowrap; }
-    .ph-sub { font-family:'Fira Code',monospace; font-size:.58rem; color:var(--muted); font-weight:400; white-space:nowrap; }
-    .dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
-    .d-idle { background:var(--dim); }
-    .d-run  { background:var(--red); animation:blink 1s infinite; }
-    .d-stop { background:var(--muted); animation:none; }
+    .ph-l       { display:flex; align-items:center; gap:8px; overflow:hidden; }
+    .ph-l span  { white-space:nowrap; }
+    .ph-sub     { font-family:'Fira Code',monospace; font-size:.58rem; color:var(--muted); font-weight:400; white-space:nowrap; }
+    .dot        { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+    .d-idle     { background:var(--dim); }
+    .d-run      { background:var(--red); animation:blink 1s infinite; }
+    .d-stop     { background:var(--muted); animation:none; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.15} }
-    #scan-lbl { font-weight:700; }
-    .badge { background:var(--red); color:#fff; border-radius:10px; padding:1px 8px; font-size:.67rem; font-family:'Fira Code',monospace; font-weight:700; flex-shrink:0; }
-    .badge.z { background:var(--dim); color:var(--muted); }
+    #scan-lbl   { font-weight:700; }
+    .badge      { background:var(--red); color:#fff; border-radius:10px; padding:1px 8px; font-size:.67rem; font-family:'Fira Code',monospace; font-weight:700; flex-shrink:0; }
+    .badge.z    { background:var(--dim); color:var(--muted); }
 
-    /* ── DIVIDERS ── */
+    /* ── RESIZABLE DIVIDERS ── */
     .divider { width:5px; flex-shrink:0; background:transparent; cursor:col-resize; position:relative; z-index:20; transition:background .15s; user-select:none; }
-    .divider:hover,.divider.drag { background:var(--red); }
+    .divider:hover, .divider.drag { background:var(--red); }
     .divider::after { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:1px; height:40px; background:var(--border2); }
 
-    /* ── LEFT PANEL ── */
+    /* ── LEFT PANEL: FEED ── */
     #panel-left { width:260px; border-right:1px solid var(--border); }
-    #feed { flex:1; overflow:hidden; padding:8px 12px; font-family:'Fira Code',monospace; font-size:.67rem; line-height:1.8; background:var(--feed-bg); }
-    .fl { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .fl-dir   { color:var(--white); opacity:.85; }
-    .fl-file  { color:var(--muted); }
-    .fl-skip  { color:var(--dim); font-style:italic; }
-    .fl-match { color:var(--red); font-weight:700; }
-    .fl-info  { color:var(--dim); }
-    .fl-ok    { color:var(--white); font-weight:700; }
-    .fl-err   { color:var(--red); }
+    #feed       { flex:1; overflow:hidden; padding:8px 12px; font-family:'Fira Code',monospace; font-size:.67rem; line-height:1.8; background:var(--feed-bg); }
+    .fl         { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .fl-dir     { color:var(--white); opacity:.85; }
+    .fl-file    { color:var(--muted); }
+    .fl-skip    { color:var(--dim); font-style:italic; }
+    .fl-match   { color:var(--red); font-weight:700; }
+    .fl-info    { color:var(--dim); }
+    .fl-ok      { color:var(--white); font-weight:700; }
+    .fl-err     { color:var(--red); }
 
-    /* ── MID PANEL ── */
-    #panel-mid { flex:1; border-right:1px solid var(--border); }
+    /* ── MID PANEL: DUPLICATES ── */
+    #panel-mid    { flex:1; border-right:1px solid var(--border); }
     #dupes-scroll { flex:1; overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--red) transparent; }
-    #dupes-scroll::-webkit-scrollbar { width:5px; }
+    #dupes-scroll::-webkit-scrollbar       { width:5px; }
     #dupes-scroll::-webkit-scrollbar-thumb { background:var(--red); border-radius:3px; }
 
-    /* ── HOME ── */
-    #home { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center; }
-    .home-icon { font-size:2.6rem; color:var(--red); opacity:.25; }
-    #home h2 { font-size:1.35rem; font-weight:700; color:var(--white); }
-    #home p  { color:var(--muted); font-size:.85rem; line-height:1.75; max-width:320px; }
-    .home-note { font-family:'Fira Code',monospace; font-size:.65rem; color:var(--dim); }
-    .home-warn {
+    /* ── HOME SCREEN ── */
+    #home         { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center; }
+    .home-icon    { font-size:2.6rem; color:var(--red); opacity:.25; }
+    #home h2      { font-size:1.35rem; font-weight:700; color:var(--white); }
+    #home p       { color:var(--muted); font-size:.85rem; line-height:1.75; max-width:320px; }
+    .home-note    { font-family:'Fira Code',monospace; font-size:.65rem; color:var(--dim); }
+    .home-warn    {
       font-family:'Fira Code',monospace; font-size:.63rem; color:var(--red);
       border:1px solid rgba(232,0,45,.3); background:var(--red-dim);
       padding:7px 14px; border-radius:4px; max-width:340px; line-height:1.7;
     }
 
-    /* ── CONFIRM ── */
-    #confirm-step { display:none; height:100%; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center; }
+    /* Chrome blocks certain root folders at the OS level (e.g. Downloads, Desktop).
+       This callout explains the workaround to the user without technical jargon. */
+    .chrome-warn {
+      display:flex; align-items:flex-start; gap:11px;
+      background:var(--red-dim); border:1px solid rgba(232,0,45,.28);
+      border-radius:5px; padding:11px 15px; max-width:360px; text-align:left;
+    }
+    .chrome-warn i             { color:var(--red); font-size:1rem; flex-shrink:0; margin-top:2px; }
+    .chrome-warn-body          { display:flex; flex-direction:column; gap:3px; }
+    .chrome-warn-title         { font-size:.78rem; font-weight:700; color:var(--red); font-family:'GoogleSans',sans-serif; }
+    .chrome-warn-text          { font-size:.73rem; color:var(--muted); line-height:1.65; }
+    .chrome-warn-text strong   { color:var(--white); }
+
+    /* ── FOLDER CONFIRM STEP ── */
+    #confirm-step   { display:none; height:100%; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center; }
     #confirm-step h3 { font-size:1.1rem; font-weight:700; }
     #confirm-step p  { color:var(--muted); font-size:.83rem; line-height:1.7; max-width:320px; }
-    .confirm-path { font-family:'Fira Code',monospace; font-size:.78rem; color:var(--red); background:var(--red-dim); border:1px solid rgba(232,0,45,.25); padding:8px 16px; border-radius:4px; max-width:380px; word-break:break-all; }
-    .confirm-btns { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+    .confirm-path    { font-family:'Fira Code',monospace; font-size:.78rem; color:var(--red); background:var(--red-dim); border:1px solid rgba(232,0,45,.25); padding:8px 16px; border-radius:4px; max-width:380px; word-break:break-all; }
+    .confirm-btns    { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
 
     /* ── BUTTONS ── */
-    .btn-primary   { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:var(--red); border:1px solid var(--red); color:#fff; font-family:'Fira Code',monospace; font-size:.85rem; cursor:pointer; border-radius:4px; transition:all .2s; }
+    .btn-primary         { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:var(--red); border:1px solid var(--red); color:#fff; font-family:'Fira Code',monospace; font-size:.85rem; cursor:pointer; border-radius:4px; transition:all .2s; }
     .btn-primary:hover   { opacity:.88; transform:translateY(-1px); }
-    .btn-secondary { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:transparent; border:1px solid var(--border2); color:var(--muted); font-family:'Fira Code',monospace; font-size:.85rem; cursor:pointer; border-radius:4px; transition:all .2s; }
+    .btn-secondary       { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:transparent; border:1px solid var(--border2); color:var(--muted); font-family:'Fira Code',monospace; font-size:.85rem; cursor:pointer; border-radius:4px; transition:all .2s; }
     .btn-secondary:hover { border-color:var(--white); color:var(--white); }
 
-    /* ── DUPLICATE GROUPS ── */
-    .dg { margin:8px 10px; border:1px solid var(--border); border-radius:4px; overflow:hidden; animation:si .25s ease; box-shadow:var(--shadow); }
+    /* ── DUPLICATE GROUP CARDS ── */
+    .dg         { margin:8px 10px; border:1px solid var(--border); border-radius:4px; overflow:hidden; animation:si .25s ease; box-shadow:var(--shadow); }
     @keyframes si { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:none} }
-    .dg-hdr { background:var(--red-dim); padding:6px 13px; border-bottom:1px solid var(--border); font-family:'Fira Code',monospace; font-size:.68rem; color:var(--muted); display:flex; justify-content:space-between; align-items:center; gap:8px; }
+    .dg-hdr     { background:var(--red-dim); padding:6px 13px; border-bottom:1px solid var(--border); font-family:'Fira Code',monospace; font-size:.68rem; color:var(--muted); display:flex; justify-content:space-between; align-items:center; gap:8px; }
     .dg-hdr .h  { color:var(--red); }
     .dg-hdr .sv { color:var(--white); font-weight:700; white-space:nowrap; }
-    .df { padding:8px 12px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:9px; transition:background .1s; }
+    .df         { padding:8px 12px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:9px; transition:background .1s; }
     .df:last-child { border-bottom:none; }
-    .df:hover  { background:var(--red-dim); }
-    .df.sel    { background:var(--red-dim); border-left:3px solid var(--red); }
-    .df.orig   { border-left:3px solid var(--dim); }
-    .df input[type=checkbox] { accent-color:var(--red); width:14px; height:14px; flex-shrink:0; cursor:pointer; }
+    .df:hover   { background:var(--red-dim); }
+    .df.sel     { background:var(--red-dim); border-left:3px solid var(--red); }
+    .df.orig    { border-left:3px solid var(--dim); }
+    .df input[type=checkbox]          { accent-color:var(--red); width:14px; height:14px; flex-shrink:0; cursor:pointer; }
     .df input[type=checkbox]:disabled { opacity:.25; }
-    .df-icon   { font-size:.85rem; color:var(--dim); flex-shrink:0; }
-    .df-info   { flex:1; min-width:0; }
-    .df-name   { font-size:.83rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--white); }
-    .df-path   { font-size:.63rem; color:var(--muted); font-family:'Fira Code',monospace; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .orig-tag  { font-size:.58rem; color:var(--red); border:1px solid var(--red); padding:0 4px; border-radius:2px; margin-left:6px; opacity:.6; vertical-align:middle; }
-    .btn-eye   { background:transparent; border:1px solid var(--border); color:var(--dim); padding:3px 8px; border-radius:3px; font-size:.7rem; cursor:pointer; transition:all .18s; flex-shrink:0; }
+    .df-icon    { font-size:.85rem; color:var(--dim); flex-shrink:0; }
+    .df-info    { flex:1; min-width:0; }
+    .df-name    { font-size:.83rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--white); }
+    .df-path    { font-size:.63rem; color:var(--muted); font-family:'Fira Code',monospace; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .orig-tag   { font-size:.58rem; color:var(--red); border:1px solid var(--red); padding:0 4px; border-radius:2px; margin-left:6px; opacity:.6; vertical-align:middle; }
+    .btn-eye    { background:transparent; border:1px solid var(--border); color:var(--dim); padding:3px 8px; border-radius:3px; font-size:.7rem; cursor:pointer; transition:all .18s; flex-shrink:0; }
     .btn-eye:hover { border-color:var(--red); color:var(--red); }
 
     /* ── STATS BAR ── */
-    #stats-bar { min-height:40px; flex-shrink:0; display:flex; align-items:center; flex-wrap:wrap; gap:4px; padding:0 10px; border-top:1px solid var(--border); background:var(--panel); font-family:'Fira Code',monospace; font-size:.68rem; color:var(--muted); box-shadow:var(--shadow); }
-    .sbar-left   { display:flex; align-items:center; gap:6px; }
+    #stats-bar  { min-height:40px; flex-shrink:0; display:flex; align-items:center; flex-wrap:wrap; gap:4px; padding:0 10px; border-top:1px solid var(--border); background:var(--panel); font-family:'Fira Code',monospace; font-size:.68rem; color:var(--muted); box-shadow:var(--shadow); }
+    .sbar-left  { display:flex; align-items:center; gap:6px; }
     .sbar-center { flex:1; display:flex; align-items:center; justify-content:center; min-width:0; }
-    .sbar-right  { display:flex; align-items:center; gap:5px; }
-    .sbar-val    { color:var(--white); font-weight:700; }
-    .sbar-sep    { color:var(--dim); }
-    #sel-info    { display:none; font-family:'Fira Code',monospace; font-size:.68rem; color:var(--red); font-weight:700; }
-    .sbar-btn { background:transparent; border:1px solid var(--border2); color:var(--muted); padding:3px 9px; border-radius:3px; font-family:'Fira Code',monospace; font-size:.64rem; cursor:pointer; transition:all .18s; white-space:nowrap; }
+    .sbar-right { display:flex; align-items:center; gap:5px; }
+    .sbar-val   { color:var(--white); font-weight:700; }
+    .sbar-sep   { color:var(--dim); }
+    #sel-info   { display:none; font-family:'Fira Code',monospace; font-size:.68rem; color:var(--red); font-weight:700; }
+    .sbar-btn   { background:transparent; border:1px solid var(--border2); color:var(--muted); padding:3px 9px; border-radius:3px; font-family:'Fira Code',monospace; font-size:.64rem; cursor:pointer; transition:all .18s; white-space:nowrap; }
     .sbar-btn:hover { border-color:var(--white); color:var(--white); }
-    #btn-del { background:var(--red); border:1px solid var(--red); color:#fff; padding:3px 10px; border-radius:3px; font-family:'Fira Code',monospace; font-size:.64rem; cursor:pointer; transition:all .18s; display:none; white-space:nowrap; }
+    #btn-del    { background:var(--red); border:1px solid var(--red); color:#fff; padding:3px 10px; border-radius:3px; font-family:'Fira Code',monospace; font-size:.64rem; cursor:pointer; transition:all .18s; display:none; white-space:nowrap; }
     #btn-del:hover { opacity:.85; }
 
-    /* ── RIGHT PANEL ── */
-    #panel-right  { width:290px; }
-    #prev-body    { flex:1; overflow:hidden; display:flex; flex-direction:column; }
-    #prev-empty   { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; color:var(--dim); font-size:.8rem; text-align:center; }
-    #prev-empty i { font-size:2.2rem; }
-    #prev-content { flex:1; overflow-y:auto; padding:14px; display:none; scrollbar-width:thin; scrollbar-color:var(--border2) transparent; }
+    /* ── RIGHT PANEL: PREVIEW ── */
+    #panel-right    { width:290px; }
+    #prev-body      { flex:1; overflow:hidden; display:flex; flex-direction:column; }
+    #prev-empty     { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; color:var(--dim); font-size:.8rem; text-align:center; }
+    #prev-empty i   { font-size:2.2rem; }
+    #prev-content   { flex:1; overflow-y:auto; padding:14px; display:none; scrollbar-width:thin; scrollbar-color:var(--border2) transparent; }
     #prev-content::-webkit-scrollbar       { width:4px; }
     #prev-content::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
-    .pv-name { font-size:.9rem; font-weight:700; word-break:break-all; margin-bottom:4px; color:var(--white); }
-    .pv-meta { font-family:'Fira Code',monospace; font-size:.63rem; color:var(--muted); margin-bottom:12px; line-height:1.7; }
-    .pv-meta .ac { color:var(--red); font-weight:700; }
+    .pv-name        { font-size:.9rem; font-weight:700; word-break:break-all; margin-bottom:4px; color:var(--white); }
+    .pv-meta        { font-family:'Fira Code',monospace; font-size:.63rem; color:var(--muted); margin-bottom:12px; line-height:1.7; }
+    .pv-meta .ac    { color:var(--red); font-weight:700; }
     #btn-close-prev { background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:.78rem; padding:3px 5px; border-radius:3px; transition:color .15s; line-height:1; }
     #btn-close-prev:hover { color:var(--red); }
 
-    /* ── FORMAT FILTER BAR ── */
-    #filter-bar { display:none; flex-shrink:0; padding:6px 10px; border-bottom:1px solid var(--border); background:var(--panel); overflow-x:auto; scrollbar-width:none; gap:5px; flex-wrap:wrap; align-items:center; }
+    /* ── FORMAT FILTER CHIPS ── */
+    #filter-bar  { display:none; flex-shrink:0; padding:6px 10px; border-bottom:1px solid var(--border); background:var(--panel); overflow-x:auto; scrollbar-width:none; gap:5px; flex-wrap:wrap; align-items:center; }
     #filter-bar::-webkit-scrollbar { display:none; }
     #filter-bar.visible { display:flex; }
     .filter-label { font-family:'Fira Code',monospace; font-size:.63rem; color:var(--muted); margin-right:4px; white-space:nowrap; }
-    .fmt-chip { font-family:'Fira Code',monospace; font-size:.63rem; border:1px solid var(--border2); color:var(--muted); padding:2px 9px; border-radius:10px; cursor:pointer; transition:all .15s; white-space:nowrap; background:transparent; user-select:none; }
+    .fmt-chip     { font-family:'Fira Code',monospace; font-size:.63rem; border:1px solid var(--border2); color:var(--muted); padding:2px 9px; border-radius:10px; cursor:pointer; transition:all .15s; white-space:nowrap; background:transparent; user-select:none; }
     .fmt-chip:hover  { border-color:var(--white); color:var(--white); }
     .fmt-chip.active { border-color:var(--red); color:var(--red); background:var(--red-dim); }
     .fmt-chip.all    { border-color:var(--muted); }
 
-    /* ── MODAL (eliminar) ── */
+    /* ── DELETE CONFIRMATION MODAL ── */
     #modal-ov { position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:9000; display:none; align-items:center; justify-content:center; padding:20px; }
     #modal-ov.on { display:flex; }
-    .mbox { background:var(--panel); border:1px solid var(--red); padding:24px; border-radius:6px; max-width:420px; width:100%; display:flex; flex-direction:column; gap:12px; box-shadow:0 8px 32px rgba(0,0,0,.25); }
-    .mbox h3 { font-size:1rem; font-weight:700; color:var(--white); }
-    .mbox p  { color:var(--muted); font-size:.82rem; line-height:1.65; }
-    .mlist { max-height:120px; overflow-y:auto; background:var(--bg); border:1px solid var(--border); padding:8px 12px; font-family:'Fira Code',monospace; font-size:.65rem; color:var(--red); scrollbar-width:thin; border-radius:3px; }
-    .mlist div { margin-bottom:3px; word-break:break-all; }
-    .minput { background:var(--bg); border:1px solid var(--border2); color:var(--white); padding:8px 11px; font-family:'Fira Code',monospace; font-size:.85rem; border-radius:4px; width:100%; outline:none; transition:border-color .2s; }
+    .mbox       { background:var(--panel); border:1px solid var(--red); padding:24px; border-radius:6px; max-width:420px; width:100%; display:flex; flex-direction:column; gap:12px; box-shadow:0 8px 32px rgba(0,0,0,.25); }
+    .mbox h3    { font-size:1rem; font-weight:700; color:var(--white); }
+    .mbox p     { color:var(--muted); font-size:.82rem; line-height:1.65; }
+    .mlist      { max-height:120px; overflow-y:auto; background:var(--bg); border:1px solid var(--border); padding:8px 12px; font-family:'Fira Code',monospace; font-size:.65rem; color:var(--red); scrollbar-width:thin; border-radius:3px; }
+    .mlist div  { margin-bottom:3px; word-break:break-all; }
+    .minput     { background:var(--bg); border:1px solid var(--border2); color:var(--white); padding:8px 11px; font-family:'Fira Code',monospace; font-size:.85rem; border-radius:4px; width:100%; outline:none; transition:border-color .2s; }
     .minput:focus { border-color:var(--red); }
-    .mactions { display:flex; gap:9px; justify-content:flex-end; }
+    .mactions   { display:flex; gap:9px; justify-content:flex-end; }
     .btn-cancel  { background:transparent; border:1px solid var(--border2); color:var(--muted); padding:7px 16px; border-radius:4px; font-family:'Fira Code',monospace; font-size:.78rem; cursor:pointer; transition:all .2s; }
     .btn-cancel:hover  { border-color:var(--muted); color:var(--white); }
     .btn-confirm { background:var(--red); border:1px solid var(--red); color:#fff; padding:7px 16px; border-radius:4px; font-family:'Fira Code',monospace; font-size:.78rem; cursor:pointer; transition:all .2s; }
-    .btn-confirm:hover { opacity:.85; }
+    .btn-confirm:hover    { opacity:.85; }
     .btn-confirm:disabled { opacity:.3; cursor:not-allowed; }
 
-    /* ── SETTINGS MODAL — TAREA 3 ── */
+    /* ── SETTINGS MODAL ── */
     #settings-ov { position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:9000; display:none; align-items:center; justify-content:center; padding:20px; }
     #settings-ov.on { display:flex; }
-    .sbox {
-      background:var(--panel); border:1px solid var(--border2); padding:24px;
-      border-radius:6px; max-width:480px; width:100%; display:flex; flex-direction:column;
-      gap:18px; box-shadow:0 8px 32px rgba(0,0,0,.35); max-height:90vh; overflow-y:auto;
-    }
-    .sbox h3 { font-size:1rem; font-weight:700; color:var(--white); display:flex; align-items:center; gap:8px; }
-    .sfield { display:flex; flex-direction:column; gap:6px; }
-    .sfield label { font-family:'Fira Code',monospace; font-size:.72rem; color:var(--muted); }
-    .sfield textarea, .sfield input[type=number] {
-      background:var(--bg); border:1px solid var(--border2); color:var(--white);
-      padding:8px 11px; font-family:'Fira Code',monospace; font-size:.8rem;
-      border-radius:4px; width:100%; outline:none; transition:border-color .2s; resize:vertical;
-    }
-    .sfield textarea { min-height:60px; }
-    .sfield textarea:focus, .sfield input[type=number]:focus { border-color:var(--red); }
+    .sbox         { background:var(--panel); border:1px solid var(--border2); padding:24px; border-radius:6px; max-width:480px; width:100%; display:flex; flex-direction:column; gap:20px; box-shadow:0 8px 32px rgba(0,0,0,.35); max-height:90vh; overflow-y:auto; }
+    .sbox h3      { font-size:1rem; font-weight:700; color:var(--white); display:flex; align-items:center; gap:8px; }
+    .sdivider     { border:none; border-top:1px solid var(--border); margin:0; }
+    .sfield       { display:flex; flex-direction:column; gap:8px; }
+    .sfield > .slabel { font-size:.82rem; font-weight:700; color:var(--white); font-family:'GoogleSans',sans-serif; }
     .sfield .hint { font-family:'Fira Code',monospace; font-size:.62rem; color:var(--dim); line-height:1.6; }
-    .ssize-row { display:flex; gap:8px; align-items:stretch; }
-    .ssize-row input { flex:1; }
-    .cfg-select {
-      background:var(--bg); border:1px solid var(--border2); color:var(--muted);
-      padding:8px 10px; font-family:'Fira Code',monospace; font-size:.8rem;
-      border-radius:4px; outline:none; cursor:pointer; transition:border-color .2s;
+    .cfg-checks   { display:flex; flex-direction:column; gap:0; }
+    .cfg-check-row {
+      display:flex; align-items:flex-start; gap:10px;
+      padding:9px 12px; border-radius:4px; cursor:pointer;
+      transition:background .12s; user-select:none;
     }
+    .cfg-check-row:hover                     { background:var(--red-dim); }
+    .cfg-check-row input[type=checkbox]      { accent-color:var(--red); width:15px; height:15px; flex-shrink:0; margin-top:2px; cursor:pointer; }
+    .cfg-check-label  { display:flex; flex-direction:column; gap:2px; }
+    .cfg-check-title  { font-size:.82rem; color:var(--white); line-height:1.4; }
+    .cfg-check-sub    { font-family:'Fira Code',monospace; font-size:.62rem; color:var(--muted); }
+    .sfield input[type=number] { background:var(--bg); border:1px solid var(--border2); color:var(--white); padding:8px 11px; font-family:'Fira Code',monospace; font-size:.8rem; border-radius:4px; width:100%; outline:none; transition:border-color .2s; }
+    .sfield input[type=number]:focus { border-color:var(--red); }
+    .ssize-row    { display:flex; gap:8px; align-items:stretch; }
+    .ssize-row input { flex:1; }
+    .cfg-select   { background:var(--bg); border:1px solid var(--border2); color:var(--muted); padding:8px 10px; font-family:'Fira Code',monospace; font-size:.8rem; border-radius:4px; outline:none; cursor:pointer; transition:border-color .2s; }
     .cfg-select:focus { border-color:var(--red); }
+    .precision-cards { display:flex; flex-direction:column; gap:8px; }
+    .precision-card  { display:flex; align-items:flex-start; gap:12px; border:1px solid var(--border2); border-radius:5px; padding:11px 14px; cursor:pointer; transition:border-color .18s, background .18s; }
+    .precision-card:hover    { border-color:var(--muted); }
+    .precision-card.selected { border-color:var(--red); background:var(--red-dim); }
+    .precision-card input[type=radio] { accent-color:var(--red); flex-shrink:0; margin-top:3px; cursor:pointer; }
+    .pc-body  { display:flex; flex-direction:column; gap:3px; }
+    .pc-title { font-size:.83rem; font-weight:700; color:var(--white); }
+    .pc-title .pc-badge { display:inline-block; background:var(--red); color:#fff; font-size:.57rem; font-family:'Fira Code',monospace; padding:1px 6px; border-radius:8px; margin-left:6px; vertical-align:middle; font-weight:700; }
+    .pc-desc  { font-size:.73rem; color:var(--muted); line-height:1.55; }
 
-    /* ── LANGUAGE ── */
+    /* ── LANGUAGE VISIBILITY ── */
     body.es .en { display:none !important; }
     body.en .es { display:none !important; }
 
-    /* ── OK SCREEN ── */
-    .ok-screen { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center; }
+    /* ── CLEAN SLATE SCREEN ── */
+    .ok-screen   { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center; }
     .ok-screen h2 { font-size:1.3rem; font-weight:700; }
     .ok-screen p  { color:var(--muted); font-size:.84rem; line-height:1.7; max-width:300px; }
 
+    /* The file input is only used as a fallback for Firefox / Safari */
     #mobile-input { display:none; }
 
-    /* ════════════════════════════════════════════════════
-       TAREA 1 — RESPONSIVE / MOBILE  @media ≤ 768px
-       ════════════════════════════════════════════════════ */
-    /* El botón flotante de feed solo aparece en móvil */
+    /* ── MOBILE FEED TOGGLE — hidden on desktop ── */
     #mobile-feed-btn { display:none; }
 
+    /* ── RESPONSIVE: ≤ 768px ── */
     @media (max-width: 768px) {
-      /* Permitir scroll vertical en móvil */
-      html, body { overflow:auto; height:auto; }
-      .app-body   { height:auto; min-height:calc(100svh - 54px); }
+      html, body   { overflow:auto; height:auto; }
+      .app-body    { height:auto; min-height:calc(100svh - 54px); }
+      .panels-row  { flex-direction:column; overflow:visible; height:auto; flex:none; }
+      .panel       { width:100% !important; flex:none !important; min-width:unset; overflow:visible; }
 
-      /* Columnas → filas */
-      .panels-row { flex-direction:column; overflow:visible; height:auto; flex:none; }
-
-      /* Todos los paneles: ancho 100%, sin min-width */
-      .panel { width:100% !important; flex:none !important; min-width:unset; overflow:visible; }
-
-      /* Feed (izquierda): colapsado por defecto, expandible */
+      /* Feed collapses by default; toggled by the FAB */
       #panel-left {
         height:0; overflow:hidden; border-right:none;
         border-bottom:1px solid var(--border);
         transition:height .3s ease;
-        /* Cuando el feed tiene contenido vemos solo un extracto */
       }
-      #panel-left.mobile-open { height:220px; }
-      #panel-left.mobile-open #feed { overflow-y:auto; }
+      #panel-left.mobile-open        { height:220px; }
+      #panel-left.mobile-open #feed  { overflow-y:auto; }
 
-      /* Mid panel: prioridad absoluta — mínimo 60vh */
-      #panel-mid { min-height:60svh; border-right:none; border-bottom:1px solid var(--border); }
-      #dupes-scroll { max-height:60svh; overflow-y:auto; }
+      /* The duplicate list always gets priority on mobile */
+      #panel-mid     { min-height:60svh; border-right:none; border-bottom:1px solid var(--border); }
+      #dupes-scroll  { max-height:60svh; overflow-y:auto; }
 
-      /* Right panel (preview): debajo del mid */
-      #panel-right { height:auto; border-right:none; border-top:1px solid var(--border); }
-      #prev-empty  { min-height:80px; }
-      #prev-content { max-height:50svh; }
+      #panel-right   { height:auto; border-right:none; border-top:1px solid var(--border); }
+      #prev-empty    { min-height:80px; }
+      #prev-content  { max-height:50svh; }
 
-      /* Ocultar divisores de redimensionado */
       .divider { display:none; }
 
-      /* Nav comprimido */
-      nav { padding:0 12px; gap:4px; }
-      .logo { font-size:.95rem; }
-      .nav-folder { display:none !important; }
-      .nav-byline { display:none; }
+      nav          { padding:0 12px; gap:4px; }
+      .logo        { font-size:.95rem; }
+      .nav-folder  { display:none !important; }
+      .nav-byline  { display:none; }
 
-      /* Stats bar: apilado */
-      #stats-bar { flex-wrap:wrap; gap:6px; padding:8px 10px; min-height:auto; }
+      #stats-bar   { flex-wrap:wrap; gap:6px; padding:8px 10px; min-height:auto; }
       .sbar-left   { flex:0 0 100%; justify-content:flex-start; }
       .sbar-center { flex:0 0 100%; }
       .sbar-right  { flex:0 0 100%; flex-wrap:wrap; gap:4px; }
 
-      /* Home padding reducido */
-      #home { padding:24px 20px; min-height:50svh; }
+      #home        { padding:24px 20px; min-height:50svh; }
 
-      /* Botón flotante de feed — solo en móvil */
       #mobile-feed-btn {
-        display:flex !important;
-        position:fixed; bottom:18px; right:18px; z-index:500;
+        display:flex !important; position:fixed; bottom:18px; right:18px; z-index:500;
         width:46px; height:46px; border-radius:50%;
-        background:var(--red); border:none; color:#fff;
-        font-size:1.05rem; cursor:pointer;
-        align-items:center; justify-content:center;
-        box-shadow:0 4px 20px rgba(232,0,45,.45);
-        transition:transform .15s, opacity .15s;
+        background:var(--red); border:none; color:#fff; font-size:1.05rem;
+        cursor:pointer; align-items:center; justify-content:center;
+        box-shadow:0 4px 20px rgba(232,0,45,.45); transition:transform .15s;
       }
-      #mobile-feed-btn:active { transform:scale(.9); }
-      #mobile-feed-btn.feed-visible { background:var(--panel); color:var(--red); border:1px solid var(--red); }
+      #mobile-feed-btn:active                 { transform:scale(.9); }
+      #mobile-feed-btn.feed-visible           { background:var(--panel); color:var(--red); border:1px solid var(--red); }
 
-      /* Settings box adaptado a móvil */
       .sbox { max-height:85svh; }
     }
   </style>
 </head>
 <body class="es">
 
+<!-- Fallback folder picker for Firefox / Safari (no File System Access API) -->
 <input type="file" id="mobile-input" webkitdirectory multiple>
 
-<!-- TAREA 1: Botón flotante para mostrar/ocultar el feed en móvil -->
-<button id="mobile-feed-btn" onclick="toggleMobileFeed()" title="Toggle log feed" aria-label="Toggle feed">
+<!-- Floating action button: shows / hides the feed panel on mobile -->
+<button id="mobile-feed-btn" onclick="toggleMobileFeed()" title="Toggle log" aria-label="Toggle feed">
   <i class="fas fa-terminal"></i>
 </button>
 
-<!-- ── NAV ── -->
+<!-- NAV -->
 <nav>
   <div style="display:flex;align-items:baseline;gap:10px;">
     <div class="logo">dupe<span>cleaner</span></div>
     <div class="nav-byline" style="font-family:'GoogleSans',sans-serif;font-weight:400;font-size:.67rem;color:var(--muted);">by jaimefg1888</div>
   </div>
   <div class="nav-right">
-
-    <!-- Language — TAREA 1: height:32px fijo -->
     <button class="lang-switch" id="lang-btn" onclick="toggleLang()">
       <i class="fas fa-globe"></i><span class="es">ESP</span><span class="en">ENG</span>
     </button>
-
-    <!-- TAREA 3: Settings gear button — mismo height:32px que lang-switch -->
-    <button class="icon-btn" id="settings-btn" onclick="openSettings()" title="Configuración / Settings">
+    <button class="icon-btn" id="settings-btn" onclick="openSettings()" title="Opciones / Settings">
       <i class="fas fa-gear"></i>
     </button>
-
-    <!-- Theme — TAREA 1: height:32px fijo, perfectamente simétrico -->
-    <button class="icon-btn" id="theme-btn" onclick="toggleTheme()" title="Cambiar tema / Toggle theme">
+    <button class="icon-btn" id="theme-btn" onclick="toggleTheme()" title="Tema / Theme">
       <i class="fas fa-moon" id="theme-icon"></i>
     </button>
-
     <div class="nav-folder" id="nav-folder" style="display:none;">
       <i class="fas fa-folder"></i><span id="nav-folder-name"></span>
     </div>
@@ -402,7 +398,7 @@
   <div id="pbar-wrap"><div id="pbar"></div></div>
   <div class="panels-row">
 
-    <!-- LEFT: FEED LOG -->
+    <!-- LEFT: live scan log feed -->
     <div class="panel" id="panel-left">
       <div class="ph">
         <div class="ph-l">
@@ -422,7 +418,7 @@
 
     <div class="divider" id="div-1"></div>
 
-    <!-- MID: DUPLICATES — prioridad absoluta en móvil -->
+    <!-- MID: duplicate groups list (gets priority on mobile) -->
     <div class="panel" id="panel-mid">
       <div class="ph">
         <div class="ph-l">
@@ -452,12 +448,32 @@
             <i class="fas fa-folder-open"></i>
             <span class="es">Seleccionar carpeta</span><span class="en">Select folder</span>
           </button>
+
+          <!-- Chrome blocks root-level folders (Downloads, Desktop) at the OS/browser level.
+               We can't override this with code, so we educate the user instead. -->
+          <div class="chrome-warn">
+            <i class="fas fa-triangle-exclamation"></i>
+            <div class="chrome-warn-body">
+              <span class="chrome-warn-title es">¿Te da error al seleccionar la carpeta?</span>
+              <span class="chrome-warn-title en">Getting an error when selecting a folder?</span>
+              <span class="chrome-warn-text es">
+                Chrome bloquea carpetas raíz como <strong>Descargas</strong> o <strong>Escritorio</strong> por seguridad.
+                Solución: abre esa carpeta, <strong>crea una subcarpeta</strong> dentro y selecciónala a ella.
+              </span>
+              <span class="chrome-warn-text en">
+                Chrome blocks root folders like <strong>Downloads</strong> or <strong>Desktop</strong> for security.
+                Fix: open that folder, <strong>create a subfolder</strong> inside it and select that instead.
+              </span>
+            </div>
+          </div>
+
           <p class="home-note" id="compat-note"></p>
           <div id="limited-warn" style="display:none;" class="home-warn">
             <span class="es"><i class="fas fa-circle-info"></i> Tu navegador no permite eliminar archivos desde la web.<br>El escaneo funciona con total normalidad, pero para borrar duplicados necesitas <strong>Chrome o Edge</strong> (escritorio o Android).</span>
             <span class="en"><i class="fas fa-circle-info"></i> Your browser doesn't allow deleting files from the web.<br>Scanning works fine, but to delete duplicates you need <strong>Chrome or Edge</strong> (desktop or Android).</span>
           </div>
         </div>
+
         <div id="confirm-step">
           <div class="home-icon" style="font-size:2rem;"><i class="fas fa-folder-open"></i></div>
           <h3><span class="es">Carpeta seleccionada</span><span class="en">Folder selected</span></h3>
@@ -499,7 +515,7 @@
 
     <div class="divider" id="div-2"></div>
 
-    <!-- RIGHT: PREVIEW -->
+    <!-- RIGHT: file preview -->
     <div class="panel" id="panel-right">
       <div class="ph">
         <div class="ph-l">
@@ -526,7 +542,7 @@
   </div>
 </div>
 
-<!-- ── DELETE MODAL ── -->
+<!-- DELETE MODAL -->
 <div id="modal-ov">
   <div class="mbox">
     <h3><i class="fas fa-triangle-exclamation" style="color:var(--red);margin-right:7px;"></i>
@@ -547,27 +563,52 @@
   </div>
 </div>
 
-<!-- ── SETTINGS MODAL — TAREA 3 ── -->
+<!-- SETTINGS MODAL -->
 <div id="settings-ov">
   <div class="sbox">
     <h3>
-      <i class="fas fa-gear" style="color:var(--red);"></i>
-      <span class="es">Configuración del escaneo</span><span class="en">Scan settings</span>
+      <i class="fas fa-sliders" style="color:var(--red);"></i>
+      <span class="es">Opciones de escaneo</span><span class="en">Scan options</span>
     </h3>
 
-    <!-- Carpetas a ignorar -->
     <div class="sfield">
-      <label class="es">Carpetas a ignorar (separadas por comas):</label>
-      <label class="en">Folders to ignore (comma-separated):</label>
-      <textarea id="cfg-ignore" placeholder="node_modules, .git, .cache, dist, __pycache__"></textarea>
-      <span class="hint es">Se añaden a las rutas del sistema bloqueadas por defecto (Windows, macOS, Linux).</span>
-      <span class="hint en">Added on top of the system paths already blocked by default (Windows, macOS, Linux).</span>
+      <span class="slabel es">¿Qué quieres ignorar?</span>
+      <span class="slabel en">What do you want to skip?</span>
+      <div class="cfg-checks">
+        <label class="cfg-check-row">
+          <input type="checkbox" id="cfg-dev" checked>
+          <div class="cfg-check-label">
+            <span class="cfg-check-title es">Carpetas de desarrollo</span>
+            <span class="cfg-check-title en">Development folders</span>
+            <span class="cfg-check-sub">node_modules · .git · .cache · dist · __pycache__ · .next · .nuxt</span>
+          </div>
+        </label>
+        <label class="cfg-check-row">
+          <input type="checkbox" id="cfg-hidden">
+          <div class="cfg-check-label">
+            <span class="cfg-check-title es">Carpetas ocultas (empiezan por punto)</span>
+            <span class="cfg-check-title en">Hidden folders (starting with a dot)</span>
+            <span class="cfg-check-sub es">Ej: .ssh · .config · .local · .vscode</span>
+            <span class="cfg-check-sub en">E.g.: .ssh · .config · .local · .vscode</span>
+          </div>
+        </label>
+        <label class="cfg-check-row">
+          <input type="checkbox" id="cfg-sysfiles">
+          <div class="cfg-check-label">
+            <span class="cfg-check-title es">Archivos del sistema</span>
+            <span class="cfg-check-title en">System files</span>
+            <span class="cfg-check-sub es">Extensiones: .ini · .sys · .dll · .lnk · .bat · .cmd · .drv</span>
+            <span class="cfg-check-sub en">Extensions: .ini · .sys · .dll · .lnk · .bat · .cmd · .drv</span>
+          </div>
+        </label>
+      </div>
     </div>
 
-    <!-- Tamaño mínimo -->
+    <hr class="sdivider">
+
     <div class="sfield">
-      <label class="es">Tamaño mínimo de archivo a escanear:</label>
-      <label class="en">Minimum file size to scan:</label>
+      <span class="slabel es">No escanear archivos que pesen menos de:</span>
+      <span class="slabel en">Skip files smaller than:</span>
       <div class="ssize-row">
         <input type="number" id="cfg-minsize" min="0" value="0" placeholder="0">
         <select id="cfg-minunit" class="cfg-select">
@@ -576,26 +617,38 @@
           <option value="1048576">MB</option>
         </select>
       </div>
-      <span class="hint es">Los archivos más pequeños que este umbral se omiten durante el escaneo.</span>
-      <span class="hint en">Files smaller than this threshold are skipped during the scan.</span>
+      <span class="hint es">Útil para ignorar miniaturas, iconos y archivos de configuración pequeños.</span>
+      <span class="hint en">Useful to skip thumbnails, icons and small config files.</span>
     </div>
 
-    <!-- Estrategia de hash -->
+    <hr class="sdivider">
+
     <div class="sfield">
-      <label class="es">Estrategia de hash para archivos &gt; 20 MB:</label>
-      <label class="en">Hash strategy for files &gt; 20 MB:</label>
-      <select id="cfg-strategy" class="cfg-select" style="width:100%;">
-        <option value="sample">
-          <span class="es">Muestras (inicio + centro + final, 2 MB c/u) — ultrarrápido</span>
-          <span class="en">Sampling (start + middle + end, 2 MB each) — ultra-fast</span>
-        </option>
-        <option value="full">
-          <span class="es">Hash completo — lento pero exacto al 100%</span>
-          <span class="en">Full hash — slow but 100% exact</span>
-        </option>
-      </select>
-      <span class="hint es">El modo muestras evita Out-of-Memory en archivos gigantes y es suficiente en la mayoría de casos.</span>
-      <span class="hint en">Sampling mode prevents Out-of-Memory on huge files and is sufficient for most use cases.</span>
+      <span class="slabel es">Precisión en archivos gigantes (&gt; 20 MB):</span>
+      <span class="slabel en">Accuracy for large files (&gt; 20 MB):</span>
+      <div class="precision-cards">
+        <label class="precision-card selected" id="card-sample" onclick="selectPrecision('sample')">
+          <input type="radio" name="cfg-strategy" id="radio-sample" value="sample" checked>
+          <div class="pc-body">
+            <span class="pc-title">
+              <span class="es">Modo Rápido</span><span class="en">Fast Mode</span>
+              <span class="pc-badge es">RECOMENDADO</span><span class="pc-badge en">RECOMMENDED</span>
+            </span>
+            <span class="pc-desc es">Comprueba partes clave del archivo (inicio, centro y final). Súper rápido e ideal para vídeos y películas.</span>
+            <span class="pc-desc en">Checks key parts of the file (start, middle and end). Ultra-fast and ideal for videos and movies.</span>
+          </div>
+        </label>
+        <label class="precision-card" id="card-full" onclick="selectPrecision('full')">
+          <input type="radio" name="cfg-strategy" id="radio-full" value="full">
+          <div class="pc-body">
+            <span class="pc-title es">Modo Exhaustivo</span><span class="pc-title en">Thorough Mode</span>
+            <span class="pc-desc es">Lee el archivo completo byte a byte. Muy lento en archivos grandes, pero con precisión absoluta.</span>
+            <span class="pc-desc en">Reads the entire file byte by byte. Very slow on large files, but with absolute precision.</span>
+          </div>
+        </label>
+      </div>
+      <span class="hint es">Para archivos de menos de 20 MB siempre se hace una comparación completa sin importar este ajuste.</span>
+      <span class="hint en">Files under 20 MB are always fully compared regardless of this setting.</span>
     </div>
 
     <div class="mactions">
@@ -612,108 +665,111 @@
 <script>
 'use strict';
 
-// ══════════════════════════════════════════════════════
-//  TAREA 2 — WEB WORKER INLINE (Blob URL)
-//  Mueve el cómputo SHA-256 off the main thread.
-//  Para archivos > 20 MB usa estrategia de muestras
-//  (slice de File API) para evitar OOM.
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   WEB WORKER — inline via Blob URL so the file stays self-
+   contained. The worker receives one or more ArrayBuffers,
+   concatenates them if needed, and returns the SHA-256 hex.
+   Running it off the main thread keeps the UI responsive
+   even while hashing hundreds of files back-to-back.
+───────────────────────────────────────────────────────── */
 const _WORKER_SRC = `
-  self.onmessage = async function(e) {
-    const { id, buffers } = e.data;
+  self.onmessage = async function({ data: { id, buffers } }) {
     try {
       let input;
       if (buffers.length === 1) {
         input = buffers[0];
       } else {
-        // Concatenar las muestras en un único buffer antes de hashear
+        // Merge sample slices into one contiguous buffer before hashing
         const total  = buffers.reduce((s, b) => s + b.byteLength, 0);
         const merged = new Uint8Array(total);
-        let   offset = 0;
-        for (const buf of buffers) {
-          merged.set(new Uint8Array(buf), offset);
-          offset += buf.byteLength;
-        }
+        let offset   = 0;
+        for (const buf of buffers) { merged.set(new Uint8Array(buf), offset); offset += buf.byteLength; }
         input = merged.buffer;
       }
       const raw  = await crypto.subtle.digest('SHA-256', input);
-      const hash = Array.from(new Uint8Array(raw))
-                        .map(b => b.toString(16).padStart(2, '0'))
-                        .join('');
+      const hash = Array.from(new Uint8Array(raw)).map(b => b.toString(16).padStart(2,'0')).join('');
       self.postMessage({ id, hash });
-    } catch (err) {
+    } catch(err) {
       self.postMessage({ id, hash: null, error: err.message });
     }
   };
 `;
-
-const _workerBlob  = new Blob([_WORKER_SRC], { type: 'application/javascript' });
-const _workerURL   = URL.createObjectURL(_workerBlob);
+const _workerURL   = URL.createObjectURL(new Blob([_WORKER_SRC], { type:'application/javascript' }));
 const _hashWorker  = new Worker(_workerURL);
 let   _hashIdSeq   = 0;
-const _hashPending = new Map();   // id → resolve
+const _hashPending = new Map(); // id → Promise resolve
 
 _hashWorker.onmessage = ({ data: { id, hash } }) => {
   const resolve = _hashPending.get(id);
   if (resolve) { _hashPending.delete(id); resolve(hash); }
 };
-_hashWorker.onerror = (err) => console.error('[HashWorker]', err);
+_hashWorker.onerror = err => console.error('[HashWorker]', err);
 
-// Umbrales de muestreo
-const SAMPLE_THRESHOLD = 20 * 1024 * 1024;   // 20 MB → usar muestras
-const SAMPLE_CHUNK     =  2 * 1024 * 1024;   // 2 MB por muestra (×3 = 6 MB máx. en RAM)
+/* ─────────────────────────────────────────────────────────
+   CONSTANTS
+───────────────────────────────────────────────────────── */
 
-// ══════════════════════════════════════════════════════
-//  TAREA 3 — RUTAS BLOQUEADAS: Windows + macOS + Linux
-// ══════════════════════════════════════════════════════
+// Files above this threshold use the sampling strategy to avoid OOM
+const SAMPLE_THRESHOLD = 20 * 1024 * 1024; // 20 MB
+// Each sample slice is 2 MB → 3 slices = 6 MB max in RAM for any file size
+const SAMPLE_CHUNK     =  2 * 1024 * 1024;
+
+// OS-level system paths that should never be touched regardless of user config
 const BLOCKED = new Set([
-  // ── Windows ──
-  'windows', 'system32', 'syswow64', 'program files', 'program files (x86)',
-  'programdata', 'system volume information', '$recycle.bin', 'recovery',
-  'boot', 'efi', 'winsxs', 'drivers', 'assembly', 'windowsapps',
-  'windowspowershell', 'microsoft.net', 'servicing', 'installer', 'prefetch',
-  // ── macOS ──
-  'system', 'library', 'private', 'cores', 'developer',
-  'volumes', '.trashes', '.spotlight-v100', '.fseventsd', 'macos',
-  // ── Linux / Unix ──
-  'bin', 'sbin', 'usr', 'etc', 'proc', 'dev', 'sys', 'run',
-  'lib', 'lib64', 'lib32', 'libx32', 'srv', 'snap', 'lost+found',
+  // Windows
+  'windows','system32','syswow64','program files','program files (x86)',
+  'programdata','system volume information','$recycle.bin','recovery',
+  'boot','efi','winsxs','drivers','assembly','windowsapps',
+  'windowspowershell','microsoft.net','servicing','installer','prefetch',
+  // macOS
+  'system','library','private','cores','developer',
+  'volumes','.trashes','.spotlight-v100','.fseventsd','macos',
+  // Linux / Unix
+  'bin','sbin','usr','etc','proc','dev','sys','run',
+  'lib','lib64','lib32','libx32','srv','snap','lost+found',
 ]);
 
-function isBlocked(path) {
-  return path.toLowerCase().replace(/\\/g, '/').split('/').some(p => BLOCKED.has(p));
-}
+// Development artifact folders — skipped when the user's checkbox is on
+const DEV_FOLDERS = new Set([
+  'node_modules','.git','.cache','dist','__pycache__',
+  '.next','.nuxt','.turbo','.parcel-cache','coverage',
+  '.svelte-kit','out','build','.tox','venv','.venv',
+]);
 
-// ══════════════════════════════════════════════════════
-//  TAREA 3 — CONFIGURACIÓN DE USUARIO
-// ══════════════════════════════════════════════════════
-let userIgnoreFolders = new Set();   // carpetas definidas por el usuario
-let userMinFileSize   = 0;           // tamaño mínimo en bytes
-let userHashStrategy  = 'sample';    // 'sample' | 'full'
+// System file extensions — skipped when the user's checkbox is on
+const SYS_EXTENSIONS = new Set([
+  'ini','sys','dll','lnk','bat','cmd','drv',
+  'msi','inf','cat','evt','evtx','reg','scr',
+]);
 
-function isUserIgnored(name) {
-  return userIgnoreFolders.has(name.toLowerCase());
-}
+/* ─────────────────────────────────────────────────────────
+   USER CONFIG STATE  (mirrors the Settings modal)
+───────────────────────────────────────────────────────── */
+let cfgIgnoreDev      = true;
+let cfgIgnoreHidden   = false;
+let cfgIgnoreSysFiles = false;
+let userMinFileSize   = 0;
+let userHashStrategy  = 'sample'; // 'sample' | 'full'
 
-// ══════════════════════════════════════════════════════
-//  ESTADO GLOBAL
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   APP STATE
+───────────────────────────────────────────────────────── */
 let dirHandle   = null;
 let cancelled   = false;
 let scanning    = false;
-let limitedMode = false;
+let limitedMode = false; // true when File System Access API is unavailable
 let fileCount   = 0;
 let skipCount   = 0;
 let feedCount   = 0;
-const MAX_FEED  = 300;
+const MAX_FEED  = 300;   // max log lines kept in the DOM
 
-const FILES  = new Map();
-const GROUPS = new Map();
-const SEL    = new Set();
+const FILES  = new Map(); // path → file descriptor
+const GROUPS = new Map(); // sha256 → [file descriptor, …]
+const SEL    = new Set(); // paths selected for deletion
 
-// ══════════════════════════════════════════════════════
-//  HELPERS
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   PURE HELPERS
+───────────────────────────────────────────────────────── */
 const t = (es, en) => document.body.classList.contains('es') ? es : en;
 
 const fmtSize = b =>
@@ -729,29 +785,38 @@ const ICONS = {
   mp4:'fa-file-video', mkv:'fa-file-video', avi:'fa-file-video', mov:'fa-file-video', webm:'fa-file-video',
   mp3:'fa-file-audio', wav:'fa-file-audio', flac:'fa-file-audio', ogg:'fa-file-audio', aac:'fa-file-audio',
   zip:'fa-file-zipper', rar:'fa-file-zipper', '7z':'fa-file-zipper', gz:'fa-file-zipper',
-  doc:'fa-file-word', docx:'fa-file-word', xls:'fa-file-excel', xlsx:'fa-file-excel',
-  js:'fa-file-code', ts:'fa-file-code', py:'fa-file-code',
-  html:'fa-file-code', css:'fa-file-code', json:'fa-file-code',
-  txt:'fa-file-lines', md:'fa-file-lines', csv:'fa-file-lines', log:'fa-file-lines',
+  doc:'fa-file-word',  docx:'fa-file-word',  xls:'fa-file-excel', xlsx:'fa-file-excel',
+  js:'fa-file-code',   ts:'fa-file-code',    py:'fa-file-code',
+  html:'fa-file-code', css:'fa-file-code',   json:'fa-file-code',
+  txt:'fa-file-lines', md:'fa-file-lines',   csv:'fa-file-lines', log:'fa-file-lines',
 };
-const getIcon = n  => 'fas ' + (ICONS[n.split('.').pop().toLowerCase()] || 'fa-file');
-const isImg   = n  => /\.(jpe?g|png|gif|webp|bmp|svg)$/i.test(n);
-const isTxt   = n  => /\.(txt|md|json|js|ts|py|html|css|log|csv|xml|sh|bat|c|cpp|h|java|rb|php)$/i.test(n);
-// TAREA 3: helpers para vídeo y audio
-const isVideo = n  => /\.(mp4|webm|mkv|avi|mov|ogv|m4v)$/i.test(n);
-const isAudio = n  => /\.(mp3|wav|flac|ogg|aac|m4a|opus|weba)$/i.test(n);
-const frame   = () => new Promise(r => requestAnimationFrame(r));
+const getIcon  = n => 'fas ' + (ICONS[n.split('.').pop().toLowerCase()] || 'fa-file');
+const isImg    = n => /\.(jpe?g|png|gif|webp|bmp|svg)$/i.test(n);
+const isTxt    = n => /\.(txt|md|json|js|ts|py|html|css|log|csv|xml|sh|bat|c|cpp|h|java|rb|php)$/i.test(n);
+const isVideo  = n => /\.(mp4|webm|mkv|avi|mov|ogv|m4v)$/i.test(n);
+const isAudio  = n => /\.(mp3|wav|flac|ogg|aac|m4a|opus|weba)$/i.test(n);
+const frame    = () => new Promise(r => requestAnimationFrame(r));
 const hasFSAPI = () => 'showDirectoryPicker' in window;
 
-// ══════════════════════════════════════════════════════
-//  TEMA
-// ══════════════════════════════════════════════════════
-function toggleTheme() {
-  const dark = document.body.classList.toggle('dark');
-  document.getElementById('theme-icon').className = dark ? 'fas fa-sun' : 'fas fa-moon';
-  try { localStorage.setItem('dc-theme', dark ? 'dark' : 'light'); } catch {}
-}
-(function () {
+const isBlocked = path =>
+  path.toLowerCase().replace(/\\/g, '/').split('/').some(p => BLOCKED.has(p));
+
+const isUserIgnoredDir = name => {
+  if (cfgIgnoreDev    && DEV_FOLDERS.has(name.toLowerCase())) return true;
+  if (cfgIgnoreHidden && name.startsWith('.'))                 return true;
+  return false;
+};
+
+const isUserIgnoredFile = name => {
+  if (!cfgIgnoreSysFiles) return false;
+  const ext = name.includes('.') ? name.split('.').pop().toLowerCase() : '';
+  return SYS_EXTENSIONS.has(ext);
+};
+
+/* ─────────────────────────────────────────────────────────
+   BOOTSTRAP — theme, language, compat banner
+───────────────────────────────────────────────────────── */
+(function restoreTheme() {
   try {
     if (localStorage.getItem('dc-theme') === 'dark') {
       document.body.classList.add('dark');
@@ -760,22 +825,6 @@ function toggleTheme() {
   } catch {}
 })();
 
-// ══════════════════════════════════════════════════════
-//  IDIOMA
-// ══════════════════════════════════════════════════════
-function toggleLang() {
-  const isEs = document.body.classList.contains('es');
-  document.body.classList.toggle('es', !isEs);
-  document.body.classList.toggle('en', isEs);
-  document.documentElement.lang = isEs ? 'en' : 'es';
-  document.getElementById('modal-input').placeholder = isEs ? 'CONFIRM' : 'CONFIRMAR';
-  updateCompatNote();
-  updateSelectionUI();
-}
-
-// ══════════════════════════════════════════════════════
-//  COMPAT NOTE
-// ══════════════════════════════════════════════════════
 function updateCompatNote() {
   const el = document.getElementById('compat-note');
   if (!el) return;
@@ -787,13 +836,41 @@ function updateCompatNote() {
 }
 updateCompatNote();
 
-if (!hasFSAPI()) {
-  document.getElementById('limited-warn').style.display = 'block';
+if (!hasFSAPI()) document.getElementById('limited-warn').style.display = 'block';
+
+/* ─────────────────────────────────────────────────────────
+   EVENT WIRING
+───────────────────────────────────────────────────────── */
+document.getElementById('settings-ov').addEventListener('click', e => { if (e.target === e.currentTarget) closeSettings(); });
+document.getElementById('modal-ov').addEventListener('click',    e => { if (e.target === e.currentTarget) closeModal(); });
+
+document.getElementById('mobile-input').addEventListener('change', function() {
+  const files = Array.from(this.files);
+  if (!files.length) return;
+  const rootName = files[0].webkitRelativePath.split('/')[0];
+  dirHandle = { name: rootName, _inputFiles: files };
+  showConfirm(rootName);
+});
+
+/* ─────────────────────────────────────────────────────────
+   UI CONTROLS
+───────────────────────────────────────────────────────── */
+function toggleTheme() {
+  const dark = document.body.classList.toggle('dark');
+  document.getElementById('theme-icon').className = dark ? 'fas fa-sun' : 'fas fa-moon';
+  try { localStorage.setItem('dc-theme', dark ? 'dark' : 'light'); } catch {}
 }
 
-// ══════════════════════════════════════════════════════
-//  TAREA 1 — TOGGLE FEED EN MÓVIL
-// ══════════════════════════════════════════════════════
+function toggleLang() {
+  const isEs = document.body.classList.contains('es');
+  document.body.classList.toggle('es', !isEs);
+  document.body.classList.toggle('en',  isEs);
+  document.documentElement.lang = isEs ? 'en' : 'es';
+  document.getElementById('modal-input').placeholder = isEs ? 'CONFIRM' : 'CONFIRMAR';
+  updateCompatNote();
+  updateSelectionUI();
+}
+
 function toggleMobileFeed() {
   const panel = document.getElementById('panel-left');
   const btn   = document.getElementById('mobile-feed-btn');
@@ -801,48 +878,58 @@ function toggleMobileFeed() {
   btn.classList.toggle('feed-visible', panel.classList.contains('mobile-open'));
 }
 
-// ══════════════════════════════════════════════════════
-//  TAREA 3 — SETTINGS MODAL
-// ══════════════════════════════════════════════════════
+function setDot(state, label) {
+  document.getElementById('scan-dot').className   = 'dot d-' + state;
+  document.getElementById('scan-lbl').textContent = label;
+}
+
+function stopScan() { cancelled = true; }
+
+/* ─────────────────────────────────────────────────────────
+   SETTINGS MODAL
+───────────────────────────────────────────────────────── */
+function selectPrecision(val) {
+  document.getElementById('card-sample').classList.toggle('selected', val === 'sample');
+  document.getElementById('card-full').classList.toggle('selected',   val === 'full');
+  document.getElementById('radio-sample').checked = val === 'sample';
+  document.getElementById('radio-full').checked   = val === 'full';
+}
+
 function openSettings() {
-  document.getElementById('cfg-ignore').value  = [...userIgnoreFolders].join(', ');
-  // Rellenar tamaño actual
+  document.getElementById('cfg-dev').checked      = cfgIgnoreDev;
+  document.getElementById('cfg-hidden').checked   = cfgIgnoreHidden;
+  document.getElementById('cfg-sysfiles').checked = cfgIgnoreSysFiles;
+
   let displaySize = userMinFileSize;
-  let unitVal = '1';
-  if (userMinFileSize >= 1048576)      { displaySize = userMinFileSize / 1048576; unitVal = '1048576'; }
+  let unitVal     = '1024';
+  if      (userMinFileSize >= 1048576) { displaySize = userMinFileSize / 1048576; unitVal = '1048576'; }
   else if (userMinFileSize >= 1024)    { displaySize = userMinFileSize / 1024;    unitVal = '1024'; }
-  document.getElementById('cfg-minsize').value  = displaySize || 0;
-  document.getElementById('cfg-minunit').value  = unitVal;
-  document.getElementById('cfg-strategy').value = userHashStrategy;
+  else if (userMinFileSize > 0)        { displaySize = userMinFileSize;           unitVal = '1'; }
+  document.getElementById('cfg-minsize').value = displaySize || 0;
+  document.getElementById('cfg-minunit').value = unitVal;
+
+  selectPrecision(userHashStrategy);
   document.getElementById('settings-ov').classList.add('on');
 }
 
-function closeSettings() {
-  document.getElementById('settings-ov').classList.remove('on');
-}
+function closeSettings() { document.getElementById('settings-ov').classList.remove('on'); }
 
 function saveSettings() {
-  // Parsear carpetas ignoradas
-  const raw = document.getElementById('cfg-ignore').value;
-  userIgnoreFolders = new Set(
-    raw.split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
-  );
-  // Parsear tamaño mínimo
+  cfgIgnoreDev      = document.getElementById('cfg-dev').checked;
+  cfgIgnoreHidden   = document.getElementById('cfg-hidden').checked;
+  cfgIgnoreSysFiles = document.getElementById('cfg-sysfiles').checked;
+
   const sizeVal  = parseFloat(document.getElementById('cfg-minsize').value) || 0;
   const unitMult = parseInt(document.getElementById('cfg-minunit').value, 10) || 1;
-  userMinFileSize = Math.max(0, Math.round(sizeVal * unitMult));
-  // Estrategia de hash
-  userHashStrategy = document.getElementById('cfg-strategy').value;
+  userMinFileSize  = Math.max(0, Math.round(sizeVal * unitMult));
+  userHashStrategy = document.querySelector('input[name="cfg-strategy"]:checked')?.value || 'sample';
+
   closeSettings();
 }
 
-// Cerrar modales al hacer clic en el overlay
-document.getElementById('settings-ov').addEventListener('click', e => { if (e.target === e.currentTarget) closeSettings(); });
-document.getElementById('modal-ov').addEventListener('click',    e => { if (e.target === e.currentTarget) closeModal(); });
-
-// ══════════════════════════════════════════════════════
-//  FILTER
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   FORMAT FILTER
+───────────────────────────────────────────────────────── */
 const activeFilters = new Set();
 const detectedExts  = new Set();
 
@@ -877,16 +964,16 @@ function applyFilter() {
   });
 }
 
-// ══════════════════════════════════════════════════════
-//  RESIZABLE PANELS (escritorio)
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   RESIZABLE PANELS
+───────────────────────────────────────────────────────── */
 function makeDivider(divId, leftId, rightId) {
   const div = document.getElementById(divId);
   const L   = document.getElementById(leftId);
   const R   = document.getElementById(rightId);
   div.addEventListener('mousedown', e => {
     e.preventDefault();
-    const x0 = e.clientX;
+    const x0  = e.clientX;
     const w0L = L.getBoundingClientRect().width;
     const w0R = R.getBoundingClientRect().width;
     div.classList.add('drag');
@@ -897,40 +984,40 @@ function makeDivider(divId, leftId, rightId) {
     const up = () => {
       div.classList.remove('drag');
       document.removeEventListener('mousemove', mv);
-      document.removeEventListener('mouseup', up);
+      document.removeEventListener('mouseup',   up);
     };
     document.addEventListener('mousemove', mv);
-    document.addEventListener('mouseup', up);
+    document.addEventListener('mouseup',   up);
   });
 }
 makeDivider('div-1', 'panel-left', 'panel-mid');
 makeDivider('div-2', 'panel-mid',  'panel-right');
 
-// ══════════════════════════════════════════════════════
-//  FEED
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   FEED LOG
+───────────────────────────────────────────────────────── */
 const $feed = document.getElementById('feed');
 function feedLine(text, cls) {
   document.getElementById('feed-ph')?.remove();
   const el = document.createElement('div');
-  el.className = 'fl fl-' + cls;
+  el.className   = 'fl fl-' + cls;
   el.textContent = text;
   $feed.appendChild(el);
   feedCount++;
+  // Evict oldest entry once we hit the cap to prevent unbounded DOM growth
   if (feedCount > MAX_FEED) { $feed.querySelector('.fl')?.remove(); feedCount--; }
   $feed.scrollTop = $feed.scrollHeight;
 }
 
-// ══════════════════════════════════════════════════════
-//  TAREA 2 — SHA-256 VÍA WEB WORKER + MUESTRAS
-//
-//  Lógica:
-//  • Archivo ≤ 20 MB o estrategia 'full': leer buffer completo → Worker
-//  • Archivo >  20 MB y estrategia 'sample':
-//      Leer 3 fragmentos de 2 MB (inicio, centro, final) con File.slice()
-//      → concatenar en Worker → SHA-256 del conjunto de muestras
-//  Ventaja: máx. 6 MB en RAM independientemente del tamaño del archivo.
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   SHA-256 DISPATCHER
+   Files ≤ 20 MB: full arrayBuffer read (safe, ≤ 20 MB in RAM).
+   Files > 20 MB (sample mode): read 3 × 2 MB slices from
+   start / mid / end via File.slice() — capped at 6 MB RAM
+   regardless of actual file size, preventing OOM crashes on
+   huge video or disk-image files.
+   Buffers are transferred (zero-copy) to the worker.
+───────────────────────────────────────────────────────── */
 async function sha256(fi) {
   return new Promise(async resolve => {
     try {
@@ -938,10 +1025,8 @@ async function sha256(fi) {
       let buffers;
 
       if (file.size <= SAMPLE_THRESHOLD || userHashStrategy === 'full') {
-        // Lectura completa — segura para ≤20 MB o cuando el usuario la fuerza
         buffers = [await file.arrayBuffer()];
       } else {
-        // Estrategia de muestras: 3 slices × 2 MB = máx. 6 MB en RAM
         const mid = Math.max(0, Math.floor(file.size / 2) - SAMPLE_CHUNK / 2);
         const [s1, s2, s3] = await Promise.all([
           file.slice(0, SAMPLE_CHUNK).arrayBuffer(),
@@ -953,7 +1038,6 @@ async function sha256(fi) {
 
       const id = ++_hashIdSeq;
       _hashPending.set(id, resolve);
-      // Transferencia de propiedad (zero-copy) para máximo rendimiento
       _hashWorker.postMessage({ id, buffers }, buffers);
     } catch {
       resolve(null);
@@ -961,9 +1045,9 @@ async function sha256(fi) {
   });
 }
 
-// ══════════════════════════════════════════════════════
-//  PICK FOLDER
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   FOLDER PICKING
+───────────────────────────────────────────────────────── */
 async function pickFolder() {
   if (hasFSAPI()) {
     limitedMode = false;
@@ -984,17 +1068,9 @@ async function pickFolder() {
   }
 }
 
-document.getElementById('mobile-input').addEventListener('change', function () {
-  const files = Array.from(this.files);
-  if (!files.length) return;
-  const rootName = files[0].webkitRelativePath.split('/')[0];
-  dirHandle = { name: rootName, _inputFiles: files };
-  showConfirm(rootName);
-});
-
 function showConfirm(name) {
-  document.getElementById('home').style.display         = 'none';
-  document.getElementById('confirm-step').style.display = 'flex';
+  document.getElementById('home').style.display          = 'none';
+  document.getElementById('confirm-step').style.display  = 'flex';
   document.getElementById('confirm-path-text').textContent = name;
 }
 
@@ -1005,11 +1081,12 @@ function cancelPick() {
   document.getElementById('mobile-input').value         = '';
 }
 
-// ══════════════════════════════════════════════════════
-//  BEGIN SCAN
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   SCAN ORCHESTRATION
+───────────────────────────────────────────────────────── */
 async function beginScan() {
   if (!dirHandle) return;
+
   FILES.clear(); GROUPS.clear(); SEL.clear();
   fileCount = 0; skipCount = 0; cancelled = false; scanning = true; feedCount = 0;
   activeFilters.clear(); detectedExts.clear();
@@ -1042,11 +1119,8 @@ async function beginScan() {
   feedLine('📂  ' + dirHandle.name, 'dir');
   await frame();
 
-  if (limitedMode) {
-    await collectFromInput(dirHandle._inputFiles);
-  } else {
-    await collect(dirHandle, dirHandle.name);
-  }
+  if (limitedMode) await collectFromInput(dirHandle._inputFiles);
+  else             await collect(dirHandle, dirHandle.name);
   if (cancelled) { finishStopped(); return; }
 
   setDot('run', t('calculando SHA-256…', 'computing SHA-256…'));
@@ -1092,31 +1166,27 @@ function finishStopped() {
   feedLine(t('— Escaneo detenido por el usuario —', '— Scan stopped by user —'), 'info');
 }
 
-// ══════════════════════════════════════════════════════
-//  COLLECT — File System Access API
-//  TAREA 3: respeta userIgnoreFolders + userMinFileSize
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   COLLECT — File System Access API (Chrome / Edge)
+───────────────────────────────────────────────────────── */
 async function collect(dh, path) {
   for await (const [name, handle] of dh.entries()) {
     if (cancelled) return;
     const fullPath = path + '/' + name;
     if (handle.kind === 'directory') {
-      if (isBlocked(fullPath) || isUserIgnored(name)) {
+      if (isBlocked(fullPath) || isUserIgnoredDir(name)) {
         feedLine('✗  ' + name + '  [' + t('omitida', 'skipped') + ']', 'skip');
-        skipCount++;
-        await frame();
-        continue;
+        skipCount++; await frame(); continue;
       }
-      feedLine('▸  ' + fullPath, 'dir');
-      await frame();
+      feedLine('▸  ' + fullPath, 'dir'); await frame();
       await collect(handle, fullPath);
     } else {
       try {
         const file = await handle.getFile();
-        // Filtro por tamaño mínimo
         if (file.size < userMinFileSize) continue;
+        if (isUserIgnoredFile(name)) continue;
         feedLine('   ' + name, 'file');
-        FILES.set(fullPath, { handle, size: file.size, name, dir: path, hash: null, _sid: null, canDelete: true });
+        FILES.set(fullPath, { handle, size:file.size, name, dir:path, hash:null, _sid:null, canDelete:true });
         fileCount++;
         document.getElementById('scan-cnt').textContent = fileCount + ' ' + t('archivos', 'files');
       } catch {}
@@ -1125,10 +1195,9 @@ async function collect(dh, path) {
   }
 }
 
-// ══════════════════════════════════════════════════════
-//  COLLECT — <input webkitdirectory> fallback
-//  TAREA 3: respeta userIgnoreFolders + userMinFileSize
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   COLLECT — <input webkitdirectory> fallback (Firefox / Safari)
+───────────────────────────────────────────────────────── */
 async function collectFromInput(files) {
   const seenDirs = new Set();
   for (let i = 0; i < files.length; i++) {
@@ -1139,26 +1208,25 @@ async function collectFromInput(files) {
     const name  = parts[parts.length - 1];
     const dir   = parts.slice(0, -1).join('/');
 
-    // Verificar si algún segmento de la ruta está bloqueado por sistema o usuario
-    if (parts.some(p => BLOCKED.has(p.toLowerCase()) || isUserIgnored(p))) {
-      skipCount++;
-      continue;
-    }
-    // Filtro por tamaño mínimo
+    if (parts.some(p => BLOCKED.has(p.toLowerCase()) || isUserIgnoredDir(p))) { skipCount++; continue; }
     if (file.size < userMinFileSize) continue;
+    if (isUserIgnoredFile(name)) continue;
 
     if (!seenDirs.has(dir)) { seenDirs.add(dir); feedLine('▸  ' + dir, 'dir'); }
     feedLine('   ' + name, 'file');
-    FILES.set(rel, { fileObj: file, handle: null, size: file.size, name, dir, hash: null, _sid: null, canDelete: false });
+    FILES.set(rel, { fileObj:file, handle:null, size:file.size, name, dir, hash:null, _sid:null, canDelete:false });
     fileCount++;
     document.getElementById('scan-cnt').textContent = fileCount + ' ' + t('archivos', 'files');
     if (fileCount % 30 === 0) await frame();
   }
 }
 
-// ══════════════════════════════════════════════════════
-//  FIND DUPLICATES
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   FIND DUPLICATES
+   Phase 1: group by size (zero I/O, instant).
+   Phase 2: SHA-256 only for same-size candidates — avoids
+   reading 99% of files in typical folder structures.
+───────────────────────────────────────────────────────── */
 async function findDupes() {
   const bySize = new Map();
   for (const [key, fi] of FILES) {
@@ -1166,19 +1234,18 @@ async function findDupes() {
     bySize.get(fi.size).push({ key, ...fi });
   }
   const candidates = [...bySize.values()].filter(g => g.length > 1);
-  const total = candidates.reduce((s, g) => s + g.length, 0);
+  const total      = candidates.reduce((s, g) => s + g.length, 0);
   if (total === 0) return;
 
   feedLine('─────────────────────────────', 'info');
   feedLine('SHA-256: ' + total + ' ' + t('candidatos por tamaño', 'size-matched candidates'), 'info');
-  if (userHashStrategy === 'sample') {
-    feedLine(t('⚡ Modo muestras activo para archivos > 20 MB',
-               '⚡ Sampling mode active for files > 20 MB'), 'info');
-  }
+  if (userHashStrategy === 'sample')
+    feedLine(t('⚡ Modo muestras activo para archivos > 20 MB', '⚡ Sampling mode active for files > 20 MB'), 'info');
   await frame();
 
-  let done = 0;
-  const $pbar = document.getElementById('pbar');
+  let done  = 0;
+  const $pb = document.getElementById('pbar');
+
   for (const group of candidates) {
     if (cancelled) return;
     for (const fi of group) {
@@ -1192,19 +1259,18 @@ async function findDupes() {
       GROUPS.get(hash).push(fi);
       if (GROUPS.get(hash).length >= 2) {
         feedLine('💥 ' + t('DUPLICADO', 'DUPLICATE') + ': ' + fi.name, 'match');
-        renderGroup(hash);
-        await frame();
+        renderGroup(hash); await frame();
       }
       done++;
-      $pbar.style.width = Math.round(done / total * 100) + '%';
+      $pb.style.width = Math.round(done / total * 100) + '%';
       updateStats();
     }
   }
 }
 
-// ══════════════════════════════════════════════════════
-//  RENDER GROUP
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   RENDER GROUP
+───────────────────────────────────────────────────────── */
 function renderGroup(hash) {
   const files = GROUPS.get(hash);
   if (!files || files.length < 2) return;
@@ -1218,13 +1284,11 @@ function renderGroup(hash) {
     <div class="dg-hdr">
       <span>
         <span class="h">${hash.substring(0, 14)}…</span>
-        &nbsp;·&nbsp;
-        ${files.length} ${t('copias idénticas', 'identical copies')}
-        &nbsp;·&nbsp;
-        ${fmtSize(files[0].size)} ${t('c/u', 'each')}
-        ${ext ? `&nbsp;·&nbsp; <span style="color:var(--muted)">.${ext}</span>` : ''}
+        &nbsp;·&nbsp;${files.length} ${t('copias idénticas','identical copies')}
+        &nbsp;·&nbsp;${fmtSize(files[0].size)} ${t('c/u','each')}
+        ${ext ? `&nbsp;·&nbsp;<span style="color:var(--muted)">.${ext}</span>` : ''}
       </span>
-      <span class="sv" title="${t('espacio recuperable al borrar las copias', 'space freed by deleting copies')}">
+      <span class="sv" title="${t('espacio recuperable','space freed by deleting copies')}">
         ↩ ${fmtSize(files[0].size * (files.length - 1))}
       </span>
     </div>`;
@@ -1232,29 +1296,30 @@ function renderGroup(hash) {
   files.forEach((fi, i) => {
     const isOrig    = i === 0;
     const canDelete = !limitedMode && fi.canDelete !== false;
+
+    // Deterministic DOM id from the file path via djb2 hash
     let h = 5381;
     for (let j = 0; j < fi.key.length; j++) h = ((h << 5) + h) ^ fi.key.charCodeAt(j);
     const sid = 'r' + (h >>> 0).toString(36);
     fi._sid = sid;
     if (FILES.has(fi.key)) FILES.get(fi.key)._sid = sid;
 
-    const row      = document.createElement('div');
-    row.className  = 'df' + (isOrig ? ' orig' : '');
-    row.id         = sid;
-    const keyEsc   = fi.key.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-    const chkTitle = isOrig
-      ? t('Original: no se puede eliminar', 'Original: cannot be deleted')
-      : t('Solo lectura en este navegador', 'Read-only in this browser');
-    const chkAttr  = (isOrig || !canDelete) ? `disabled title="${chkTitle}"` : '';
+    const row     = document.createElement('div');
+    row.className = 'df' + (isOrig ? ' orig' : '');
+    row.id        = sid;
+    const keyEsc  = fi.key.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    const chkAttr = (isOrig || !canDelete)
+      ? `disabled title="${isOrig ? t('Original: no se puede eliminar','Original: cannot be deleted') : t('Solo lectura en este navegador','Read-only in this browser')}"`
+      : '';
 
     row.innerHTML = `
       <input type="checkbox" ${chkAttr} onchange="toggleSel('${keyEsc}',this.checked)">
       <i class="${getIcon(fi.name)} df-icon"></i>
       <div class="df-info">
-        <div class="df-name">${fi.name}${isOrig ? `<span class="orig-tag">${t('original', 'original')}</span>` : ''}</div>
+        <div class="df-name">${fi.name}${isOrig ? `<span class="orig-tag">${t('original','original')}</span>` : ''}</div>
         <div class="df-path">${fi.dir}</div>
       </div>
-      <button class="btn-eye" onclick="previewFile('${keyEsc}')" title="${t('Vista previa', 'Preview')}">
+      <button class="btn-eye" onclick="previewFile('${keyEsc}')" title="${t('Vista previa','Preview')}">
         <i class="fas fa-eye"></i>
       </button>`;
     el.appendChild(row);
@@ -1265,15 +1330,15 @@ function renderGroup(hash) {
   if (activeFilters.size > 0 && !activeFilters.has(ext)) el.style.display = 'none';
   updateStats();
 
-  const n = [...GROUPS.values()].filter(g => g.length > 1).length;
+  const n     = [...GROUPS.values()].filter(g => g.length > 1).length;
   const badge = document.getElementById('dupe-badge');
   badge.textContent = n;
   badge.classList.toggle('z', n === 0);
 }
 
-// ══════════════════════════════════════════════════════
-//  SELECTION
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   SELECTION
+───────────────────────────────────────────────────────── */
 function toggleSel(key, checked) {
   if (limitedMode) return;
   checked ? SEL.add(key) : SEL.delete(key);
@@ -1291,11 +1356,7 @@ function selectAll() {
       SEL.add(fi.key);
       if (fi._sid) {
         const row = document.getElementById(fi._sid);
-        if (row) {
-          row.classList.add('sel');
-          const cb = row.querySelector('input[type=checkbox]');
-          if (cb) cb.checked = true;
-        }
+        if (row) { row.classList.add('sel'); const cb = row.querySelector('input[type=checkbox]'); if (cb) cb.checked = true; }
       }
     });
   }
@@ -1307,26 +1368,16 @@ function deselectAll() {
     const fi = FILES.get(key);
     if (fi && fi._sid) {
       const row = document.getElementById(fi._sid);
-      if (row) {
-        row.classList.remove('sel');
-        const cb = row.querySelector('input[type=checkbox]');
-        if (cb) cb.checked = false;
-      }
+      if (row) { row.classList.remove('sel'); const cb = row.querySelector('input[type=checkbox]'); if (cb) cb.checked = false; }
     }
   }
   SEL.clear();
   updateSelectionUI();
 }
 
-function getSelectedSize() {
-  let total = 0;
-  for (const key of SEL) { const fi = FILES.get(key); if (fi) total += fi.size; }
-  return total;
-}
-
 function updateSelectionUI() {
   const n    = SEL.size;
-  const size = getSelectedSize();
+  const size = [...SEL].reduce((s, k) => { const fi = FILES.get(k); return s + (fi ? fi.size : 0); }, 0);
   document.getElementById('btn-del').style.display = (!limitedMode && n > 0) ? 'block' : 'none';
   document.getElementById('sel-cnt').textContent   = n;
   const infoEl = document.getElementById('sel-info');
@@ -1341,9 +1392,9 @@ function updateSelectionUI() {
   }
 }
 
-// ══════════════════════════════════════════════════════
-//  STATISTICS
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   STATISTICS
+───────────────────────────────────────────────────────── */
 function updateStats() {
   document.getElementById('st-files').textContent = fileCount;
   const gs = [...GROUPS.values()].filter(g => g.length > 1);
@@ -1354,11 +1405,13 @@ function updateStats() {
   badge.classList.toggle('z', gs.length === 0);
 }
 
-// ══════════════════════════════════════════════════════
-//  TAREA 3 — PREVIEW con soporte nativo VÍDEO y AUDIO
-//  Usa URL.createObjectURL() para crear una URL temporal
-//  sin copiar el archivo en RAM para reproducirlo.
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   FILE PREVIEW
+   Images and text: read into memory.
+   Video / audio: URL.createObjectURL() creates a temporary
+   blob URL that the browser can stream without copying the
+   entire file into JS heap — essential for large media files.
+───────────────────────────────────────────────────────── */
 async function previewFile(key) {
   const fi = FILES.get(key);
   if (!fi) return;
@@ -1378,85 +1431,74 @@ async function previewFile(key) {
       ${t('Cargando…', 'Loading…')}
     </div>`;
 
-  // En móvil, hacer scroll hasta el panel de preview
-  if (window.innerWidth <= 768) {
-    document.getElementById('panel-right').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+  if (window.innerWidth <= 768)
+    document.getElementById('panel-right').scrollIntoView({ behavior:'smooth', block:'start' });
 
   try {
     const file = fi.fileObj ? fi.fileObj : await fi.handle.getFile();
     document.getElementById('pv-loading')?.remove();
 
     if (isImg(fi.name)) {
-      // ── Imagen ──
       const url  = URL.createObjectURL(file);
       const wrap = document.createElement('div');
       wrap.style.cssText = 'text-align:center;';
       const img  = document.createElement('img');
-      img.style.cssText = 'max-width:100%;max-height:calc(100vh - 160px);border-radius:4px;border:1px solid var(--border);display:block;margin:0 auto;';
-      img.src = url; img.alt = fi.name;
+      img.style.cssText  = 'max-width:100%;max-height:calc(100vh - 160px);border-radius:4px;border:1px solid var(--border);display:block;margin:0 auto;';
+      img.src    = url; img.alt = fi.name;
       img.onload = () => URL.revokeObjectURL(url);
       wrap.appendChild(img); $c.appendChild(wrap);
 
     } else if (isVideo(fi.name)) {
-      // ── Vídeo nativo — TAREA 3 ──
       const url   = URL.createObjectURL(file);
       const video = document.createElement('video');
-      video.controls = true;
-      video.preload  = 'metadata';
+      video.controls = true; video.preload = 'metadata';
       video.style.cssText = 'max-width:100%;max-height:calc(100vh - 200px);border-radius:4px;border:1px solid var(--border);display:block;margin:0 auto;background:#000;';
       video.src = url;
-      // Liberar URL cuando el elemento se descargue o falle
-      video.addEventListener('error', () => URL.revokeObjectURL(url), { once: true });
+      video.addEventListener('error', () => URL.revokeObjectURL(url), { once:true });
       $c.appendChild(video);
       const note = document.createElement('div');
       note.style.cssText = 'font-family:"Fira Code",monospace;font-size:.6rem;color:var(--muted);margin-top:7px;text-align:right;';
-      note.textContent = '.' + fi.name.split('.').pop().toLowerCase() + ' · ' + fmtSize(fi.size);
+      note.textContent   = '.' + fi.name.split('.').pop().toLowerCase() + ' · ' + fmtSize(fi.size);
       $c.appendChild(note);
 
     } else if (isAudio(fi.name)) {
-      // ── Audio nativo — TAREA 3 ──
       const url   = URL.createObjectURL(file);
       const wrap  = document.createElement('div');
       wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:16px;padding:28px 14px;text-align:center;';
       const ico   = document.createElement('i');
-      ico.className = getIcon(fi.name);
-      ico.style.cssText = 'font-size:3rem;color:var(--dim);';
+      ico.className      = getIcon(fi.name);
+      ico.style.cssText  = 'font-size:3rem;color:var(--dim);';
       const audio = document.createElement('audio');
-      audio.controls = true;
-      audio.preload  = 'metadata';
+      audio.controls = true; audio.preload = 'metadata';
       audio.style.cssText = 'width:100%;max-width:270px;';
       audio.src = url;
-      audio.addEventListener('error', () => URL.revokeObjectURL(url), { once: true });
+      audio.addEventListener('error', () => URL.revokeObjectURL(url), { once:true });
       const note = document.createElement('div');
       note.style.cssText = 'font-family:"Fira Code",monospace;font-size:.62rem;color:var(--muted);';
-      note.textContent = '.' + fi.name.split('.').pop().toLowerCase() + ' · ' + fmtSize(fi.size);
+      note.textContent   = '.' + fi.name.split('.').pop().toLowerCase() + ' · ' + fmtSize(fi.size);
       wrap.appendChild(ico); wrap.appendChild(audio); wrap.appendChild(note);
       $c.appendChild(wrap);
 
     } else if (isTxt(fi.name) && fi.size < 1048576) {
-      // ── Texto ──
       const text = await file.text();
       const ext  = fi.name.includes('.') ? fi.name.split('.').pop().toLowerCase() : '';
       const pre  = document.createElement('pre');
-      pre.style.cssText = `font-family:'Fira Code',monospace;font-size:.72rem;line-height:1.65;color:var(--white);background:var(--code-bg);padding:12px;border-radius:4px;border:1px solid var(--border);white-space:pre-wrap;word-break:break-all;max-height:calc(100vh - 160px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--red) transparent;`;
-      pre.textContent = text.length > 12000 ? text.substring(0, 12000) + '\n… (' + t('truncado', 'truncated') + ')' : text;
+      pre.style.cssText  = `font-family:'Fira Code',monospace;font-size:.72rem;line-height:1.65;color:var(--white);background:var(--code-bg);padding:12px;border-radius:4px;border:1px solid var(--border);white-space:pre-wrap;word-break:break-all;max-height:calc(100vh - 160px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--red) transparent;`;
+      pre.textContent    = text.length > 12000 ? text.substring(0, 12000) + '\n… (' + t('truncado', 'truncated') + ')' : text;
       $c.appendChild(pre);
       const note = document.createElement('div');
       note.style.cssText = 'font-family:"Fira Code",monospace;font-size:.6rem;color:var(--muted);margin-top:5px;text-align:right;';
-      note.textContent = (ext ? '.' + ext : t('sin extensión', 'no ext')) + ' · ' + fmtSize(fi.size);
+      note.textContent   = (ext ? '.' + ext : t('sin extensión', 'no ext')) + ' · ' + fmtSize(fi.size);
       $c.appendChild(note);
 
     } else if (fi.name.toLowerCase().endsWith('.pdf')) {
-      // ── PDF ──
       const url   = URL.createObjectURL(file);
       const embed = document.createElement('embed');
-      embed.src   = url; embed.type = 'application/pdf';
+      embed.src  = url; embed.type = 'application/pdf';
       embed.style.cssText = 'width:100%;height:calc(100vh - 160px);border:1px solid var(--border);border-radius:4px;';
       $c.appendChild(embed);
 
     } else {
-      // ── Archivo binario genérico ──
       const ext = fi.name.includes('.') ? fi.name.split('.').pop().toUpperCase() : t('SIN EXT', 'NO EXT');
       const d   = document.createElement('div');
       d.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:14px;padding:28px 16px;text-align:center;';
@@ -1472,7 +1514,7 @@ async function previewFile(key) {
         </div>`;
       $c.appendChild(d);
     }
-  } catch (e) {
+  } catch(e) {
     document.getElementById('pv-loading')?.remove();
     $c.innerHTML += `<div style="color:var(--red);font-size:.72rem;font-family:'Fira Code',monospace;margin-top:8px;">${t('Error al cargar', 'Error loading')}: ${e.message}</div>`;
   }
@@ -1483,26 +1525,16 @@ function closePreview() {
   document.getElementById('prev-empty').style.display     = 'flex';
   document.getElementById('btn-close-prev').style.display = 'none';
   document.getElementById('prev-lbl').textContent         = '';
-  // Revocar posibles object URLs activas liberando RAM
+  // Revoke any active blob URL to free memory immediately
   const video = document.querySelector('#prev-content video');
   const audio = document.querySelector('#prev-content audio');
   if (video?.src?.startsWith('blob:')) URL.revokeObjectURL(video.src);
   if (audio?.src?.startsWith('blob:')) URL.revokeObjectURL(audio.src);
 }
 
-// ══════════════════════════════════════════════════════
-//  STATUS DOT
-// ══════════════════════════════════════════════════════
-function setDot(state, label) {
-  document.getElementById('scan-dot').className   = 'dot d-' + state;
-  document.getElementById('scan-lbl').textContent = label;
-}
-
-function stopScan() { cancelled = true; }
-
-// ══════════════════════════════════════════════════════
-//  RESET
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   RESET
+───────────────────────────────────────────────────────── */
 function resetApp() {
   cancelled = true; scanning = false; limitedMode = false;
   dirHandle = null; FILES.clear(); GROUPS.clear(); SEL.clear();
@@ -1554,26 +1586,21 @@ function resetApp() {
   document.getElementById('prev-content').style.display    = 'none';
   document.getElementById('btn-close-prev').style.display  = 'none';
   document.getElementById('prev-lbl').textContent          = '';
-  // Resetear toggle de feed móvil
   document.getElementById('panel-left').classList.remove('mobile-open');
   document.getElementById('mobile-feed-btn').classList.remove('feed-visible');
   updateStats(); updateSelectionUI(); updateCompatNote();
 }
 
-// ══════════════════════════════════════════════════════
-//  DELETE MODAL
-// ══════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
+   DELETE MODAL
+───────────────────────────────────────────────────────── */
 function openModal() {
   if (limitedMode) return;
   const list = document.getElementById('modal-list');
   list.innerHTML = '';
   for (const key of SEL) {
     const fi = FILES.get(key);
-    if (fi) {
-      const d = document.createElement('div');
-      d.textContent = fi.dir + '/' + fi.name;
-      list.appendChild(d);
-    }
+    if (fi) { const d = document.createElement('div'); d.textContent = fi.dir + '/' + fi.name; list.appendChild(d); }
   }
   document.getElementById('modal-input').value    = '';
   document.getElementById('btn-confirm').disabled = true;
@@ -1597,7 +1624,7 @@ async function execDelete() {
       feedLine('🗑  ' + t('Eliminado', 'Deleted') + ': ' + fi.name, 'match');
       if (fi._sid) document.getElementById(fi._sid)?.remove();
       FILES.delete(key); SEL.delete(key);
-    } catch (e) {
+    } catch(e) {
       feedLine('✗  ' + t('Error al eliminar', 'Delete error') + ': ' + fi.name + ' — ' + e.message, 'err');
     }
   }
