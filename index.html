@@ -238,11 +238,45 @@
     .btn-confirm:hover { background:rgba(255,0,51,.18); }
     .btn-confirm:disabled { opacity:.3; cursor:not-allowed; }
 
-    /* ── CURSOR ── */
-    @media (pointer:fine) { *, *::before, *::after, a, button, input, label { cursor:none !important; } }
-    #cursor { position:fixed; width:10px; height:10px; background:var(--red); border-radius:50%; pointer-events:none; z-index:99999; top:0; left:0; transform:translate(-50%,-50%); transition:width .12s,height .12s; will-change:transform; }
-    #cursor.h { width:18px; height:18px; background:rgba(255,0,51,.35); }
-    @media (pointer:coarse) { #cursor { display:none; } }
+    /* ── IDIOMA ── */
+    body.es .en { display:none !important; }
+    body.en .es { display:none !important; }
+
+    /* ── LANG SWITCH ── */
+    .lang-switch {
+      cursor:pointer; color:var(--muted); font-size:.78rem;
+      display:flex; align-items:center; gap:6px;
+      font-family:'Fira Code',monospace; border:1px solid var(--border2);
+      padding:4px 10px; border-radius:3px; transition:.3s; background:transparent;
+    }
+    .lang-switch:hover { color:var(--red); border-color:var(--red); background:var(--red-dim); }
+    .lang-switch.pulse { animation:slowPulse 2s ease-out; }
+    @keyframes slowPulse {
+      0%,15%  { border-color:var(--red); color:var(--red); background:var(--red-dim); }
+      100%    { border-color:var(--border2); color:var(--muted); background:transparent; }
+    }
+
+    /* ── FILTRO DE FORMATOS ── */
+    #filter-bar {
+      display:none; flex-shrink:0; padding:7px 12px;
+      border-bottom:1px solid var(--border); background:var(--panel);
+      overflow-x:auto; scrollbar-width:none;
+      gap:6px; flex-wrap:wrap; align-items:center;
+    }
+    #filter-bar::-webkit-scrollbar { display:none; }
+    #filter-bar.visible { display:flex; }
+    .filter-label { font-family:'Fira Code',monospace; font-size:.65rem; color:var(--muted); margin-right:4px; white-space:nowrap; }
+    .fmt-chip {
+      font-family:'Fira Code',monospace; font-size:.65rem;
+      border:1px solid var(--border2); color:var(--muted);
+      padding:2px 9px; border-radius:12px; cursor:pointer;
+      transition:all .18s; white-space:nowrap; background:transparent;
+      user-select:none;
+    }
+    .fmt-chip:hover  { border-color:var(--white); color:var(--white); }
+    .fmt-chip.active { border-color:var(--red); color:var(--red); background:var(--red-dim); }
+    .fmt-chip.all    { border-color:var(--muted); }
+    .fmt-chip.all.active { border-color:var(--red); color:var(--red); }
 
     /* ── EMPTY / OK SCREEN ── */
     .ok-screen { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center; }
@@ -250,18 +284,28 @@
     .ok-screen p { color:var(--muted); font-size:.84rem; line-height:1.7; max-width:300px; }
   </style>
 </head>
-<body>
-
-<div id="cursor"></div>
+<body class="es">
 
 <!-- NAV -->
 <nav>
-  <div class="logo">dupe<span>cleaner</span></div>
+  <div style="display:flex;align-items:baseline;gap:10px;">
+    <div class="logo">dupe<span>cleaner</span></div>
+    <div style="font-family:'GoogleSans',sans-serif;font-weight:400;font-size:.68rem;color:var(--dim);">by jaimefg1888</div>
+  </div>
   <div class="nav-right">
+    <button class="lang-switch" id="lang-btn" onclick="toggleLang()">
+      <i class="fas fa-globe"></i>
+      <span class="es">ESP</span>
+      <span class="en">ENG</span>
+    </button>
     <div class="nav-folder" id="nav-folder" style="display:none;"><i class="fas fa-folder"></i><span id="nav-folder-name"></span></div>
-    <button class="nbtn" id="btn-stop"  onclick="stopScan()"><i class="fas fa-stop"></i> Detener</button>
-    <button class="nbtn" id="btn-reset" onclick="resetApp()"><i class="fas fa-rotate-left"></i> Nuevo escaneo</button>
-    <div class="nav-folder" style="border:none;color:var(--dim);">SHA-256 · File System API</div>
+    <button class="nbtn" id="btn-stop"  onclick="stopScan()">
+      <i class="fas fa-stop"></i> <span class="es">Detener</span><span class="en">Stop</span>
+    </button>
+    <button class="nbtn" id="btn-reset" onclick="resetApp()">
+      <i class="fas fa-rotate-left"></i> <span class="es">Nuevo escaneo</span><span class="en">New scan</span>
+    </button>
+    <div style="font-family:'Fira Code',monospace;font-size:.65rem;color:var(--dim);">SHA-256 · File System API</div>
   </div>
 </nav>
 
@@ -274,14 +318,15 @@
       <div class="ph">
         <div class="ph-l">
           <div class="dot d-idle" id="scan-dot"></div>
-          <span id="scan-lbl">inactivo</span>
+          <span id="scan-lbl"><span class="es">inactivo</span><span class="en">idle</span></span>
         </div>
         <span id="scan-cnt" style="font-family:'Fira Code',monospace;font-size:.67rem;color:var(--muted);font-weight:400;"></span>
       </div>
       <div id="feed" style="font-family:'Fira Code',monospace;font-size:.68rem;line-height:1.75;flex:1;overflow:hidden;padding:8px 12px;">
         <div id="feed-ph" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--dim);font-size:.75rem;text-align:center;pointer-events:none;font-family:'Fira Code',monospace;">
           <i class="fas fa-terminal" style="font-size:1.8rem;"></i>
-          <span>El feed aparecerá<br>aquí durante el escaneo</span>
+          <span class="es">El feed aparecerá<br>aquí durante el escaneo</span>
+          <span class="en">The feed will appear<br>here during the scan</span>
         </div>
       </div>
     </div>
@@ -291,43 +336,75 @@
     <!-- MID: DUPLICADOS -->
     <div class="panel" id="panel-mid">
       <div class="ph">
-        <span>duplicados encontrados</span>
+        <span><span class="es">duplicados encontrados</span><span class="en">duplicates found</span></span>
         <span class="badge z" id="dupe-badge">0</span>
       </div>
+
+      <!-- BARRA DE FILTRO DE FORMATOS -->
+      <div id="filter-bar">
+        <span class="filter-label es">formato:</span>
+        <span class="filter-label en">format:</span>
+        <button class="fmt-chip all active" data-ext="all" onclick="setFilter('all',this)">
+          <span class="es">todos</span><span class="en">all</span>
+        </button>
+      </div>
+
       <div id="dupes-scroll">
 
         <!-- PANTALLA INICIO -->
         <div id="home">
           <div class="home-icon"><i class="fas fa-copy"></i></div>
           <h2>DupeCleaner</h2>
-          <p>Selecciona una carpeta. La app escanea todo el contenido real con SHA-256 y te muestra únicamente los duplicados exactos.</p>
-          <button class="btn-primary" onclick="pickFolder()"><i class="fas fa-folder-open"></i> Seleccionar carpeta</button>
-          <p class="home-note">Chrome / Edge 86+ · Las carpetas del sistema se ignoran automáticamente</p>
+          <p class="es">Selecciona una carpeta. La app escanea todo el contenido real con SHA-256 y te muestra únicamente los duplicados exactos.</p>
+          <p class="en">Select a folder. The app scans all content with SHA-256 and shows only exact duplicates.</p>
+          <button class="btn-primary" onclick="pickFolder()">
+            <i class="fas fa-folder-open"></i>
+            <span class="es">Seleccionar carpeta</span><span class="en">Select folder</span>
+          </button>
+          <p class="home-note es">Chrome / Edge 86+ · Las carpetas del sistema se ignoran automáticamente</p>
+          <p class="home-note en">Chrome / Edge 86+ · System folders are automatically ignored</p>
         </div>
 
         <!-- PASO DE CONFIRMACIÓN -->
         <div id="confirm-step">
           <div class="home-icon" style="font-size:2rem;"><i class="fas fa-folder-open"></i></div>
-          <h3>Carpeta seleccionada</h3>
+          <h3><span class="es">Carpeta seleccionada</span><span class="en">Folder selected</span></h3>
           <div class="confirm-path" id="confirm-path-text"></div>
-          <p>Se escanearán todos los archivos de esta carpeta y subcarpetas buscando duplicados exactos. Las carpetas del sistema serán ignoradas.</p>
+          <p class="es">Se escanearán todos los archivos de esta carpeta y subcarpetas buscando duplicados exactos. Las carpetas del sistema serán ignoradas.</p>
+          <p class="en">All files in this folder and subfolders will be scanned for exact duplicates. System folders will be ignored.</p>
           <div class="confirm-btns">
-            <button class="btn-secondary" onclick="cancelPick()"><i class="fas fa-xmark"></i> Cancelar</button>
-            <button class="btn-primary"   onclick="beginScan()"><i class="fas fa-magnifying-glass"></i> Iniciar escaneo</button>
+            <button class="btn-secondary" onclick="cancelPick()">
+              <i class="fas fa-xmark"></i> <span class="es">Cancelar</span><span class="en">Cancel</span>
+            </button>
+            <button class="btn-primary" onclick="beginScan()">
+              <i class="fas fa-magnifying-glass"></i> <span class="es">Iniciar escaneo</span><span class="en">Start scan</span>
+            </button>
           </div>
         </div>
 
       </div>
       <div id="stats-bar">
-        <div class="sbar-stat">archivos: <span id="st-files">0</span></div>
+        <div class="sbar-stat">
+          <span class="es">archivos escaneados:</span><span class="en">scanned files:</span> <span id="st-files">0</span>
+        </div>
         <span class="sbar-sep">·</span>
-        <div class="sbar-stat">grupos: <span id="st-groups">0</span></div>
-        <span class="sbar-sep">·</span>
-        <div class="sbar-stat">recuperable: <span id="st-size">—</span></div>
+        <div class="sbar-stat">
+          <span class="es">espacio a recuperar:</span><span class="en">space to free:</span> <span id="st-size">—</span>
+        </div>
         <div class="sbar-btns">
-          <button class="sbar-btn" id="btn-selall"   onclick="selectAll()"><i class="fas fa-check-double"></i> Seleccionar copias</button>
-          <button class="sbar-btn" id="btn-deselall" onclick="deselectAll()"><i class="fas fa-xmark"></i> Deseleccionar</button>
-          <button id="btn-del" onclick="openModal()"><i class="fas fa-trash-alt"></i> Eliminar (<span id="sel-cnt">0</span>)</button>
+          <button class="sbar-btn" onclick="selectAll()">
+            <i class="fas fa-check-double"></i>
+            <span class="es">Seleccionar todos</span><span class="en">Select all</span>
+          </button>
+          <button class="sbar-btn" onclick="deselectAll()">
+            <i class="fas fa-xmark"></i>
+            <span class="es">Deseleccionar todos</span><span class="en">Deselect all</span>
+          </button>
+          <button id="btn-del" onclick="openModal()">
+            <i class="fas fa-trash-alt"></i>
+            <span class="es">Eliminar</span><span class="en">Delete</span>
+            (<span id="sel-cnt">0</span>)
+          </button>
         </div>
       </div>
     </div>
@@ -337,13 +414,18 @@
     <!-- RIGHT: PREVIEW -->
     <div class="panel" id="panel-right">
       <div class="ph">
-        <div class="ph-l"><i class="fas fa-eye" style="font-size:.78rem;color:var(--red);"></i><span>vista previa</span></div>
+        <div class="ph-l"><i class="fas fa-eye" style="font-size:.78rem;color:var(--red);"></i>
+          <span><span class="es">vista previa</span><span class="en">preview</span></span>
+        </div>
         <span id="prev-lbl" style="font-family:'Fira Code',monospace;font-size:.65rem;color:var(--muted);font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:130px;"></span>
       </div>
       <div id="prev-body">
         <div id="prev-empty">
           <i class="fas fa-hand-pointer"></i>
-          <span style="font-family:'Fira Code',monospace;font-size:.75rem;">Pulsa el ojo<br>de cualquier archivo</span>
+          <span style="font-family:'Fira Code',monospace;font-size:.75rem;">
+            <span class="es">Pulsa el ojo<br>de cualquier archivo</span>
+            <span class="en">Click the eye<br>on any file</span>
+          </span>
         </div>
         <div id="prev-content"></div>
       </div>
@@ -355,14 +437,23 @@
 <!-- MODAL ELIMINACIÓN -->
 <div id="modal-ov">
   <div class="mbox">
-    <h3><i class="fas fa-triangle-exclamation" style="color:var(--red);margin-right:7px;"></i>Eliminar permanentemente</h3>
-    <p>Estos archivos se borrarán definitivamente. <strong>Sin papelera, sin marcha atrás.</strong></p>
+    <h3><i class="fas fa-triangle-exclamation" style="color:var(--red);margin-right:7px;"></i>
+      <span class="es">Eliminar permanentemente</span><span class="en">Permanently delete</span>
+    </h3>
+    <p class="es">Estos archivos se borrarán definitivamente. <strong>Sin papelera, sin marcha atrás.</strong></p>
+    <p class="en">These files will be permanently deleted. <strong>No recycle bin, no undo.</strong></p>
     <div class="mlist" id="modal-list"></div>
-    <p>Escribe <strong style="color:var(--red)">CONFIRMAR</strong> para activar el botón:</p>
+    <p class="es">Escribe <strong style="color:var(--red)">CONFIRMAR</strong> para activar el botón:</p>
+    <p class="en">Type <strong style="color:var(--red)">CONFIRM</strong> to enable the button:</p>
     <input type="text" class="minput" id="modal-input" placeholder="CONFIRMAR" oninput="checkConfirm(this.value)">
     <div class="mactions">
-      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
-      <button class="btn-confirm" id="btn-confirm" disabled onclick="execDelete()"><i class="fas fa-trash-alt"></i> Eliminar</button>
+      <button class="btn-cancel" onclick="closeModal()">
+        <span class="es">Cancelar</span><span class="en">Cancel</span>
+      </button>
+      <button class="btn-confirm" id="btn-confirm" disabled onclick="execDelete()">
+        <i class="fas fa-trash-alt"></i>
+        <span class="es">Eliminar</span><span class="en">Delete</span>
+      </button>
     </div>
   </div>
 </div>
@@ -403,15 +494,62 @@ const GROUPS  = new Map();  // hash     → [ ...fileInfo ]
 const SEL     = new Set();  // fullPaths seleccionados
 
 // ══════════════════════════════════════════════════════
-//  CURSOR
+//  IDIOMA
 // ══════════════════════════════════════════════════════
-const $cur = document.getElementById('cursor');
-document.addEventListener('mousemove', e => {
-  $cur.style.transform = `translate(${e.clientX-5}px,${e.clientY-5}px)`;
-});
-document.addEventListener('mouseover', e => {
-  $cur.classList.toggle('h', !!e.target.closest('button,input,label,.df,.btn-eye,.divider'));
-});
+function toggleLang() {
+  const body = document.body;
+  const isEs = body.classList.contains('es');
+  body.classList.toggle('es', !isEs);
+  body.classList.toggle('en',  isEs);
+  document.documentElement.lang = isEs ? 'en' : 'es';
+
+  // Placeholder del modal según idioma
+  document.getElementById('modal-input').placeholder = isEs ? 'CONFIRM' : 'CONFIRMAR';
+
+  const btn = document.getElementById('lang-btn');
+  btn.classList.remove('pulse');
+  void btn.offsetWidth;
+  btn.classList.add('pulse');
+  setTimeout(() => btn.classList.remove('pulse'), 2000);
+}
+
+// ══════════════════════════════════════════════════════
+//  FILTRO DE FORMATOS
+// ══════════════════════════════════════════════════════
+let activeFilter = 'all';
+const detectedExts = new Set();
+
+function addExtToFilter(ext) {
+  ext = ext.toLowerCase();
+  if (detectedExts.has(ext)) return;
+  detectedExts.add(ext);
+
+  const bar = document.getElementById('filter-bar');
+  bar.classList.add('visible');
+
+  const chip = document.createElement('button');
+  chip.className = 'fmt-chip';
+  chip.dataset.ext = ext;
+  chip.textContent = '.' + ext;
+  chip.onclick = () => setFilter(ext, chip);
+  bar.appendChild(chip);
+}
+
+function setFilter(ext, el) {
+  activeFilter = ext;
+  // Actualizar chips
+  document.querySelectorAll('.fmt-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  // Mostrar/ocultar grupos
+  document.querySelectorAll('.dg').forEach(grp => {
+    if (ext === 'all') { grp.style.display = ''; return; }
+    const firstFile = grp.querySelector('.df-name');
+    if (!firstFile) { grp.style.display = 'none'; return; }
+    const name = firstFile.textContent.trim();
+    const grpExt = name.split('.').pop().toLowerCase();
+    grp.style.display = grpExt === ext ? '' : 'none';
+  });
+}
 
 // ══════════════════════════════════════════════════════
 //  PANELES REDIMENSIONABLES
@@ -558,10 +696,18 @@ async function beginScan() {
   // Reset estado
   FILES.clear(); GROUPS.clear(); SEL.clear();
   fileCount = 0; skipCount = 0; cancelled = false; scanning = true; feedCount = 0;
+  activeFilter = 'all'; detectedExts.clear();
 
   // Reset UI
   document.getElementById('confirm-step').style.display = 'none';
   document.getElementById('dupes-scroll').innerHTML = ''; // vaciar duplicados
+
+  // Limpiar barra de filtros
+  const fb = document.getElementById('filter-bar');
+  fb.classList.remove('visible');
+  // Eliminar chips de extensión (dejar solo el "todos")
+  fb.querySelectorAll('.fmt-chip:not(.all)').forEach(c => c.remove());
+  fb.querySelector('.fmt-chip.all').classList.add('active');
 
   // Limpiar feed
   $feed.innerHTML = '';
@@ -766,6 +912,16 @@ function renderGroup(hash) {
   });
 
   scroll.appendChild(el);
+
+  // Registrar extensión en el filtro
+  const ext = files[0].name.split('.').pop().toLowerCase();
+  addExtToFilter(ext);
+
+  // Aplicar filtro activo al nuevo grupo
+  if (activeFilter !== 'all' && ext !== activeFilter) {
+    el.style.display = 'none';
+  }
+
   updateStats();
 
   const n = [...GROUPS.values()].filter(g => g.length > 1).length;
@@ -792,9 +948,11 @@ function toggleSel(key, checked) {
 function updateStats() {
   document.getElementById('st-files').textContent = fileCount;
   const gs = [...GROUPS.values()].filter(g => g.length > 1);
-  document.getElementById('st-groups').textContent = gs.length;
-  const w = gs.reduce((s, g) => s + g[0].size * (g.length - 1), 0);
+  const w  = gs.reduce((s, g) => s + g[0].size * (g.length - 1), 0);
   document.getElementById('st-size').textContent = w > 0 ? fmtSize(w) : '—';
+  const badge = document.getElementById('dupe-badge');
+  badge.textContent = gs.length;
+  badge.classList.toggle('z', gs.length === 0);
 }
 
 // ══════════════════════════════════════════════════════
@@ -912,24 +1070,37 @@ function resetApp() {
   dirHandle = null;
   FILES.clear(); GROUPS.clear(); SEL.clear();
   fileCount = 0; skipCount = 0; feedCount = 0;
+  activeFilter = 'all'; detectedExts.clear();
+
+  // Limpiar filtros
+  const fb = document.getElementById('filter-bar');
+  fb.classList.remove('visible');
+  fb.querySelectorAll('.fmt-chip:not(.all)').forEach(c => c.remove());
+  fb.querySelector('.fmt-chip.all')?.classList.add('active');
 
   // Reset UI completo
   document.getElementById('dupes-scroll').innerHTML = `
     <div id="home">
       <div class="home-icon"><i class="fas fa-copy"></i></div>
       <h2>DupeCleaner</h2>
-      <p>Selecciona una carpeta. La app escanea todo el contenido real con SHA-256 y te muestra únicamente los duplicados exactos.</p>
-      <button class="btn-primary" onclick="pickFolder()"><i class="fas fa-folder-open"></i> Seleccionar carpeta</button>
-      <p class="home-note">Chrome / Edge 86+ · Las carpetas del sistema se ignoran automáticamente</p>
+      <p class="es">Selecciona una carpeta. La app escanea todo el contenido real con SHA-256 y te muestra únicamente los duplicados exactos.</p>
+      <p class="en">Select a folder. The app scans all content with SHA-256 and shows only exact duplicates.</p>
+      <button class="btn-primary" onclick="pickFolder()">
+        <i class="fas fa-folder-open"></i>
+        <span class="es">Seleccionar carpeta</span><span class="en">Select folder</span>
+      </button>
+      <p class="home-note es">Chrome / Edge 86+ · Las carpetas del sistema se ignoran automáticamente</p>
+      <p class="home-note en">Chrome / Edge 86+ · System folders are automatically ignored</p>
     </div>
     <div id="confirm-step" style="display:none;">
       <div class="home-icon" style="font-size:2rem;"><i class="fas fa-folder-open"></i></div>
-      <h3>Carpeta seleccionada</h3>
+      <h3><span class="es">Carpeta seleccionada</span><span class="en">Folder selected</span></h3>
       <div class="confirm-path" id="confirm-path-text"></div>
-      <p>Se escanearán todos los archivos de esta carpeta y subcarpetas buscando duplicados exactos. Las carpetas del sistema serán ignoradas.</p>
+      <p class="es">Se escanearán todos los archivos de esta carpeta y subcarpetas buscando duplicados exactos.</p>
+      <p class="en">All files in this folder and subfolders will be scanned for exact duplicates.</p>
       <div class="confirm-btns">
-        <button class="btn-secondary" onclick="cancelPick()"><i class="fas fa-xmark"></i> Cancelar</button>
-        <button class="btn-primary" onclick="beginScan()"><i class="fas fa-magnifying-glass"></i> Iniciar escaneo</button>
+        <button class="btn-secondary" onclick="cancelPick()"><i class="fas fa-xmark"></i> <span class="es">Cancelar</span><span class="en">Cancel</span></button>
+        <button class="btn-primary" onclick="beginScan()"><i class="fas fa-magnifying-glass"></i> <span class="es">Iniciar escaneo</span><span class="en">Start scan</span></button>
       </div>
     </div>
   `;
@@ -937,11 +1108,13 @@ function resetApp() {
   $feed.innerHTML = `
     <div id="feed-ph" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--dim);font-size:.75rem;text-align:center;pointer-events:none;font-family:'Fira Code',monospace;">
       <i class="fas fa-terminal" style="font-size:1.8rem;"></i>
-      <span>El feed aparecerá<br>aquí durante el escaneo</span>
+      <span class="es">El feed aparecerá<br>aquí durante el escaneo</span>
+      <span class="en">The feed will appear<br>here during the scan</span>
     </div>
   `;
 
-  setDot('idle', 'inactivo');
+  const isEs = document.body.classList.contains('es');
+  setDot('idle', isEs ? 'inactivo' : 'idle');
   document.getElementById('scan-cnt').textContent  = '';
   document.getElementById('pbar').style.width      = '0%';
   document.getElementById('dupe-badge').textContent = '0';
@@ -1015,7 +1188,11 @@ function openModal() {
   document.getElementById('btn-confirm').disabled = true;
   document.getElementById('modal-ov').classList.add('on');
 }
-function checkConfirm(v) { document.getElementById('btn-confirm').disabled = v !== 'CONFIRMAR'; }
+function checkConfirm(v) {
+  const isEs = document.body.classList.contains('es');
+  const keyword = isEs ? 'CONFIRMAR' : 'CONFIRM';
+  document.getElementById('btn-confirm').disabled = v !== keyword;
+}
 function closeModal()    { document.getElementById('modal-ov').classList.remove('on'); }
 
 async function execDelete() {
