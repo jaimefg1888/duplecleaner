@@ -7,10 +7,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     @font-face { font-family:'GoogleSans'; src:url('GoogleSans-Regular.ttf') format('truetype'); font-weight:400; }
-    @font-face { font-family:'GoogleSans'; src:url('GoogleSans-Bold.ttf') format('truetype'); font-weight:700; }
+    @font-face { font-family:'GoogleSans'; src:url('GoogleSans-Bold.ttf')    format('truetype'); font-weight:700; }
     @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
 
-    /* ── VARIABLES (solo rojo y blanco) ── */
+    /* ── VARIABLES ── */
     :root {
       --bg:      #050505;
       --panel:   #0a0a0a;
@@ -23,13 +23,14 @@
       --red-dim: rgba(255,0,51,0.08);
     }
 
-    *  { margin:0; padding:0; box-sizing:border-box; }
+    * { margin:0; padding:0; box-sizing:border-box; }
     html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--white); font-family:'GoogleSans',sans-serif; }
 
     /* ── NAV ── */
     nav {
       height:52px; display:flex; align-items:center; justify-content:space-between;
-      padding:0 22px; background:var(--bg); border-bottom:1px solid var(--border); z-index:100; position:relative;
+      padding:0 22px; background:var(--bg); border-bottom:1px solid var(--border);
+      z-index:100; position:relative;
     }
     .logo { font-family:'Fira Code',monospace; font-size:1.25rem; font-weight:700; }
     .logo span { color:var(--red); }
@@ -55,9 +56,9 @@
     #pbar { height:100%; background:var(--red); width:0%; transition:width .25s ease; box-shadow:0 0 8px var(--red); }
 
     /* ── LAYOUT ── */
-    .app-body  { display:flex; flex-direction:column; height:calc(100vh - 54px); }
-    .panels-row{ flex:1; display:flex; overflow:hidden; }
-    .panel     { display:flex; flex-direction:column; overflow:hidden; min-width:100px; }
+    .app-body   { display:flex; flex-direction:column; height:calc(100vh - 54px); }
+    .panels-row { flex:1; display:flex; overflow:hidden; }
+    .panel      { display:flex; flex-direction:column; overflow:hidden; min-width:100px; }
 
     /* ── PANEL HEADER ── */
     .ph {
@@ -66,18 +67,17 @@
       font-family:'GoogleSans',sans-serif; font-size:.82rem; font-weight:700; color:var(--white);
     }
     .ph-l { display:flex; align-items:center; gap:8px; }
-    .ph-label { font-weight:700; color:var(--white); }
     .dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
     .d-idle { background:var(--dim); }
     .d-run  { background:var(--red); animation:blink 1s infinite; }
     .d-stop { background:var(--muted); animation:none; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.15} }
-    #scan-lbl { font-weight:700; color:var(--white); font-family:'GoogleSans',sans-serif; font-size:.82rem; }
+    #scan-lbl { font-weight:700; font-family:'GoogleSans',sans-serif; font-size:.82rem; }
 
     .badge { background:var(--red); color:var(--white); border-radius:10px; padding:1px 8px; font-size:.67rem; font-family:'Fira Code',monospace; font-weight:700; }
     .badge.z { background:var(--dim); color:var(--muted); }
 
-    /* ── DIVISORES ARRASTRABLES ── */
+    /* ── RESIZABLE DIVIDERS ── */
     .divider {
       width:5px; flex-shrink:0; background:transparent; cursor:col-resize;
       position:relative; z-index:20; transition:background .15s; user-select:none;
@@ -85,16 +85,13 @@
     .divider:hover, .divider.drag { background:var(--red); }
     .divider::after { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:1px; height:50px; background:var(--border2); }
 
-    /* ── PANEL IZQUIERDO: FEED ── */
+    /* ── LEFT PANEL: FEED ── */
     #panel-left { width:270px; border-right:1px solid var(--border); }
-
     #feed {
       flex:1; overflow:hidden; padding:8px 12px;
       font-family:'Fira Code',monospace; font-size:.68rem; line-height:1.75;
     }
     .fl { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-
-    /* SOLO BLANCO Y ROJO */
     .fl-dir   { color:var(--white); opacity:.85; }
     .fl-file  { color:var(--muted); }
     .fl-skip  { color:var(--dim); font-style:italic; }
@@ -103,13 +100,13 @@
     .fl-ok    { color:var(--white); font-weight:700; }
     .fl-err   { color:var(--red); }
 
-    /* ── PANTALLA INICIO ── */
+    /* ── MID PANEL ── */
     #panel-mid { flex:1; border-right:1px solid var(--border); }
-
     #dupes-scroll { flex:1; overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--red) transparent; }
     #dupes-scroll::-webkit-scrollbar { width:5px; }
     #dupes-scroll::-webkit-scrollbar-thumb { background:var(--red); border-radius:3px; }
 
+    /* ── HOME SCREEN ── */
     #home {
       height:100%; display:flex; flex-direction:column;
       align-items:center; justify-content:center; gap:20px; padding:40px; text-align:center;
@@ -125,43 +122,37 @@
       align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center;
     }
     #confirm-step h3 { font-size:1.1rem; font-weight:700; }
-    #confirm-step p { color:var(--muted); font-size:.83rem; line-height:1.7; max-width:320px; }
+    #confirm-step p  { color:var(--muted); font-size:.83rem; line-height:1.7; max-width:320px; }
     .confirm-path {
-      font-family:'Fira Code',monospace; font-size:.78rem;
-      color:var(--red); background:var(--red-dim);
-      border:1px solid rgba(255,0,51,.2); padding:8px 16px;
-      border-radius:3px; max-width:360px; word-break:break-all; text-align:center;
+      font-family:'Fira Code',monospace; font-size:.78rem; color:var(--red);
+      background:var(--red-dim); border:1px solid rgba(255,0,51,.2);
+      padding:8px 16px; border-radius:3px; max-width:360px; word-break:break-all; text-align:center;
     }
     .confirm-btns { display:flex; gap:12px; }
 
-    /* ── BOTONES GENÉRICOS ── */
+    /* ── GENERIC BUTTONS ── */
     .btn-primary {
       display:inline-flex; align-items:center; gap:9px;
-      padding:11px 22px; background:transparent;
-      border:1px solid var(--red); color:var(--white);
-      font-family:'Fira Code',monospace; font-size:.88rem;
-      cursor:pointer; border-radius:3px; transition:all .25s;
+      padding:11px 22px; background:transparent; border:1px solid var(--red); color:var(--white);
+      font-family:'Fira Code',monospace; font-size:.88rem; cursor:pointer; border-radius:3px; transition:all .25s;
     }
     .btn-primary:hover { background:var(--red-dim); transform:translateY(-1px); }
     .btn-secondary {
       display:inline-flex; align-items:center; gap:9px;
-      padding:11px 22px; background:transparent;
-      border:1px solid var(--border2); color:var(--muted);
-      font-family:'Fira Code',monospace; font-size:.88rem;
-      cursor:pointer; border-radius:3px; transition:all .25s;
+      padding:11px 22px; background:transparent; border:1px solid var(--border2); color:var(--muted);
+      font-family:'Fira Code',monospace; font-size:.88rem; cursor:pointer; border-radius:3px; transition:all .25s;
     }
     .btn-secondary:hover { border-color:var(--muted); color:var(--white); }
 
-    /* ── GRUPOS DUPLICADOS ── */
+    /* ── DUPLICATE GROUPS ── */
     .dg { margin:10px 12px; border:1px solid var(--border); border-radius:3px; overflow:hidden; animation:si .3s ease; }
     @keyframes si { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
     .dg-hdr {
-      background:rgba(255,0,51,.04); padding:7px 13px;
-      border-bottom:1px solid var(--border);
+      background:rgba(255,0,51,.04); padding:7px 13px; border-bottom:1px solid var(--border);
       font-family:'Fira Code',monospace; font-size:.7rem; color:var(--muted);
       display:flex; justify-content:space-between; align-items:center;
     }
-    .dg-hdr .h { color:var(--red); }
+    .dg-hdr .h  { color:var(--red); }
     .dg-hdr .sv { color:var(--white); font-weight:700; }
 
     .df {
@@ -170,7 +161,7 @@
     }
     .df:last-child { border-bottom:none; }
     .df:hover { background:#0c0c0c; }
-    .df.sel { background:var(--red-dim); border-left:2px solid var(--red); }
+    .df.sel  { background:var(--red-dim); border-left:2px solid var(--red); }
     .df.orig { border-left:2px solid var(--border2); }
     .df input[type=checkbox] { accent-color:var(--red); width:13px; height:13px; flex-shrink:0; cursor:pointer; }
     .df input[type=checkbox]:disabled { opacity:.2; }
@@ -190,7 +181,7 @@
     }
     #stats-bar span { color:var(--white); font-weight:700; }
     .sbar-stat { white-space:nowrap; }
-    .sbar-sep { color:var(--dim); }
+    .sbar-sep  { color:var(--dim); }
     .sbar-btns { display:flex; gap:6px; margin-left:auto; }
     .sbar-btn {
       background:transparent; border:1px solid var(--border2); color:var(--muted);
@@ -205,63 +196,29 @@
     }
     #btn-del:hover { background:var(--red-dim); }
 
-    /* ── PANEL DERECHO: PREVIEW ── */
+    /* ── RIGHT PANEL: PREVIEW ── */
     #panel-right { width:300px; }
-    #prev-body { flex:1; overflow:hidden; display:flex; flex-direction:column; }
-    #prev-empty { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; color:var(--dim); font-size:.8rem; text-align:center; }
+    #prev-body   { flex:1; overflow:hidden; display:flex; flex-direction:column; }
+    #prev-empty  { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; color:var(--dim); font-size:.8rem; text-align:center; }
     #prev-empty i { font-size:2.2rem; }
     #prev-content { flex:1; overflow-y:auto; padding:14px; display:none; scrollbar-width:thin; scrollbar-color:var(--border2) transparent; }
     #prev-content::-webkit-scrollbar { width:4px; }
     #prev-content::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
-    .pv-title { font-size:.9rem; font-weight:700; word-break:break-all; margin-bottom:4px; }
     .pv-meta { font-family:'Fira Code',monospace; font-size:.65rem; color:var(--muted); margin-bottom:12px; line-height:1.7; }
     .pv-meta .ac { color:var(--red); }
-    .pv-img { width:100%; border-radius:3px; border:1px solid var(--border); display:block; }
-    .pv-text { font-family:'Fira Code',monospace; font-size:.67rem; color:var(--muted); background:#060606; padding:10px; border-radius:3px; border:1px solid var(--border); white-space:pre-wrap; word-break:break-all; max-height:360px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--dim) transparent; }
-    .pv-generic { display:flex; flex-direction:column; align-items:center; gap:10px; padding:24px 16px; text-align:center; color:var(--muted); font-size:.8rem; }
-    .pv-generic i { font-size:2.5rem; color:var(--dim); }
 
-    /* ── MODAL ── */
-    #modal-ov { position:fixed; inset:0; background:rgba(0,0,0,.92); z-index:9000; display:none; align-items:center; justify-content:center; }
-    #modal-ov.on { display:flex; }
-    .mbox { background:var(--panel); border:1px solid var(--red); padding:26px; border-radius:3px; max-width:420px; width:92%; display:flex; flex-direction:column; gap:13px; }
-    .mbox h3 { font-size:1rem; font-weight:700; }
-    .mbox p { color:var(--muted); font-size:.82rem; line-height:1.65; }
-    .mlist { max-height:130px; overflow-y:auto; background:#040404; border:1px solid var(--border); padding:9px 12px; font-family:'Fira Code',monospace; font-size:.67rem; color:var(--red); scrollbar-width:thin; }
-    .mlist div { margin-bottom:3px; word-break:break-all; }
-    .minput { background:#040404; border:1px solid var(--border2); color:var(--white); padding:8px 11px; font-family:'Fira Code',monospace; font-size:.85rem; border-radius:3px; width:100%; outline:none; transition:border-color .2s; }
-    .minput:focus { border-color:var(--red); }
-    .mactions { display:flex; gap:9px; justify-content:flex-end; }
-    .btn-cancel { background:transparent; border:1px solid var(--border2); color:var(--muted); padding:7px 16px; border-radius:3px; font-family:'Fira Code',monospace; font-size:.78rem; cursor:pointer; transition:all .2s; }
-    .btn-cancel:hover { border-color:var(--muted); color:var(--white); }
-    .btn-confirm { background:var(--red-dim); border:1px solid var(--red); color:var(--white); padding:7px 16px; border-radius:3px; font-family:'Fira Code',monospace; font-size:.78rem; cursor:pointer; transition:all .2s; }
-    .btn-confirm:hover { background:rgba(255,0,51,.18); }
-    .btn-confirm:disabled { opacity:.3; cursor:not-allowed; }
-
-    /* ── IDIOMA ── */
-    body.es .en { display:none !important; }
-    body.en .es { display:none !important; }
-
-    /* ── LANG SWITCH ── */
-    .lang-switch {
-      cursor:pointer; color:var(--muted); font-size:.78rem;
-      display:flex; align-items:center; gap:6px;
-      font-family:'Fira Code',monospace; border:1px solid var(--border2);
-      padding:4px 10px; border-radius:3px; transition:.3s; background:transparent;
+    /* close preview button */
+    #btn-close-prev {
+      background:transparent; border:none; color:var(--dim); cursor:pointer;
+      font-size:.78rem; padding:4px 6px; border-radius:3px; transition:color .15s; line-height:1;
     }
-    .lang-switch:hover { color:var(--red); border-color:var(--red); background:var(--red-dim); }
-    .lang-switch.pulse { animation:slowPulse 2s ease-out; }
-    @keyframes slowPulse {
-      0%,15%  { border-color:var(--red); color:var(--red); background:var(--red-dim); }
-      100%    { border-color:var(--border2); color:var(--muted); background:transparent; }
-    }
+    #btn-close-prev:hover { color:var(--red); }
 
-    /* ── FILTRO DE FORMATOS ── */
+    /* ── FORMAT FILTER BAR ── */
     #filter-bar {
       display:none; flex-shrink:0; padding:7px 12px;
       border-bottom:1px solid var(--border); background:var(--panel);
-      overflow-x:auto; scrollbar-width:none;
-      gap:6px; flex-wrap:wrap; align-items:center;
+      overflow-x:auto; scrollbar-width:none; gap:6px; flex-wrap:wrap; align-items:center;
     }
     #filter-bar::-webkit-scrollbar { display:none; }
     #filter-bar.visible { display:flex; }
@@ -270,18 +227,50 @@
       font-family:'Fira Code',monospace; font-size:.65rem;
       border:1px solid var(--border2); color:var(--muted);
       padding:2px 9px; border-radius:12px; cursor:pointer;
-      transition:all .18s; white-space:nowrap; background:transparent;
-      user-select:none;
+      transition:all .18s; white-space:nowrap; background:transparent; user-select:none;
     }
     .fmt-chip:hover  { border-color:var(--white); color:var(--white); }
     .fmt-chip.active { border-color:var(--red); color:var(--red); background:var(--red-dim); }
     .fmt-chip.all    { border-color:var(--muted); }
-    .fmt-chip.all.active { border-color:var(--red); color:var(--red); }
+
+    /* ── MODAL ── */
+    #modal-ov { position:fixed; inset:0; background:rgba(0,0,0,.92); z-index:9000; display:none; align-items:center; justify-content:center; }
+    #modal-ov.on { display:flex; }
+    .mbox { background:var(--panel); border:1px solid var(--red); padding:26px; border-radius:3px; max-width:420px; width:92%; display:flex; flex-direction:column; gap:13px; }
+    .mbox h3 { font-size:1rem; font-weight:700; }
+    .mbox p  { color:var(--muted); font-size:.82rem; line-height:1.65; }
+    .mlist { max-height:130px; overflow-y:auto; background:#040404; border:1px solid var(--border); padding:9px 12px; font-family:'Fira Code',monospace; font-size:.67rem; color:var(--red); scrollbar-width:thin; }
+    .mlist div { margin-bottom:3px; word-break:break-all; }
+    .minput { background:#040404; border:1px solid var(--border2); color:var(--white); padding:8px 11px; font-family:'Fira Code',monospace; font-size:.85rem; border-radius:3px; width:100%; outline:none; transition:border-color .2s; }
+    .minput:focus { border-color:var(--red); }
+    .mactions { display:flex; gap:9px; justify-content:flex-end; }
+    .btn-cancel  { background:transparent; border:1px solid var(--border2); color:var(--muted); padding:7px 16px; border-radius:3px; font-family:'Fira Code',monospace; font-size:.78rem; cursor:pointer; transition:all .2s; }
+    .btn-cancel:hover { border-color:var(--muted); color:var(--white); }
+    .btn-confirm { background:var(--red-dim); border:1px solid var(--red); color:var(--white); padding:7px 16px; border-radius:3px; font-family:'Fira Code',monospace; font-size:.78rem; cursor:pointer; transition:all .2s; }
+    .btn-confirm:hover { background:rgba(255,0,51,.18); }
+    .btn-confirm:disabled { opacity:.3; cursor:not-allowed; }
+
+    /* ── LANG SWITCH ── */
+    .lang-switch {
+      cursor:pointer; color:var(--muted); font-size:.78rem;
+      display:flex; align-items:center; gap:6px; font-family:'Fira Code',monospace;
+      border:1px solid var(--border2); padding:4px 10px; border-radius:3px; transition:.3s; background:transparent;
+    }
+    .lang-switch:hover { color:var(--red); border-color:var(--red); background:var(--red-dim); }
+    .lang-switch.pulse { animation:slowPulse 2s ease-out; }
+    @keyframes slowPulse {
+      0%,15%  { border-color:var(--red); color:var(--red); background:var(--red-dim); }
+      100%    { border-color:var(--border2); color:var(--muted); background:transparent; }
+    }
+
+    /* ── LANGUAGE TOGGLE ── */
+    body.es .en { display:none !important; }
+    body.en .es { display:none !important; }
 
     /* ── EMPTY / OK SCREEN ── */
     .ok-screen { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center; }
     .ok-screen h2 { font-size:1.3rem; font-weight:700; }
-    .ok-screen p { color:var(--muted); font-size:.84rem; line-height:1.7; max-width:300px; }
+    .ok-screen p  { color:var(--muted); font-size:.84rem; line-height:1.7; max-width:300px; }
   </style>
 </head>
 <body class="es">
@@ -298,8 +287,10 @@
       <span class="es">ESP</span>
       <span class="en">ENG</span>
     </button>
-    <div class="nav-folder" id="nav-folder" style="display:none;"><i class="fas fa-folder"></i><span id="nav-folder-name"></span></div>
-    <button class="nbtn" id="btn-stop"  onclick="stopScan()">
+    <div class="nav-folder" id="nav-folder" style="display:none;">
+      <i class="fas fa-folder"></i><span id="nav-folder-name"></span>
+    </div>
+    <button class="nbtn" id="btn-stop" onclick="stopScan()">
       <i class="fas fa-stop"></i> <span class="es">Detener</span><span class="en">Stop</span>
     </button>
     <button class="nbtn" id="btn-reset" onclick="resetApp()">
@@ -322,7 +313,7 @@
         </div>
         <span id="scan-cnt" style="font-family:'Fira Code',monospace;font-size:.67rem;color:var(--muted);font-weight:400;"></span>
       </div>
-      <div id="feed" style="font-family:'Fira Code',monospace;font-size:.68rem;line-height:1.75;flex:1;overflow:hidden;padding:8px 12px;">
+      <div id="feed">
         <div id="feed-ph" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--dim);font-size:.75rem;text-align:center;pointer-events:none;font-family:'Fira Code',monospace;">
           <i class="fas fa-terminal" style="font-size:1.8rem;"></i>
           <span class="es">El feed aparecerá<br>aquí durante el escaneo</span>
@@ -333,14 +324,14 @@
 
     <div class="divider" id="div-1"></div>
 
-    <!-- MID: DUPLICADOS -->
+    <!-- MID: DUPLICATES -->
     <div class="panel" id="panel-mid">
       <div class="ph">
         <span><span class="es">duplicados encontrados</span><span class="en">duplicates found</span></span>
         <span class="badge z" id="dupe-badge">0</span>
       </div>
 
-      <!-- BARRA DE FILTRO DE FORMATOS -->
+      <!-- FORMAT FILTER BAR -->
       <div id="filter-bar">
         <span class="filter-label es">formato:</span>
         <span class="filter-label en">format:</span>
@@ -351,11 +342,11 @@
 
       <div id="dupes-scroll">
 
-        <!-- PANTALLA INICIO -->
+        <!-- HOME SCREEN -->
         <div id="home">
           <div class="home-icon"><i class="fas fa-copy"></i></div>
           <h2>DupeCleaner</h2>
-          <p class="es">Selecciona una carpeta. La app escanea todo el contenido real con SHA-256 y te muestra únicamente los duplicados exactos.</p>
+          <p class="es">Selecciona una carpeta. La app escanea todo el contenido con SHA-256 y te muestra únicamente los duplicados exactos.</p>
           <p class="en">Select a folder. The app scans all content with SHA-256 and shows only exact duplicates.</p>
           <button class="btn-primary" onclick="pickFolder()">
             <i class="fas fa-folder-open"></i>
@@ -365,7 +356,7 @@
           <p class="home-note en">Chrome / Edge 86+ · System folders are automatically ignored</p>
         </div>
 
-        <!-- PASO DE CONFIRMACIÓN -->
+        <!-- CONFIRMATION STEP -->
         <div id="confirm-step">
           <div class="home-icon" style="font-size:2rem;"><i class="fas fa-folder-open"></i></div>
           <h3><span class="es">Carpeta seleccionada</span><span class="en">Folder selected</span></h3>
@@ -383,6 +374,8 @@
         </div>
 
       </div>
+
+      <!-- STATS BAR -->
       <div id="stats-bar">
         <div class="sbar-stat">
           <span class="es">archivos escaneados:</span><span class="en">scanned files:</span> <span id="st-files">0</span>
@@ -414,10 +407,16 @@
     <!-- RIGHT: PREVIEW -->
     <div class="panel" id="panel-right">
       <div class="ph">
-        <div class="ph-l"><i class="fas fa-eye" style="font-size:.78rem;color:var(--red);"></i>
+        <div class="ph-l">
+          <i class="fas fa-eye" style="font-size:.78rem;color:var(--red);"></i>
           <span><span class="es">vista previa</span><span class="en">preview</span></span>
         </div>
-        <span id="prev-lbl" style="font-family:'Fira Code',monospace;font-size:.65rem;color:var(--muted);font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:130px;"></span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span id="prev-lbl" style="font-family:'Fira Code',monospace;font-size:.65rem;color:var(--muted);font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px;"></span>
+          <button id="btn-close-prev" onclick="closePreview()" title="Cerrar / Close" style="display:none;">
+            <i class="fas fa-xmark"></i>
+          </button>
+        </div>
       </div>
       <div id="prev-body">
         <div id="prev-empty">
@@ -434,10 +433,11 @@
   </div>
 </div>
 
-<!-- MODAL ELIMINACIÓN -->
+<!-- DELETE MODAL -->
 <div id="modal-ov">
   <div class="mbox">
-    <h3><i class="fas fa-triangle-exclamation" style="color:var(--red);margin-right:7px;"></i>
+    <h3>
+      <i class="fas fa-triangle-exclamation" style="color:var(--red);margin-right:7px;"></i>
       <span class="es">Eliminar permanentemente</span><span class="en">Permanently delete</span>
     </h3>
     <p class="es">Estos archivos se borrarán definitivamente. <strong>Sin papelera, sin marcha atrás.</strong></p>
@@ -462,7 +462,7 @@
 'use strict';
 
 // ══════════════════════════════════════════════════════
-//  RUTAS BLOQUEADAS — NUNCA se muestran ni procesan
+//  BLOCKED SYSTEM PATHS
 // ══════════════════════════════════════════════════════
 const BLOCKED = new Set([
   'windows','system32','syswow64','program files','program files (x86)',
@@ -474,36 +474,63 @@ const BLOCKED = new Set([
 ]);
 
 function isBlocked(path) {
-  const parts = path.toLowerCase().replace(/\\/g,'/').split('/');
-  return parts.some(p => BLOCKED.has(p));
+  return path.toLowerCase().replace(/\\/g,'/').split('/').some(p => BLOCKED.has(p));
 }
 
 // ══════════════════════════════════════════════════════
-//  ESTADO
+//  STATE
 // ══════════════════════════════════════════════════════
-let dirHandle  = null;
-let cancelled  = false;
-let scanning   = false;
-let fileCount  = 0;
-let skipCount  = 0;
-let feedCount  = 0;
+let dirHandle = null;
+let cancelled = false;
+let scanning  = false;
+let fileCount = 0;
+let skipCount = 0;
+let feedCount = 0;
 const MAX_FEED = 200;
 
-const FILES   = new Map();  // fullPath → { handle, size, name, dir, hash, _sid }
-const GROUPS  = new Map();  // hash     → [ ...fileInfo ]
-const SEL     = new Set();  // fullPaths seleccionados
+const FILES  = new Map();  // fullPath → { handle, size, name, dir, hash, _sid }
+const GROUPS = new Map();  // hash     → [ ...fileInfo ]
+const SEL    = new Set();  // selected fullPaths
 
 // ══════════════════════════════════════════════════════
-//  IDIOMA
+//  HELPERS
+// ══════════════════════════════════════════════════════
+const t = (es, en) => document.body.classList.contains('es') ? es : en;
+
+const fmtSize = b =>
+  b < 1024        ? b + ' B'
+  : b < 1048576   ? (b / 1024).toFixed(1)      + ' KB'
+  : b < 1073741824 ? (b / 1048576).toFixed(2)  + ' MB'
+  :                  (b / 1073741824).toFixed(2) + ' GB';
+
+const ICONS = {
+  jpg:'fa-file-image', jpeg:'fa-file-image', png:'fa-file-image', gif:'fa-file-image',
+  webp:'fa-file-image', bmp:'fa-file-image', heic:'fa-file-image', svg:'fa-file-image',
+  pdf:'fa-file-pdf',
+  mp4:'fa-file-video', mkv:'fa-file-video', avi:'fa-file-video', mov:'fa-file-video',
+  mp3:'fa-file-audio', wav:'fa-file-audio', flac:'fa-file-audio', ogg:'fa-file-audio',
+  zip:'fa-file-zipper', rar:'fa-file-zipper', '7z':'fa-file-zipper', gz:'fa-file-zipper',
+  doc:'fa-file-word', docx:'fa-file-word',
+  xls:'fa-file-excel', xlsx:'fa-file-excel',
+  js:'fa-file-code', ts:'fa-file-code', py:'fa-file-code',
+  html:'fa-file-code', css:'fa-file-code', json:'fa-file-code',
+  txt:'fa-file-lines', md:'fa-file-lines', csv:'fa-file-lines', log:'fa-file-lines',
+};
+const getIcon = n => 'fas ' + (ICONS[n.split('.').pop().toLowerCase()] || 'fa-file');
+const isImg   = n => /\.(jpe?g|png|gif|webp|bmp|svg)$/i.test(n);
+const isTxt   = n => /\.(txt|md|json|js|ts|py|html|css|log|csv|xml|sh|bat|c|cpp|h|java|rb|php)$/i.test(n);
+
+// Yields a full frame to the browser (guarantees repaint)
+const frame = () => new Promise(r => requestAnimationFrame(r));
+
+// ══════════════════════════════════════════════════════
+//  LANGUAGE TOGGLE
 // ══════════════════════════════════════════════════════
 function toggleLang() {
-  const body = document.body;
-  const isEs = body.classList.contains('es');
-  body.classList.toggle('es', !isEs);
-  body.classList.toggle('en',  isEs);
+  const isEs = document.body.classList.contains('es');
+  document.body.classList.toggle('es', !isEs);
+  document.body.classList.toggle('en',  isEs);
   document.documentElement.lang = isEs ? 'en' : 'es';
-
-  // Placeholder del modal según idioma
   document.getElementById('modal-input').placeholder = isEs ? 'CONFIRM' : 'CONFIRMAR';
 
   const btn = document.getElementById('lang-btn');
@@ -514,129 +541,113 @@ function toggleLang() {
 }
 
 // ══════════════════════════════════════════════════════
-//  FILTRO DE FORMATOS
+//  FORMAT FILTER — multi-select
 // ══════════════════════════════════════════════════════
-let activeFilter = 'all';
-const detectedExts = new Set();
+const activeFilters = new Set();  // empty = show all
+const detectedExts  = new Set();
 
 function addExtToFilter(ext) {
   ext = ext.toLowerCase();
   if (detectedExts.has(ext)) return;
   detectedExts.add(ext);
 
-  const bar = document.getElementById('filter-bar');
+  const bar  = document.getElementById('filter-bar');
   bar.classList.add('visible');
 
   const chip = document.createElement('button');
-  chip.className = 'fmt-chip';
-  chip.dataset.ext = ext;
-  chip.textContent = '.' + ext;
-  chip.onclick = () => setFilter(ext, chip);
+  chip.className    = 'fmt-chip';
+  chip.dataset.ext  = ext;
+  chip.textContent  = '.' + ext;
+  chip.onclick      = () => setFilter(ext, chip);
   bar.appendChild(chip);
 }
 
 function setFilter(ext, el) {
-  activeFilter = ext;
-  // Actualizar chips
-  document.querySelectorAll('.fmt-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  // Mostrar/ocultar grupos
+  if (ext === 'all') {
+    // Clear all active format filters, activate "all"
+    activeFilters.clear();
+    document.querySelectorAll('.fmt-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  } else {
+    // Toggle this extension
+    if (activeFilters.has(ext)) {
+      activeFilters.delete(ext);
+      el.classList.remove('active');
+    } else {
+      activeFilters.add(ext);
+      el.classList.add('active');
+    }
+    // Manage "all" chip state
+    const allChip = document.querySelector('.fmt-chip.all');
+    if (activeFilters.size === 0) {
+      allChip?.classList.add('active');
+    } else {
+      allChip?.classList.remove('active');
+    }
+  }
+  applyFilter();
+}
+
+function applyFilter() {
   document.querySelectorAll('.dg').forEach(grp => {
-    if (ext === 'all') { grp.style.display = ''; return; }
-    const firstFile = grp.querySelector('.df-name');
-    if (!firstFile) { grp.style.display = 'none'; return; }
-    const name = firstFile.textContent.trim();
-    const grpExt = name.split('.').pop().toLowerCase();
-    grp.style.display = grpExt === ext ? '' : 'none';
+    if (activeFilters.size === 0) { grp.style.display = ''; return; }
+    const nameEl = grp.querySelector('.df-name');
+    if (!nameEl) { grp.style.display = 'none'; return; }
+    const grpExt = nameEl.textContent.trim().split('.').pop().toLowerCase();
+    grp.style.display = activeFilters.has(grpExt) ? '' : 'none';
   });
 }
 
 // ══════════════════════════════════════════════════════
-//  PANELES REDIMENSIONABLES
+//  RESIZABLE PANELS
 // ══════════════════════════════════════════════════════
 function makeDivider(divId, leftId, rightId) {
-  const div  = document.getElementById(divId);
-  const left = document.getElementById(leftId);
-  const right= document.getElementById(rightId);
+  const div   = document.getElementById(divId);
+  const left  = document.getElementById(leftId);
+  const right = document.getElementById(rightId);
 
   div.addEventListener('mousedown', e => {
     e.preventDefault();
-    const x0 = e.clientX;
+    const x0  = e.clientX;
     const w0L = left.getBoundingClientRect().width;
     const w0R = right.getBoundingClientRect().width;
     div.classList.add('drag');
 
     const mv = ev => {
       const dx = ev.clientX - x0;
-      const nL = Math.max(100, w0L + dx);
-      const nR = Math.max(100, w0R - dx);
-      left.style.cssText  += `;flex:none;width:${nL}px`;
-      right.style.cssText += `;flex:none;width:${nR}px`;
+      left.style.cssText  += `;flex:none;width:${Math.max(100, w0L + dx)}px`;
+      right.style.cssText += `;flex:none;width:${Math.max(100, w0R - dx)}px`;
     };
     const up = () => {
       div.classList.remove('drag');
       document.removeEventListener('mousemove', mv);
-      document.removeEventListener('mouseup', up);
+      document.removeEventListener('mouseup',   up);
     };
     document.addEventListener('mousemove', mv);
-    document.addEventListener('mouseup', up);
+    document.addEventListener('mouseup',   up);
   });
 }
-makeDivider('div-1','panel-left','panel-mid');
-makeDivider('div-2','panel-mid','panel-right');
+makeDivider('div-1', 'panel-left', 'panel-mid');
+makeDivider('div-2', 'panel-mid',  'panel-right');
 
 // ══════════════════════════════════════════════════════
-//  HELPERS
-// ══════════════════════════════════════════════════════
-const fmtSize = b =>
-  b < 1024       ? b + ' B'
-  : b < 1048576  ? (b/1024).toFixed(1)   + ' KB'
-  : b < 1073741824 ? (b/1048576).toFixed(2) + ' MB'
-  :                  (b/1073741824).toFixed(2) + ' GB';
-
-const ICONS = {
-  jpg:'fa-file-image',jpeg:'fa-file-image',png:'fa-file-image',gif:'fa-file-image',
-  webp:'fa-file-image',bmp:'fa-file-image',heic:'fa-file-image',svg:'fa-file-image',
-  pdf:'fa-file-pdf',
-  mp4:'fa-file-video',mkv:'fa-file-video',avi:'fa-file-video',mov:'fa-file-video',
-  mp3:'fa-file-audio',wav:'fa-file-audio',flac:'fa-file-audio',ogg:'fa-file-audio',
-  zip:'fa-file-zipper',rar:'fa-file-zipper','7z':'fa-file-zipper',gz:'fa-file-zipper',
-  doc:'fa-file-word',docx:'fa-file-word',
-  xls:'fa-file-excel',xlsx:'fa-file-excel',
-  js:'fa-file-code',ts:'fa-file-code',py:'fa-file-code',
-  html:'fa-file-code',css:'fa-file-code',json:'fa-file-code',
-  txt:'fa-file-lines',md:'fa-file-lines',csv:'fa-file-lines',log:'fa-file-lines',
-};
-const getIcon = n => 'fas ' + (ICONS[n.split('.').pop().toLowerCase()] || 'fa-file');
-const isImg   = n => /\.(jpe?g|png|gif|webp|bmp|svg)$/i.test(n);
-const isTxt   = n => /\.(txt|md|json|js|ts|py|html|css|log|csv|xml|sh|bat|c|cpp|h|java|rb|php)$/i.test(n);
-
-// Cede un frame completo al navegador (GARANTIZA repintado)
-const frame = () => new Promise(r => requestAnimationFrame(r));
-
-// ══════════════════════════════════════════════════════
-//  FEED  — añade línea al panel izquierdo
+//  FEED
 // ══════════════════════════════════════════════════════
 const $feed = document.getElementById('feed');
 
 function feedLine(text, cls) {
-  // Ocultar placeholder si existe
-  const ph = document.getElementById('feed-ph');
-  if (ph) ph.style.display = 'none';
+  document.getElementById('feed-ph')?.remove();
 
-  // Crear línea
   const el = document.createElement('div');
-  el.className = 'fl fl-' + cls;
+  el.className   = 'fl fl-' + cls;
   el.textContent = text;
   $feed.appendChild(el);
   feedCount++;
 
-  // Purgar las más antiguas si superamos el límite
   if (feedCount > MAX_FEED) {
-    const old = $feed.querySelector('.fl');
-    if (old) { old.remove(); feedCount--; }
+    $feed.querySelector('.fl')?.remove();
+    feedCount--;
   }
-
   $feed.scrollTop = $feed.scrollHeight;
 }
 
@@ -648,33 +659,36 @@ async function sha256(handle) {
     const file = await handle.getFile();
     const buf  = await file.arrayBuffer();
     const hash = await crypto.subtle.digest('SHA-256', buf);
-    return Array.from(new Uint8Array(hash))
-      .map(b => b.toString(16).padStart(2,'0')).join('');
+    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
   } catch { return null; }
 }
 
 // ══════════════════════════════════════════════════════
-//  PASO 1 — SELECCIONAR CARPETA (sin empezar aún)
+//  STEP 1 — PICK FOLDER
 // ══════════════════════════════════════════════════════
 async function pickFolder() {
   if (!('showDirectoryPicker' in window)) {
-    alert('Necesitas Google Chrome o Microsoft Edge 86+.\nFirefox y Safari no soportan el acceso al sistema de archivos local.');
+    alert(t(
+      'Necesitas Google Chrome o Microsoft Edge 86+.\nFirefox y Safari no soportan el acceso al sistema de archivos local.',
+      'You need Google Chrome or Microsoft Edge 86+.\nFirefox and Safari do not support the local File System Access API.'
+    ));
     return;
   }
   try {
     dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
-  } catch { return; } // usuario canceló
+  } catch { return; }
 
-  // Pedir permiso explícito (necesario para rutas raíz como C:\, Desktop...)
   try {
     const p = await dirHandle.requestPermission({ mode: 'readwrite' });
     if (p !== 'granted') {
-      alert('Se necesita permiso de acceso.\nSelecciona la carpeta y acepta el permiso del navegador.');
+      alert(t(
+        'Se necesita permiso de acceso.\nSelecciona la carpeta y acepta el permiso del navegador.',
+        'Access permission required.\nSelect the folder and accept the browser permission prompt.'
+      ));
       return;
     }
-  } catch { /* ya tiene permiso */ }
+  } catch { /* already has permission */ }
 
-  // Mostrar pantalla de confirmación
   document.getElementById('home').style.display = 'none';
   const cs = document.getElementById('confirm-step');
   cs.style.display = 'flex';
@@ -688,83 +702,80 @@ function cancelPick() {
 }
 
 // ══════════════════════════════════════════════════════
-//  PASO 2 — INICIAR ESCANEO
+//  STEP 2 — BEGIN SCAN
 // ══════════════════════════════════════════════════════
 async function beginScan() {
   if (!dirHandle) return;
 
-  // Reset estado
   FILES.clear(); GROUPS.clear(); SEL.clear();
   fileCount = 0; skipCount = 0; cancelled = false; scanning = true; feedCount = 0;
-  activeFilter = 'all'; detectedExts.clear();
+  activeFilters.clear(); detectedExts.clear();
 
-  // Reset UI
   document.getElementById('confirm-step').style.display = 'none';
-  document.getElementById('dupes-scroll').innerHTML = ''; // vaciar duplicados
+  document.getElementById('dupes-scroll').innerHTML = '';
 
-  // Limpiar barra de filtros
   const fb = document.getElementById('filter-bar');
   fb.classList.remove('visible');
-  // Eliminar chips de extensión (dejar solo el "todos")
   fb.querySelectorAll('.fmt-chip:not(.all)').forEach(c => c.remove());
   fb.querySelector('.fmt-chip.all').classList.add('active');
 
-  // Limpiar feed
   $feed.innerHTML = '';
   feedCount = 0;
 
-  // Mostrar carpeta en navbar
-  document.getElementById('nav-folder').style.display = 'flex';
-  document.getElementById('nav-folder-name').textContent = dirHandle.name;
-  document.getElementById('btn-stop').style.display  = 'block';
-  document.getElementById('btn-reset').style.display = 'none';
-
-  document.getElementById('pbar').style.width = '0%';
-  document.getElementById('dupe-badge').textContent = '0';
+  document.getElementById('nav-folder').style.display     = 'flex';
+  document.getElementById('nav-folder-name').textContent  = dirHandle.name;
+  document.getElementById('btn-stop').style.display       = 'block';
+  document.getElementById('btn-reset').style.display      = 'none';
+  document.getElementById('pbar').style.width             = '0%';
+  document.getElementById('dupe-badge').textContent       = '0';
   document.getElementById('dupe-badge').classList.add('z');
-  document.getElementById('btn-del').style.display = 'none';
-  document.getElementById('prev-empty').style.display  = 'flex';
-  document.getElementById('prev-content').style.display = 'none';
-  document.getElementById('prev-lbl').textContent = '';
+  document.getElementById('btn-del').style.display        = 'none';
+  document.getElementById('prev-empty').style.display     = 'flex';
+  document.getElementById('prev-content').style.display   = 'none';
+  document.getElementById('btn-close-prev').style.display = 'none';
+  document.getElementById('prev-lbl').textContent         = '';
   updateStats();
 
-  setDot('run', 'recopilando archivos…');
-
-  // Primer frame antes de empezar para que la UI se pinte
+  setDot('run', t('recopilando archivos…', 'collecting files…'));
   await frame();
 
   feedLine('📂  ' + dirHandle.name, 'dir');
   await frame();
 
-  // ── FASE 1: Recopilación ──
+  // Phase 1: collect
   await collect(dirHandle, dirHandle.name);
   if (cancelled) { finishStopped(); return; }
 
-  // ── FASE 2: Comparación SHA-256 ──
-  setDot('run', 'calculando SHA-256…');
+  // Phase 2: SHA-256 comparison
+  setDot('run', t('calculando SHA-256…', 'computing SHA-256…'));
   await frame();
   await findDupes();
   if (cancelled) { finishStopped(); return; }
 
-  // ── FIN ──
+  // Done
   scanning = false;
-  setDot('idle', 'completado');
-  document.getElementById('pbar').style.width = '100%';
+  setDot('idle', t('completado', 'done'));
+  document.getElementById('pbar').style.width        = '100%';
   document.getElementById('btn-stop').style.display  = 'none';
   document.getElementById('btn-reset').style.display = 'block';
 
   feedLine('─────────────────────────────', 'info');
   const gs = [...GROUPS.values()].filter(g => g.length > 1);
-  feedLine('✓  ' + fileCount + ' archivos · ' + gs.length + ' grupos' +
-    (skipCount ? ' · ' + skipCount + ' carpetas de sistema ignoradas' : ''), 'ok');
+  feedLine('✓  ' + fileCount + ' ' + t('archivos', 'files') + ' · ' + gs.length + ' ' + t('grupos', 'groups') +
+    (skipCount ? ' · ' + skipCount + ' ' + t('carpetas del sistema ignoradas', 'system folders skipped') : ''), 'ok');
 
   if (gs.length === 0) {
     document.getElementById('dupes-scroll').innerHTML = `
       <div class="ok-screen">
         <div class="home-icon" style="font-size:2.5rem;"><i class="fas fa-circle-check"></i></div>
-        <h2>¡Sin duplicados!</h2>
-        <p>No se encontraron archivos idénticos en <strong>${dirHandle.name}</strong>.</p>
-        <button class="btn-primary" onclick="resetApp()"><i class="fas fa-rotate-left"></i> Nuevo escaneo</button>
+        <h2 class="es">¡Sin duplicados!</h2>
+        <h2 class="en">No duplicates!</h2>
+        <p class="es">No se encontraron archivos idénticos en <strong>${dirHandle.name}</strong>.</p>
+        <p class="en">No identical files found in <strong>${dirHandle.name}</strong>.</p>
+        <button class="btn-primary" onclick="resetApp()">
+          <i class="fas fa-rotate-left"></i>
+          <span class="es">Nuevo escaneo</span><span class="en">New scan</span>
+        </button>
       </div>
     `;
   }
@@ -772,30 +783,29 @@ async function beginScan() {
 
 function finishStopped() {
   scanning = false;
-  setDot('stop', 'detenido');
+  setDot('stop', t('detenido', 'stopped'));
   document.getElementById('btn-stop').style.display  = 'none';
   document.getElementById('btn-reset').style.display = 'block';
-  feedLine('— Escaneo detenido por el usuario —', 'info');
+  feedLine(t('— Escaneo detenido por el usuario —', '— Scan stopped by user —'), 'info');
 }
 
 // ══════════════════════════════════════════════════════
-//  RECOLECCIÓN RECURSIVA
+//  RECURSIVE COLLECTION
 // ══════════════════════════════════════════════════════
 async function collect(dh, path) {
   for await (const [name, handle] of dh.entries()) {
     if (cancelled) return;
-
     const fullPath = path + '/' + name;
 
     if (handle.kind === 'directory') {
       if (isBlocked(fullPath)) {
-        feedLine('✗  ' + name + '  [sistema]', 'skip');
+        feedLine('✗  ' + name + '  [' + t('sistema', 'system') + ']', 'skip');
         skipCount++;
-        await frame(); // pintar el skip
+        await frame();
         continue;
       }
       feedLine('▸  ' + fullPath, 'dir');
-      await frame(); // ← CRÍTICO: cede al navegador para pintar esta línea
+      await frame();
       await collect(handle, fullPath);
 
     } else {
@@ -804,20 +814,19 @@ async function collect(dh, path) {
         const file = await handle.getFile();
         FILES.set(fullPath, { handle, size: file.size, name, dir: path, hash: null, _sid: null });
         fileCount++;
-        document.getElementById('scan-cnt').textContent = fileCount + ' archivos';
-      } catch { /* sin permiso para este archivo, saltarlo */ }
+        document.getElementById('scan-cnt').textContent = fileCount + ' ' + t('archivos', 'files');
+      } catch { /* no permission for this file, skip */ }
 
-      // Ceder al navegador cada 15 archivos
       if (fileCount % 15 === 0) await frame();
     }
   }
 }
 
 // ══════════════════════════════════════════════════════
-//  BÚSQUEDA DE DUPLICADOS
+//  DUPLICATE DETECTION
 // ══════════════════════════════════════════════════════
 async function findDupes() {
-  // Fase rápida: agrupar por tamaño (sin leer contenido)
+  // Fast phase: group by size (no content read)
   const bySize = new Map();
   for (const [key, fi] of FILES) {
     if (!bySize.has(fi.size)) bySize.set(fi.size, []);
@@ -826,11 +835,10 @@ async function findDupes() {
 
   const candidates = [...bySize.values()].filter(g => g.length > 1);
   const total = candidates.reduce((s, g) => s + g.length, 0);
-
   if (total === 0) return;
 
   feedLine('─────────────────────────────', 'info');
-  feedLine('SHA-256: ' + total + ' candidatos', 'info');
+  feedLine('SHA-256: ' + total + ' ' + t('candidatos', 'candidates'), 'info');
   await frame();
 
   let done = 0;
@@ -853,7 +861,7 @@ async function findDupes() {
 
       const grp = GROUPS.get(hash);
       if (grp.length >= 2) {
-        feedLine('💥 DUPLICADO: ' + fi.name, 'match');
+        feedLine('💥 ' + t('DUPLICADO', 'DUPLICATE') + ': ' + fi.name, 'match');
         renderGroup(hash);
         await frame();
       }
@@ -866,44 +874,43 @@ async function findDupes() {
 }
 
 // ══════════════════════════════════════════════════════
-//  RENDER GRUPO
+//  RENDER GROUP
 // ══════════════════════════════════════════════════════
 function renderGroup(hash) {
   const files = GROUPS.get(hash);
   if (!files || files.length < 2) return;
 
   const scroll = document.getElementById('dupes-scroll');
-  let el = document.getElementById('grp-' + hash);
-  if (el) el.remove();
+  document.getElementById('grp-' + hash)?.remove();
 
-  el = document.createElement('div');
-  el.className = 'dg'; el.id = 'grp-' + hash;
+  const el = document.createElement('div');
+  el.className = 'dg';
+  el.id        = 'grp-' + hash;
   el.innerHTML = `
     <div class="dg-hdr">
-      <span><span class="h">${hash.substring(0,14)}…</span> · ${files.length} copias · ${fmtSize(files[0].size)} c/u</span>
+      <span><span class="h">${hash.substring(0,14)}…</span> · ${files.length} ${t('copias','copies')} · ${fmtSize(files[0].size)} c/u</span>
       <span class="sv">↩ ${fmtSize(files[0].size * (files.length - 1))}</span>
     </div>
   `;
 
   files.forEach((fi, i) => {
     const isOrig = i === 0;
-    // ID estable basado en hash numérico de la clave
     let h = 5381;
     for (let j = 0; j < fi.key.length; j++) h = ((h << 5) + h) ^ fi.key.charCodeAt(j);
     const sid = 'r' + (h >>> 0).toString(36);
     fi._sid = sid;
     if (FILES.has(fi.key)) FILES.get(fi.key)._sid = sid;
 
-    const row = document.createElement('div');
+    const row    = document.createElement('div');
     row.className = 'df' + (isOrig ? ' orig' : '');
-    row.id = sid;
-    const keyEsc = fi.key.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    row.id        = sid;
+    const keyEsc  = fi.key.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     row.innerHTML = `
-      <input type="checkbox" ${isOrig ? 'disabled title="El original no se puede eliminar"' : ''}
+      <input type="checkbox" ${isOrig ? `disabled title="${t('El original no se puede eliminar','The original cannot be deleted')}"` : ''}
         onchange="toggleSel('${keyEsc}',this.checked)">
       <i class="${getIcon(fi.name)} df-icon"></i>
       <div class="df-info">
-        <div class="df-name">${fi.name}${isOrig ? '<span class="orig-tag">original</span>' : ''}</div>
+        <div class="df-name">${fi.name}${isOrig ? `<span class="orig-tag">${t('original','original')}</span>` : ''}</div>
         <div class="df-path">${fi.dir}</div>
       </div>
       <button class="btn-eye" onclick="previewFile('${keyEsc}')"><i class="fas fa-eye"></i></button>
@@ -913,25 +920,25 @@ function renderGroup(hash) {
 
   scroll.appendChild(el);
 
-  // Registrar extensión en el filtro
+  // Register extension in filter
   const ext = files[0].name.split('.').pop().toLowerCase();
   addExtToFilter(ext);
 
-  // Aplicar filtro activo al nuevo grupo
-  if (activeFilter !== 'all' && ext !== activeFilter) {
+  // Apply current active filters to the new group
+  if (activeFilters.size > 0 && !activeFilters.has(ext)) {
     el.style.display = 'none';
   }
 
   updateStats();
 
-  const n = [...GROUPS.values()].filter(g => g.length > 1).length;
+  const n     = [...GROUPS.values()].filter(g => g.length > 1).length;
   const badge = document.getElementById('dupe-badge');
   badge.textContent = n;
   badge.classList.toggle('z', n === 0);
 }
 
 // ══════════════════════════════════════════════════════
-//  SELECCIÓN
+//  SELECTION
 // ══════════════════════════════════════════════════════
 function toggleSel(key, checked) {
   checked ? SEL.add(key) : SEL.delete(key);
@@ -939,11 +946,42 @@ function toggleSel(key, checked) {
   if (fi && fi._sid) document.getElementById(fi._sid)?.classList.toggle('sel', checked);
   const n = SEL.size;
   document.getElementById('btn-del').style.display = n > 0 ? 'block' : 'none';
-  document.getElementById('sel-cnt').textContent = n;
+  document.getElementById('sel-cnt').textContent   = n;
+}
+
+function selectAll() {
+  for (const [, files] of GROUPS) {
+    if (files.length < 2) continue;
+    files.forEach((fi, i) => {
+      if (i === 0) return;
+      if (SEL.has(fi.key)) return;
+      SEL.add(fi.key);
+      if (fi._sid) {
+        const row = document.getElementById(fi._sid);
+        if (row) { row.classList.add('sel'); const chk = row.querySelector('input[type=checkbox]'); if (chk) chk.checked = true; }
+      }
+    });
+  }
+  const n = SEL.size;
+  document.getElementById('btn-del').style.display = n > 0 ? 'block' : 'none';
+  document.getElementById('sel-cnt').textContent   = n;
+}
+
+function deselectAll() {
+  for (const key of [...SEL]) {
+    const fi = FILES.get(key);
+    if (fi && fi._sid) {
+      const row = document.getElementById(fi._sid);
+      if (row) { row.classList.remove('sel'); const chk = row.querySelector('input[type=checkbox]'); if (chk) chk.checked = false; }
+    }
+  }
+  SEL.clear();
+  document.getElementById('btn-del').style.display = 'none';
+  document.getElementById('sel-cnt').textContent   = '0';
 }
 
 // ══════════════════════════════════════════════════════
-//  ESTADÍSTICAS
+//  STATISTICS
 // ══════════════════════════════════════════════════════
 function updateStats() {
   document.getElementById('st-files').textContent = fileCount;
@@ -956,26 +994,24 @@ function updateStats() {
 }
 
 // ══════════════════════════════════════════════════════
-//  PREVIEW — muestra el contenido del archivo a lo grande
+//  PREVIEW
 // ══════════════════════════════════════════════════════
 async function previewFile(key) {
   const fi = FILES.get(key);
   if (!fi) return;
 
-  document.getElementById('prev-empty').style.display = 'none';
+  document.getElementById('prev-empty').style.display     = 'none';
+  document.getElementById('btn-close-prev').style.display = 'block';
   const $c = document.getElementById('prev-content');
   $c.style.display = 'block';
   document.getElementById('prev-lbl').textContent = fi.name;
 
-  // Cabecera compacta
   $c.innerHTML = `
     <div style="margin-bottom:12px;">
-      <div class="pv-title">${fi.name}</div>
-      <div class="pv-meta">
-        ${fi.dir} &nbsp;·&nbsp; <span class="ac">${fmtSize(fi.size)}</span>
-      </div>
+      <div style="font-size:.9rem;font-weight:700;word-break:break-all;margin-bottom:4px;">${fi.name}</div>
+      <div class="pv-meta">${fi.dir} &nbsp;·&nbsp; <span class="ac">${fmtSize(fi.size)}</span></div>
     </div>
-    <div id="pv-loading" style="color:var(--dim);font-family:'Fira Code',monospace;font-size:.72rem;text-align:center;padding:20px;">Cargando…</div>
+    <div id="pv-loading" style="color:var(--dim);font-family:'Fira Code',monospace;font-size:.72rem;text-align:center;padding:20px;">${t('Cargando…','Loading…')}</div>
   `;
 
   try {
@@ -983,58 +1019,49 @@ async function previewFile(key) {
     document.getElementById('pv-loading')?.remove();
 
     if (isImg(fi.name)) {
-      // Imagen: mostrar a pantalla completa del panel
-      const url = URL.createObjectURL(file);
+      const url  = URL.createObjectURL(file);
       const wrap = document.createElement('div');
       wrap.style.cssText = 'text-align:center;';
-      const img = document.createElement('img');
-      img.style.cssText = 'max-width:100%;max-height:calc(100vh - 160px);border-radius:3px;border:1px solid var(--border);display:block;margin:0 auto;';
+      const img  = document.createElement('img');
+      img.style.cssText  = 'max-width:100%;max-height:calc(100vh - 160px);border-radius:3px;border:1px solid var(--border);display:block;margin:0 auto;';
       img.src = url; img.alt = fi.name;
       img.onload = () => URL.revokeObjectURL(url);
       wrap.appendChild(img);
       $c.appendChild(wrap);
 
     } else if (isTxt(fi.name) && fi.size < 1024 * 1024) {
-      // Texto/código: mostrar el contenido con buena legibilidad
       const text = await file.text();
       const ext  = fi.name.split('.').pop().toLowerCase();
       const pre  = document.createElement('pre');
-      pre.style.cssText = `
-        font-family:'Fira Code',monospace; font-size:.73rem; line-height:1.65;
-        color:var(--white); background:#060606; padding:14px; border-radius:3px;
-        border:1px solid var(--border); white-space:pre-wrap; word-break:break-all;
-        max-height:calc(100vh - 160px); overflow-y:auto;
-        scrollbar-width:thin; scrollbar-color:var(--red) transparent;
-      `;
-      pre.textContent = text.length > 12000 ? text.substring(0, 12000) + '\n… (truncado)' : text;
+      pre.style.cssText = `font-family:'Fira Code',monospace;font-size:.73rem;line-height:1.65;color:var(--white);background:#060606;padding:14px;border-radius:3px;border:1px solid var(--border);white-space:pre-wrap;word-break:break-all;max-height:calc(100vh - 160px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--red) transparent;`;
+      pre.textContent = text.length > 12000 ? text.substring(0, 12000) + '\n… (' + t('truncado', 'truncated') + ')' : text;
       $c.appendChild(pre);
-
-      // Nota del tipo de archivo
       const note = document.createElement('div');
       note.style.cssText = 'font-family:"Fira Code",monospace;font-size:.62rem;color:var(--dim);margin-top:6px;text-align:right;';
       note.textContent = '.' + ext + ' · ' + fmtSize(fi.size);
       $c.appendChild(note);
 
     } else if (fi.name.toLowerCase().endsWith('.pdf')) {
-      // PDF: intentar mostrarlo embebido
-      const url = URL.createObjectURL(file);
+      const url   = URL.createObjectURL(file);
       const embed = document.createElement('embed');
-      embed.src = url;
-      embed.type = 'application/pdf';
+      embed.src   = url;
+      embed.type  = 'application/pdf';
       embed.style.cssText = 'width:100%;height:calc(100vh - 160px);border:1px solid var(--border);border-radius:3px;';
       $c.appendChild(embed);
 
     } else {
-      // Archivo binario: mostrar info clara y tamaño
       const ext = fi.name.split('.').pop().toUpperCase();
-      const d = document.createElement('div');
+      const d   = document.createElement('div');
       d.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:14px;padding:30px 16px;text-align:center;';
       d.innerHTML = `
         <i class="${getIcon(fi.name)}" style="font-size:3.5rem;color:var(--dim);"></i>
         <div style="font-size:1rem;font-weight:700;color:var(--white);">.${ext}</div>
         <div style="font-size:1.4rem;font-weight:700;color:var(--red);">${fmtSize(fi.size)}</div>
         <div style="font-family:'Fira Code',monospace;font-size:.65rem;color:var(--muted);max-width:220px;line-height:1.6;">
-          Archivo binario — el contenido es idéntico al de las otras copias (mismo hash SHA-256)
+          ${t(
+            'Archivo binario — el contenido es idéntico al de las otras copias (mismo hash SHA-256)',
+            'Binary file — content is identical to all other copies (same SHA-256 hash)'
+          )}
         </div>
       `;
       $c.appendChild(d);
@@ -1042,25 +1069,29 @@ async function previewFile(key) {
 
   } catch(e) {
     document.getElementById('pv-loading')?.remove();
-    $c.innerHTML += `<div style="color:var(--red);font-size:.72rem;font-family:'Fira Code',monospace;margin-top:8px;">Error al cargar: ${e.message}</div>`;
+    $c.innerHTML += `<div style="color:var(--red);font-size:.72rem;font-family:'Fira Code',monospace;margin-top:8px;">${t('Error al cargar','Error loading')}: ${e.message}</div>`;
   }
 }
 
+function closePreview() {
+  document.getElementById('prev-content').style.display   = 'none';
+  document.getElementById('prev-empty').style.display     = 'flex';
+  document.getElementById('btn-close-prev').style.display = 'none';
+  document.getElementById('prev-lbl').textContent         = '';
+}
+
 // ══════════════════════════════════════════════════════
-//  DOT DE ESTADO
+//  STATUS DOT
 // ══════════════════════════════════════════════════════
 function setDot(state, label) {
-  const dot = document.getElementById('scan-dot');
-  dot.className = 'dot d-' + state;
+  document.getElementById('scan-dot').className = 'dot d-' + state;
   document.getElementById('scan-lbl').textContent = label;
 }
 
 // ══════════════════════════════════════════════════════
-//  DETENER
+//  STOP
 // ══════════════════════════════════════════════════════
-function stopScan() {
-  cancelled = true;
-}
+function stopScan() { cancelled = true; }
 
 // ══════════════════════════════════════════════════════
 //  RESET
@@ -1070,20 +1101,18 @@ function resetApp() {
   dirHandle = null;
   FILES.clear(); GROUPS.clear(); SEL.clear();
   fileCount = 0; skipCount = 0; feedCount = 0;
-  activeFilter = 'all'; detectedExts.clear();
+  activeFilters.clear(); detectedExts.clear();
 
-  // Limpiar filtros
   const fb = document.getElementById('filter-bar');
   fb.classList.remove('visible');
   fb.querySelectorAll('.fmt-chip:not(.all)').forEach(c => c.remove());
   fb.querySelector('.fmt-chip.all')?.classList.add('active');
 
-  // Reset UI completo
   document.getElementById('dupes-scroll').innerHTML = `
     <div id="home">
       <div class="home-icon"><i class="fas fa-copy"></i></div>
       <h2>DupeCleaner</h2>
-      <p class="es">Selecciona una carpeta. La app escanea todo el contenido real con SHA-256 y te muestra únicamente los duplicados exactos.</p>
+      <p class="es">Selecciona una carpeta. La app escanea todo el contenido con SHA-256 y te muestra únicamente los duplicados exactos.</p>
       <p class="en">Select a folder. The app scans all content with SHA-256 and shows only exact duplicates.</p>
       <button class="btn-primary" onclick="pickFolder()">
         <i class="fas fa-folder-open"></i>
@@ -1092,17 +1121,7 @@ function resetApp() {
       <p class="home-note es">Chrome / Edge 86+ · Las carpetas del sistema se ignoran automáticamente</p>
       <p class="home-note en">Chrome / Edge 86+ · System folders are automatically ignored</p>
     </div>
-    <div id="confirm-step" style="display:none;">
-      <div class="home-icon" style="font-size:2rem;"><i class="fas fa-folder-open"></i></div>
-      <h3><span class="es">Carpeta seleccionada</span><span class="en">Folder selected</span></h3>
-      <div class="confirm-path" id="confirm-path-text"></div>
-      <p class="es">Se escanearán todos los archivos de esta carpeta y subcarpetas buscando duplicados exactos.</p>
-      <p class="en">All files in this folder and subfolders will be scanned for exact duplicates.</p>
-      <div class="confirm-btns">
-        <button class="btn-secondary" onclick="cancelPick()"><i class="fas fa-xmark"></i> <span class="es">Cancelar</span><span class="en">Cancel</span></button>
-        <button class="btn-primary" onclick="beginScan()"><i class="fas fa-magnifying-glass"></i> <span class="es">Iniciar escaneo</span><span class="en">Start scan</span></button>
-      </div>
-    </div>
+    <div id="confirm-step" style="display:none;"></div>
   `;
 
   $feed.innerHTML = `
@@ -1113,65 +1132,20 @@ function resetApp() {
     </div>
   `;
 
-  const isEs = document.body.classList.contains('es');
-  setDot('idle', isEs ? 'inactivo' : 'idle');
-  document.getElementById('scan-cnt').textContent  = '';
-  document.getElementById('pbar').style.width      = '0%';
-  document.getElementById('dupe-badge').textContent = '0';
+  setDot('idle', t('inactivo', 'idle'));
+  document.getElementById('scan-cnt').textContent          = '';
+  document.getElementById('pbar').style.width              = '0%';
+  document.getElementById('dupe-badge').textContent        = '0';
   document.getElementById('dupe-badge').classList.add('z');
-  document.getElementById('btn-del').style.display   = 'none';
-  document.getElementById('btn-stop').style.display  = 'none';
-  document.getElementById('btn-reset').style.display = 'none';
-  document.getElementById('nav-folder').style.display = 'none';
-  document.getElementById('prev-empty').style.display   = 'flex';
-  document.getElementById('prev-content').style.display = 'none';
-  document.getElementById('prev-lbl').textContent = '';
+  document.getElementById('btn-del').style.display         = 'none';
+  document.getElementById('btn-stop').style.display        = 'none';
+  document.getElementById('btn-reset').style.display       = 'none';
+  document.getElementById('nav-folder').style.display      = 'none';
+  document.getElementById('prev-empty').style.display      = 'flex';
+  document.getElementById('prev-content').style.display    = 'none';
+  document.getElementById('btn-close-prev').style.display  = 'none';
+  document.getElementById('prev-lbl').textContent          = '';
   updateStats();
-}
-
-// ══════════════════════════════════════════════════════
-//  SELECCIONAR / DESELECCIONAR TODOS
-// ══════════════════════════════════════════════════════
-function selectAll() {
-  // Marcar todas las COPIAS (no los originales) de todos los grupos
-  for (const [hash, files] of GROUPS) {
-    if (files.length < 2) continue;
-    files.forEach((fi, i) => {
-      if (i === 0) return; // el original nunca
-      const key = fi.key;
-      if (!SEL.has(key)) {
-        SEL.add(key);
-        if (fi._sid) {
-          const row = document.getElementById(fi._sid);
-          if (row) {
-            row.classList.add('sel');
-            const chk = row.querySelector('input[type=checkbox]');
-            if (chk) chk.checked = true;
-          }
-        }
-      }
-    });
-  }
-  const n = SEL.size;
-  document.getElementById('btn-del').style.display = n > 0 ? 'block' : 'none';
-  document.getElementById('sel-cnt').textContent = n;
-}
-
-function deselectAll() {
-  for (const key of [...SEL]) {
-    const fi = FILES.get(key);
-    if (fi && fi._sid) {
-      const row = document.getElementById(fi._sid);
-      if (row) {
-        row.classList.remove('sel');
-        const chk = row.querySelector('input[type=checkbox]');
-        if (chk) chk.checked = false;
-      }
-    }
-  }
-  SEL.clear();
-  document.getElementById('btn-del').style.display = 'none';
-  document.getElementById('sel-cnt').textContent = '0';
 }
 
 // ══════════════════════════════════════════════════════
@@ -1184,16 +1158,16 @@ function openModal() {
     const fi = FILES.get(key);
     if (fi) { const d = document.createElement('div'); d.textContent = fi.dir + '/' + fi.name; list.appendChild(d); }
   }
-  document.getElementById('modal-input').value = '';
-  document.getElementById('btn-confirm').disabled = true;
+  document.getElementById('modal-input').value     = '';
+  document.getElementById('btn-confirm').disabled  = true;
   document.getElementById('modal-ov').classList.add('on');
 }
+
 function checkConfirm(v) {
-  const isEs = document.body.classList.contains('es');
-  const keyword = isEs ? 'CONFIRMAR' : 'CONFIRM';
-  document.getElementById('btn-confirm').disabled = v !== keyword;
+  document.getElementById('btn-confirm').disabled = v !== t('CONFIRMAR', 'CONFIRM');
 }
-function closeModal()    { document.getElementById('modal-ov').classList.remove('on'); }
+
+function closeModal() { document.getElementById('modal-ov').classList.remove('on'); }
 
 async function execDelete() {
   closeModal();
@@ -1202,11 +1176,11 @@ async function execDelete() {
     if (!fi) continue;
     try {
       await fi.handle.remove();
-      feedLine('🗑  Eliminado: ' + fi.name, 'match');
+      feedLine('🗑  ' + t('Eliminado', 'Deleted') + ': ' + fi.name, 'match');
       if (fi._sid) document.getElementById(fi._sid)?.remove();
       FILES.delete(key); SEL.delete(key);
     } catch(e) {
-      feedLine('✗  Error: ' + fi.name + ' — ' + e.message, 'err');
+      feedLine('✗  ' + t('Error', 'Error') + ': ' + fi.name + ' — ' + e.message, 'err');
     }
   }
   document.getElementById('btn-del').style.display = 'none';
