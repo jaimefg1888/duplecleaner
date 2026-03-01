@@ -703,7 +703,13 @@ _hashWorker.onmessage = ({ data: { id, hash } }) => {
   const resolve = _hashPending.get(id);
   if (resolve) { _hashPending.delete(id); resolve(hash); }
 };
-_hashWorker.onerror = err => console.error('[HashWorker]', err);
+_hashWorker.onerror = err => {
+  console.error('[HashWorker]', err);
+  // If the worker crashes, resolve all pending hashes as null so the scan
+  // doesn't hang waiting for promises that will never settle.
+  for (const [, resolve] of _hashPending) resolve(null);
+  _hashPending.clear();
+};
 
 /* ─────────────────────────────────────────────────────────
    CONSTANTS
@@ -770,7 +776,11 @@ const SEL    = new Set(); // paths selected for deletion
 /* ─────────────────────────────────────────────────────────
    PURE HELPERS
 ───────────────────────────────────────────────────────── */
-const t = (es, en) => document.body.classList.contains('es') ? es : en;
+const t   = (es, en) => document.body.classList.contains('es') ? es : en;
+// Escape user-provided strings before inserting into innerHTML.
+// File and directory names can contain '<', '>', '"', '&' — without this
+// a filename like "<img onerror=alert(1)>" would execute as HTML.
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
 const fmtSize = b =>
   b < 1024         ? b + ' B'
@@ -1019,30 +1029,28 @@ function feedLine(text, cls) {
    Buffers are transferred (zero-copy) to the worker.
 ───────────────────────────────────────────────────────── */
 async function sha256(fi) {
-  return new Promise(async resolve => {
-    try {
-      const file = fi.fileObj ? fi.fileObj : await fi.handle.getFile();
-      let buffers;
+  try {
+    const file = fi.fileObj ? fi.fileObj : await fi.handle.getFile();
+    let buffers;
 
-      if (file.size <= SAMPLE_THRESHOLD || userHashStrategy === 'full') {
-        buffers = [await file.arrayBuffer()];
-      } else {
-        const mid = Math.max(0, Math.floor(file.size / 2) - SAMPLE_CHUNK / 2);
-        const [s1, s2, s3] = await Promise.all([
-          file.slice(0, SAMPLE_CHUNK).arrayBuffer(),
-          file.slice(mid, mid + SAMPLE_CHUNK).arrayBuffer(),
-          file.slice(Math.max(0, file.size - SAMPLE_CHUNK)).arrayBuffer(),
-        ]);
-        buffers = [s1, s2, s3];
-      }
-
-      const id = ++_hashIdSeq;
-      _hashPending.set(id, resolve);
-      _hashWorker.postMessage({ id, buffers }, buffers);
-    } catch {
-      resolve(null);
+    if (file.size <= SAMPLE_THRESHOLD || userHashStrategy === 'full') {
+      buffers = [await file.arrayBuffer()];
+    } else {
+      const mid = Math.max(0, Math.floor(file.size / 2) - SAMPLE_CHUNK / 2);
+      const [s1, s2, s3] = await Promise.all([
+        file.slice(0, SAMPLE_CHUNK).arrayBuffer(),
+        file.slice(mid, mid + SAMPLE_CHUNK).arrayBuffer(),
+        file.slice(Math.max(0, file.size - SAMPLE_CHUNK)).arrayBuffer(),
+      ]);
+      buffers = [s1, s2, s3];
     }
-  });
+
+    const id = ++_hashIdSeq;
+    _hashWorker.postMessage({ id, buffers }, buffers);
+    return new Promise(resolve => _hashPending.set(id, resolve));
+  } catch {
+    return null;
+  }
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -1316,8 +1324,8 @@ function renderGroup(hash) {
       <input type="checkbox" ${chkAttr} onchange="toggleSel('${keyEsc}',this.checked)">
       <i class="${getIcon(fi.name)} df-icon"></i>
       <div class="df-info">
-        <div class="df-name">${fi.name}${isOrig ? `<span class="orig-tag">${t('original','original')}</span>` : ''}</div>
-        <div class="df-path">${fi.dir}</div>
+        <div class="df-name">${esc(fi.name)}${isOrig ? `<span class="orig-tag">${t('original','original')}</span>` : ''}</div>
+        <div class="df-path">${esc(fi.dir)}</div>
       </div>
       <button class="btn-eye" onclick="previewFile('${keyEsc}')" title="${t('Vista previa','Preview')}">
         <i class="fas fa-eye"></i>
@@ -1424,8 +1432,8 @@ async function previewFile(key) {
 
   $c.innerHTML = `
     <div style="margin-bottom:12px;">
-      <div class="pv-name">${fi.name}</div>
-      <div class="pv-meta">${fi.dir} &nbsp;·&nbsp; <span class="ac">${fmtSize(fi.size)}</span></div>
+      <div class="pv-name">${esc(fi.name)}</div>
+      <div class="pv-meta">${esc(fi.dir)} &nbsp;·&nbsp; <span class="ac">${fmtSize(fi.size)}</span></div>
     </div>
     <div id="pv-loading" style="color:var(--dim);font-family:'Fira Code',monospace;font-size:.72rem;text-align:center;padding:20px;">
       ${t('Cargando…', 'Loading…')}
@@ -1528,8 +1536,10 @@ function closePreview() {
   // Revoke any active blob URL to free memory immediately
   const video = document.querySelector('#prev-content video');
   const audio = document.querySelector('#prev-content audio');
+  const embed = document.querySelector('#prev-content embed');
   if (video?.src?.startsWith('blob:')) URL.revokeObjectURL(video.src);
   if (audio?.src?.startsWith('blob:')) URL.revokeObjectURL(audio.src);
+  if (embed?.src?.startsWith('blob:')) URL.revokeObjectURL(embed.src);
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -1540,6 +1550,10 @@ function resetApp() {
   dirHandle = null; FILES.clear(); GROUPS.clear(); SEL.clear();
   fileCount = 0; skipCount = 0; feedCount = 0;
   activeFilters.clear(); detectedExts.clear();
+
+  // Revoke any active blob URLs before wiping the DOM
+  closePreview();
+
   document.getElementById('mobile-input').value = '';
 
   const fb = document.getElementById('filter-bar');
@@ -1628,6 +1642,17 @@ async function execDelete() {
       feedLine('✗  ' + t('Error al eliminar', 'Delete error') + ': ' + fi.name + ' — ' + e.message, 'err');
     }
   }
+
+  // Remove group cards where only the protected original remains —
+  // the card would show a single unselectable file, which is confusing.
+  for (const [hash, files] of [...GROUPS.entries()]) {
+    const alive = files.filter(fi => FILES.has(fi.key));
+    if (alive.length < 2) {
+      document.getElementById('grp-' + hash)?.remove();
+      GROUPS.delete(hash);
+    }
+  }
+
   updateStats(); updateSelectionUI();
 }
 </script>

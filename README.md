@@ -136,13 +136,13 @@ Click the ⚙ gear icon in the nav bar to open the scan options panel:
 ```
 your-repo/
 ├── index.html           ← the entire app
-├── GoogleSans-Regular.ttf
-├── GoogleSans-Bold.ttf
+├── GoogleSans-Regular.ttf   (optional — see below)
+├── GoogleSans-Bold.ttf      (optional — see below)
 └── README.md
 ```
 
 1. Fork or clone this repo
-2. Add the two `GoogleSans` font files (copy from your portfolio repo)
+2. *(Optional)* Add `GoogleSans-Regular.ttf` and `GoogleSans-Bold.ttf` for the intended typeface. Without them the app falls back to system sans-serif and works perfectly fine.
 3. Go to **Settings → Pages → Source: main / root**
 4. Done — live at `https://<your-username>.github.io/<repo-name>/`
 
@@ -286,13 +286,13 @@ Haz clic en el icono ⚙ de la barra de navegación para abrir el panel de opcio
 ```
 tu-repo/
 ├── index.html           ← la aplicación completa
-├── GoogleSans-Regular.ttf
-├── GoogleSans-Bold.ttf
+├── GoogleSans-Regular.ttf   (opcional — ver abajo)
+├── GoogleSans-Bold.ttf      (opcional — ver abajo)
 └── README.md
 ```
 
 1. Haz fork o clona este repositorio
-2. Añade los dos ficheros de fuente `GoogleSans` (cópialos desde tu repo de portfolio)
+2. *(Opcional)* Añade `GoogleSans-Regular.ttf` y `GoogleSans-Bold.ttf` para la tipografía prevista. Sin ellas la app usa system sans-serif y funciona perfectamente.
 3. Ve a **Settings → Pages → Source: main / root**
 4. Listo — disponible en `https://<tu-usuario>.github.io/<nombre-repo>/`
 
