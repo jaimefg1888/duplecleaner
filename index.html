@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ff0033">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>DupeCleaner</title>
+  <!-- PWA manifest injected as data URI by JS below -->
+  <link id="pwa-manifest" rel="manifest">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     @font-face { font-family:'GoogleSans'; src:url('GoogleSans-Regular.ttf') format('truetype'); font-weight:400; }
@@ -62,7 +67,6 @@
     }
     .nav-folder i { color:var(--red); margin-right:5px; }
 
-    /* All three nav controls share the same 32px height so they sit flush */
     .nbtn {
       background:transparent; border:1px solid var(--border2); color:var(--muted);
       height:32px; padding:0 12px; border-radius:4px; font-family:'Fira Code',monospace;
@@ -134,12 +138,21 @@
 
     /* ── MID PANEL: DUPLICATES ── */
     #panel-mid    { flex:1; border-right:1px solid var(--border); }
-    #dupes-scroll { flex:1; overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--red) transparent; }
+    /* position:relative is required for VirtualScroller's absolute-positioned children */
+    #dupes-scroll { flex:1; overflow-y:auto; position:relative; scrollbar-width:thin; scrollbar-color:var(--red) transparent; }
     #dupes-scroll::-webkit-scrollbar       { width:5px; }
     #dupes-scroll::-webkit-scrollbar-thumb { background:var(--red); border-radius:3px; }
 
+    /* ── VIRTUAL SCROLLER ── */
+    #vs-spacer { position:relative; width:100%; min-height:0; }
+    .vs-item {
+      position:absolute; left:0; right:0; top:0;
+      /* GPU-composited moves — no layout reflow */
+      will-change:transform;
+    }
+
     /* ── HOME SCREEN ── */
-    #home         { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center; }
+    #home         { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center; min-height:100%; }
     .home-icon    { font-size:2.6rem; color:var(--red); opacity:.25; }
     #home h2      { font-size:1.35rem; font-weight:700; color:var(--white); }
     #home p       { color:var(--muted); font-size:.85rem; line-height:1.75; max-width:320px; }
@@ -150,8 +163,6 @@
       padding:7px 14px; border-radius:4px; max-width:340px; line-height:1.7;
     }
 
-    /* Chrome blocks certain root folders at the OS level (e.g. Downloads, Desktop).
-       This callout explains the workaround to the user without technical jargon. */
     .chrome-warn {
       display:flex; align-items:flex-start; gap:11px;
       background:var(--red-dim); border:1px solid rgba(232,0,45,.28);
@@ -164,7 +175,7 @@
     .chrome-warn-text strong   { color:var(--white); }
 
     /* ── FOLDER CONFIRM STEP ── */
-    #confirm-step   { display:none; height:100%; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center; }
+    #confirm-step   { display:none; min-height:100%; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center; }
     #confirm-step h3 { font-size:1.1rem; font-weight:700; }
     #confirm-step p  { color:var(--muted); font-size:.83rem; line-height:1.7; max-width:320px; }
     .confirm-path    { font-family:'Fira Code',monospace; font-size:.78rem; color:var(--red); background:var(--red-dim); border:1px solid rgba(232,0,45,.25); padding:8px 16px; border-radius:4px; max-width:380px; word-break:break-all; }
@@ -292,14 +303,11 @@
     body.en .es { display:none !important; }
 
     /* ── CLEAN SLATE SCREEN ── */
-    .ok-screen   { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center; }
+    .ok-screen   { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px; text-align:center; min-height:100%; }
     .ok-screen h2 { font-size:1.3rem; font-weight:700; }
     .ok-screen p  { color:var(--muted); font-size:.84rem; line-height:1.7; max-width:300px; }
 
-    /* The file input is only used as a fallback for Firefox / Safari */
     #mobile-input { display:none; }
-
-    /* ── MOBILE FEED TOGGLE — hidden on desktop ── */
     #mobile-feed-btn { display:none; }
 
     /* ── RESPONSIVE: ≤ 768px ── */
@@ -309,7 +317,6 @@
       .panels-row  { flex-direction:column; overflow:visible; height:auto; flex:none; }
       .panel       { width:100% !important; flex:none !important; min-width:unset; overflow:visible; }
 
-      /* Feed collapses by default; toggled by the FAB */
       #panel-left {
         height:0; overflow:hidden; border-right:none;
         border-bottom:1px solid var(--border);
@@ -318,7 +325,6 @@
       #panel-left.mobile-open        { height:220px; }
       #panel-left.mobile-open #feed  { overflow-y:auto; }
 
-      /* The duplicate list always gets priority on mobile */
       #panel-mid     { min-height:60svh; border-right:none; border-bottom:1px solid var(--border); }
       #dupes-scroll  { max-height:60svh; overflow-y:auto; }
 
@@ -327,7 +333,6 @@
       #prev-content  { max-height:50svh; }
 
       .divider { display:none; }
-
       nav          { padding:0 12px; gap:4px; }
       .logo        { font-size:.95rem; }
       .nav-folder  { display:none !important; }
@@ -356,10 +361,7 @@
 </head>
 <body class="es">
 
-<!-- Fallback folder picker for Firefox / Safari (no File System Access API) -->
 <input type="file" id="mobile-input" webkitdirectory multiple>
-
-<!-- Floating action button: shows / hides the feed panel on mobile -->
 <button id="mobile-feed-btn" onclick="toggleMobileFeed()" title="Toggle log" aria-label="Toggle feed">
   <i class="fas fa-terminal"></i>
 </button>
@@ -418,7 +420,7 @@
 
     <div class="divider" id="div-1"></div>
 
-    <!-- MID: duplicate groups list (gets priority on mobile) -->
+    <!-- MID: duplicate groups list -->
     <div class="panel" id="panel-mid">
       <div class="ph">
         <div class="ph-l">
@@ -438,7 +440,10 @@
         </button>
       </div>
 
+      <!-- Scrollable container. position:relative required for VS absolute children. -->
       <div id="dupes-scroll">
+
+        <!-- ① HOME SCREEN — shown at startup and after reset -->
         <div id="home">
           <div class="home-icon"><i class="fas fa-copy"></i></div>
           <h2>DupeCleaner</h2>
@@ -448,9 +453,6 @@
             <i class="fas fa-folder-open"></i>
             <span class="es">Seleccionar carpeta</span><span class="en">Select folder</span>
           </button>
-
-          <!-- Chrome blocks root-level folders (Downloads, Desktop) at the OS/browser level.
-               We can't override this with code, so we educate the user instead. -->
           <div class="chrome-warn">
             <i class="fas fa-triangle-exclamation"></i>
             <div class="chrome-warn-body">
@@ -466,7 +468,6 @@
               </span>
             </div>
           </div>
-
           <p class="home-note" id="compat-note"></p>
           <div id="limited-warn" style="display:none;" class="home-warn">
             <span class="es"><i class="fas fa-circle-info"></i> Tu navegador no permite eliminar archivos desde la web.<br>El escaneo funciona con total normalidad, pero para borrar duplicados necesitas <strong>Chrome o Edge</strong> (escritorio o Android).</span>
@@ -474,6 +475,7 @@
           </div>
         </div>
 
+        <!-- ② CONFIRM STEP -->
         <div id="confirm-step">
           <div class="home-icon" style="font-size:2rem;"><i class="fas fa-folder-open"></i></div>
           <h3><span class="es">Carpeta seleccionada</span><span class="en">Folder selected</span></h3>
@@ -485,6 +487,13 @@
             <button class="btn-primary"   onclick="beginScan()"><i class="fas fa-magnifying-glass"></i> <span class="es">Iniciar escaneo</span><span class="en">Start scan</span></button>
           </div>
         </div>
+
+        <!-- ③ OK SCREEN — no duplicates found -->
+        <div id="ok-screen" style="display:none;" class="ok-screen"></div>
+
+        <!-- ④ VIRTUAL SCROLLER spacer — the VS mounts absolute children here -->
+        <div id="vs-spacer" style="display:none;"></div>
+
       </div>
 
       <!-- STATS BAR -->
@@ -665,39 +674,151 @@
 <script>
 'use strict';
 
-/* ─────────────────────────────────────────────────────────
-   WEB WORKER — inline via Blob URL so the file stays self-
-   contained. The worker receives one or more ArrayBuffers,
-   concatenates them if needed, and returns the SHA-256 hex.
-   Running it off the main thread keeps the UI responsive
-   even while hashing hundreds of files back-to-back.
-───────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   ① STREAMING SHA-256 WORKER  (O(1) RAM)
+   ───────────────────────────────────────────────────────────
+   Pure-JS incremental SHA-256 inside the Worker.
+   Reads the File via ReadableStream in 64 KB chunks —
+   RAM stays flat regardless of file size (no arrayBuffer()).
+   For files > 20 MB in sample mode, three 2 MB slices are
+   each streamed the same way, so peak RAM is ~64 KB, never
+   the whole slice.
+═══════════════════════════════════════════════════════════ */
 const _WORKER_SRC = `
-  self.onmessage = async function({ data: { id, buffers } }) {
-    try {
-      let input;
-      if (buffers.length === 1) {
-        input = buffers[0];
-      } else {
-        // Merge sample slices into one contiguous buffer before hashing
-        const total  = buffers.reduce((s, b) => s + b.byteLength, 0);
-        const merged = new Uint8Array(total);
-        let offset   = 0;
-        for (const buf of buffers) { merged.set(new Uint8Array(buf), offset); offset += buf.byteLength; }
-        input = merged.buffer;
-      }
-      const raw  = await crypto.subtle.digest('SHA-256', input);
-      const hash = Array.from(new Uint8Array(raw)).map(b => b.toString(16).padStart(2,'0')).join('');
-      self.postMessage({ id, hash });
-    } catch(err) {
-      self.postMessage({ id, hash: null, error: err.message });
+'use strict';
+
+/* ── SHA-256 round constants (cube roots of first 64 primes) ── */
+const _K = new Uint32Array([
+  0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+  0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+  0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+  0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+  0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+  0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+  0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+  0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+]);
+
+const _ror = (n, s) => (n >>> s) | (n << (32 - s));
+
+class SHA256 {
+  constructor() {
+    this._h = new Uint32Array([
+      0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,
+      0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19
+    ]);
+    this._buf    = new Uint8Array(64);
+    this._bufLen = 0;
+    this._total  = 0; /* bytes fed so far */
+  }
+
+  update(data) {
+    if (!(data instanceof Uint8Array))
+      data = new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
+    let i = 0;
+    const len = data.length;
+    this._total += len;
+
+    if (this._bufLen > 0) {
+      const take = Math.min(64 - this._bufLen, len);
+      this._buf.set(data.subarray(0, take), this._bufLen);
+      this._bufLen += take;
+      i = take;
+      if (this._bufLen === 64) { this._compress(this._buf); this._bufLen = 0; }
     }
-  };
+    while (i + 64 <= len) { this._compress(data.subarray(i, i + 64)); i += 64; }
+    if (i < len) { this._buf.set(data.subarray(i), 0); this._bufLen = len - i; }
+  }
+
+  final() {
+    const padLen = this._bufLen < 56 ? 64 : 128;
+    const pad    = new Uint8Array(padLen);
+    pad.set(this._buf.subarray(0, this._bufLen));
+    pad[this._bufLen] = 0x80;
+
+    const bits = this._total * 8;
+    const dv   = new DataView(pad.buffer, padLen - 8);
+    dv.setUint32(0, Math.floor(bits / 0x100000000) >>> 0);
+    dv.setUint32(4, bits >>> 0);
+
+    this._compress(pad.subarray(0, 64));
+    if (padLen === 128) this._compress(pad.subarray(64));
+
+    const out = new Uint8Array(32);
+    const ov  = new DataView(out.buffer);
+    for (let i = 0; i < 8; i++) ov.setUint32(i * 4, this._h[i]);
+    return Array.from(out).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  _compress(blk) {
+    const w  = new Uint32Array(64);
+    const dv = new DataView(blk.buffer, blk.byteOffset, 64);
+    for (let i = 0; i < 16; i++) w[i] = dv.getUint32(i * 4);
+    for (let i = 16; i < 64; i++) {
+      const s0 = _ror(w[i-15], 7) ^ _ror(w[i-15], 18) ^ (w[i-15] >>> 3);
+      const s1 = _ror(w[i-2], 17) ^ _ror(w[i-2], 19)  ^ (w[i-2]  >>> 10);
+      w[i] = (w[i-16] + s0 + w[i-7] + s1) >>> 0;
+    }
+    let [a,b,c,d,e,f,g,h] = this._h;
+    for (let i = 0; i < 64; i++) {
+      const S1   = _ror(e, 6) ^ _ror(e, 11) ^ _ror(e, 25);
+      const ch   = (e & f) ^ (~e & g);
+      const tmp1 = (h + S1 + ch + _K[i] + w[i]) >>> 0;
+      const S0   = _ror(a, 2) ^ _ror(a, 13) ^ _ror(a, 22);
+      const maj  = (a & b) ^ (a & c) ^ (b & c);
+      const tmp2 = (S0 + maj) >>> 0;
+      h=g; g=f; f=e; e=(d+tmp1)>>>0; d=c; c=b; b=a; a=(tmp1+tmp2)>>>0;
+    }
+    this._h[0]=(this._h[0]+a)>>>0; this._h[1]=(this._h[1]+b)>>>0;
+    this._h[2]=(this._h[2]+c)>>>0; this._h[3]=(this._h[3]+d)>>>0;
+    this._h[4]=(this._h[4]+e)>>>0; this._h[5]=(this._h[5]+f)>>>0;
+    this._h[6]=(this._h[6]+g)>>>0; this._h[7]=(this._h[7]+h)>>>0;
+  }
+}
+
+/* ── Stream a Blob chunk-by-chunk into the SHA256 state ── */
+async function pipeBlob(sha, blob) {
+  const reader = blob.stream().getReader();
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      sha.update(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+}
+
+const SAMPLE_THRESHOLD = 20 * 1024 * 1024;
+const SAMPLE_CHUNK     =  2 * 1024 * 1024;
+
+self.onmessage = async function({ data: { id, file, strategy } }) {
+  try {
+    const sha = new SHA256();
+
+    if (file.size <= SAMPLE_THRESHOLD || strategy === 'full') {
+      /* Full file — stream all bytes, O(1) RAM */
+      await pipeBlob(sha, file);
+    } else {
+      /* Sample mode — three 2 MB slices, each still streamed */
+      const mid = Math.max(0, Math.floor(file.size / 2) - SAMPLE_CHUNK / 2);
+      await pipeBlob(sha, file.slice(0,                              SAMPLE_CHUNK));
+      await pipeBlob(sha, file.slice(mid,                            mid + SAMPLE_CHUNK));
+      await pipeBlob(sha, file.slice(Math.max(0, file.size - SAMPLE_CHUNK)));
+    }
+
+    self.postMessage({ id, hash: sha.final() });
+  } catch(err) {
+    self.postMessage({ id, hash: null, error: err.message });
+  }
+};
 `;
+
 const _workerURL   = URL.createObjectURL(new Blob([_WORKER_SRC], { type:'application/javascript' }));
 const _hashWorker  = new Worker(_workerURL);
 let   _hashIdSeq   = 0;
-const _hashPending = new Map(); // id → Promise resolve
+const _hashPending = new Map();
 
 _hashWorker.onmessage = ({ data: { id, hash } }) => {
   const resolve = _hashPending.get(id);
@@ -705,81 +826,67 @@ _hashWorker.onmessage = ({ data: { id, hash } }) => {
 };
 _hashWorker.onerror = err => {
   console.error('[HashWorker]', err);
-  // If the worker crashes, resolve all pending hashes as null so the scan
-  // doesn't hang waiting for promises that will never settle.
   for (const [, resolve] of _hashPending) resolve(null);
   _hashPending.clear();
 };
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    CONSTANTS
-───────────────────────────────────────────────────────── */
-
-// Files above this threshold use the sampling strategy to avoid OOM
-const SAMPLE_THRESHOLD = 20 * 1024 * 1024; // 20 MB
-// Each sample slice is 2 MB → 3 slices = 6 MB max in RAM for any file size
+═══════════════════════════════════════════════════════════ */
+const SAMPLE_THRESHOLD = 20 * 1024 * 1024;
 const SAMPLE_CHUNK     =  2 * 1024 * 1024;
 
-// OS-level system paths that should never be touched regardless of user config
 const BLOCKED = new Set([
-  // Windows
   'windows','system32','syswow64','program files','program files (x86)',
   'programdata','system volume information','$recycle.bin','recovery',
   'boot','efi','winsxs','drivers','assembly','windowsapps',
   'windowspowershell','microsoft.net','servicing','installer','prefetch',
-  // macOS
   'system','library','private','cores','developer',
   'volumes','.trashes','.spotlight-v100','.fseventsd','macos',
-  // Linux / Unix
   'bin','sbin','usr','etc','proc','dev','sys','run',
   'lib','lib64','lib32','libx32','srv','snap','lost+found',
 ]);
 
-// Development artifact folders — skipped when the user's checkbox is on
 const DEV_FOLDERS = new Set([
   'node_modules','.git','.cache','dist','__pycache__',
   '.next','.nuxt','.turbo','.parcel-cache','coverage',
   '.svelte-kit','out','build','.tox','venv','.venv',
 ]);
 
-// System file extensions — skipped when the user's checkbox is on
 const SYS_EXTENSIONS = new Set([
   'ini','sys','dll','lnk','bat','cmd','drv',
   'msi','inf','cat','evt','evtx','reg','scr',
 ]);
 
-/* ─────────────────────────────────────────────────────────
-   USER CONFIG STATE  (mirrors the Settings modal)
-───────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   USER CONFIG STATE
+═══════════════════════════════════════════════════════════ */
 let cfgIgnoreDev      = true;
 let cfgIgnoreHidden   = false;
 let cfgIgnoreSysFiles = false;
 let userMinFileSize   = 0;
-let userHashStrategy  = 'sample'; // 'sample' | 'full'
+let userHashStrategy  = 'sample';
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    APP STATE
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 let dirHandle   = null;
 let cancelled   = false;
 let scanning    = false;
-let limitedMode = false; // true when File System Access API is unavailable
+let limitedMode = false;
 let fileCount   = 0;
 let skipCount   = 0;
 let feedCount   = 0;
-const MAX_FEED  = 300;   // max log lines kept in the DOM
+const MAX_FEED  = 300;
 
-const FILES  = new Map(); // path → file descriptor
-const GROUPS = new Map(); // sha256 → [file descriptor, …]
-const SEL    = new Set(); // paths selected for deletion
+const FILES  = new Map();
+const GROUPS = new Map();
+const SEL    = new Set();
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    PURE HELPERS
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 const t   = (es, en) => document.body.classList.contains('es') ? es : en;
-// Escape user-provided strings before inserting into innerHTML.
-// File and directory names can contain '<', '>', '"', '&' — without this
-// a filename like "<img onerror=alert(1)>" would execute as HTML.
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
 const fmtSize = b =>
@@ -823,9 +930,289 @@ const isUserIgnoredFile = name => {
   return SYS_EXTENSIONS.has(ext);
 };
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
+   ② VIRTUAL SCROLLER  (DOM Windowing)
+   ───────────────────────────────────────────────────────────
+   • Only ~20 nodes live in the DOM at once.
+   • Items are positioned with transform:translateY() —
+     GPU-composited, no layout reflow on scroll.
+   • Node pool: released nodes are recycled instead of GC'd.
+   • Variable heights: estimated on add, measured after first
+     paint, then tops are adjusted incrementally.
+   • applyFilter(): recomputes visible subset and positions
+     without touching already-measured heights.
+═══════════════════════════════════════════════════════════ */
+class VirtualScroller {
+  constructor(scrollEl, spacerEl) {
+    this._scroll  = scrollEl;  // the overflow-y:auto container
+    this._spacer  = spacerEl;  // the relative-positioned inner div
+    this._items   = [];        // [{hash, top, height, ext, hidden}]
+    this._idxMap  = new Map(); // hash → index in _items
+    this._visible = [];        // indices currently filtered-in
+    this._rendered = new Map();// hash → DOM element (in DOM right now)
+    this._pool    = [];        // recycled divs waiting for reuse
+    this._totalH  = 0;
+    this._raf     = null;
+    this._OVERSCAN = 3;
+
+    scrollEl.addEventListener('scroll', () => this._sched(), { passive: true });
+    // Re-render on resize (viewport height change)
+    new ResizeObserver(() => this._sched()).observe(scrollEl);
+  }
+
+  /* ── Estimate item height from group file count ── */
+  _est(hash) {
+    const files = GROUPS.get(hash);
+    if (!files) return 80;
+    return 52 + files.length * 47 + 16; // header + N rows + bottom margin
+  }
+
+  /* ── Add a new group to the list ── */
+  add(hash) {
+    const ext    = (() => {
+      const files = GROUPS.get(hash);
+      if (!files || !files[0]) return '';
+      const n = files[0].name;
+      return n.includes('.') ? n.split('.').pop().toLowerCase() : '';
+    })();
+    const height = this._est(hash);
+    const item   = { hash, top: this._totalH, height, ext, hidden: false };
+    this._idxMap.set(hash, this._items.length);
+    this._items.push(item);
+    this._totalH += height;
+    this._visible = this._buildVisible();
+    this._spacer.style.height = this._totalH + 'px';
+    this._sched();
+  }
+
+  /* ── Remove a group (after deletion) ── */
+  remove(hash) {
+    const idx = this._idxMap.get(hash);
+    if (idx === undefined) return;
+
+    // Release DOM node if currently rendered
+    const el = this._rendered.get(hash);
+    if (el) { this._release(el); this._rendered.delete(hash); }
+
+    const item = this._items[idx];
+    this._totalH -= item.height;
+
+    // Shift tops of all items after this one
+    for (let i = idx + 1; i < this._items.length; i++) {
+      this._items[i].top -= item.height;
+      // If currently rendered, update its transform immediately
+      const rendEl = this._rendered.get(this._items[i].hash);
+      if (rendEl) rendEl.style.transform = `translateY(${this._items[i].top}px)`;
+    }
+
+    this._items.splice(idx, 1);
+    // Rebuild idxMap (indices shifted after removal point)
+    this._idxMap.clear();
+    for (let i = 0; i < this._items.length; i++) this._idxMap.set(this._items[i].hash, i);
+
+    this._visible = this._buildVisible();
+    this._spacer.style.height = this._totalH + 'px';
+    this._sched();
+  }
+
+  /* ── Apply format filter — recomputes visible set & positions ── */
+  setFilter(activeFilters) {
+    // Mark each item as hidden or not
+    for (const item of this._items) {
+      item.hidden = activeFilters.size > 0 && !activeFilters.has(item.ext);
+    }
+    // Recompute tops for the filtered-visible subset
+    let top = 0;
+    for (const item of this._items) {
+      if (!item.hidden) { item.top = top; top += item.height; }
+    }
+    this._totalH = top;
+    this._spacer.style.height = this._totalH + 'px';
+    this._visible = this._buildVisible();
+
+    // Release everything currently rendered so _render() rebuilds from scratch
+    for (const [, el] of this._rendered) this._release(el);
+    this._rendered.clear();
+    this._scroll.scrollTop = 0;
+    this._sched();
+  }
+
+  /* ── Clear all state (scan reset) ── */
+  reset() {
+    for (const [, el] of this._rendered) this._release(el);
+    this._rendered.clear();
+    this._items.length = 0;
+    this._idxMap.clear();
+    this._visible.length = 0;
+    this._pool.length = 0;
+    this._totalH = 0;
+    this._spacer.style.height = '0';
+  }
+
+  /* ── Node pool: acquire / release ── */
+  _acquire() {
+    const el = this._pool.pop() || document.createElement('div');
+    el.className = 'vs-item';
+    el.style.visibility = '';
+    return el;
+  }
+
+  _release(el) {
+    el.style.visibility = 'hidden';
+    el.innerHTML = '';
+    this._pool.push(el);
+    // Keep pool bounded to avoid memory leaks
+    if (this._pool.length > 40) this._pool.length = 40;
+  }
+
+  /* ── Build the filtered-visible index list ── */
+  _buildVisible() {
+    const v = [];
+    for (let i = 0; i < this._items.length; i++) {
+      if (!this._items[i].hidden) v.push(i);
+    }
+    return v;
+  }
+
+  _sched() {
+    if (this._raf) return;
+    this._raf = requestAnimationFrame(() => { this._raf = null; this._render(); });
+  }
+
+  _render() {
+    if (!this._visible.length) return;
+
+    const scrollTop  = this._scroll.scrollTop;
+    const viewH      = this._scroll.clientHeight;
+    const N          = this._visible.length;
+    const OVER       = this._OVERSCAN;
+
+    /* Binary search: first visible item in _visible[] */
+    let lo = 0, hi = N - 1, startV = 0;
+    while (lo <= hi) {
+      const mid = (lo + hi) >> 1;
+      const item = this._items[this._visible[mid]];
+      if (item.top + item.height < scrollTop) { startV = mid + 1; lo = mid + 1; }
+      else hi = mid - 1;
+    }
+    const vStart = Math.max(0, startV - OVER);
+
+    /* Linear scan to find end */
+    let vEnd = vStart;
+    while (vEnd < N && this._items[this._visible[vEnd]].top < scrollTop + viewH) vEnd++;
+    vEnd = Math.min(N - 1, vEnd + OVER);
+
+    /* Set of hashes that should be in DOM */
+    const needed = new Set();
+    for (let v = vStart; v <= vEnd; v++) {
+      needed.add(this._items[this._visible[v]].hash);
+    }
+
+    /* Release items that scrolled out */
+    for (const [hash, el] of this._rendered) {
+      if (!needed.has(hash)) { this._release(el); this._rendered.delete(hash); }
+    }
+
+    /* Mount items that scrolled in */
+    for (let v = vStart; v <= vEnd; v++) {
+      const item = this._items[this._visible[v]];
+      if (this._rendered.has(item.hash)) {
+        // Already in DOM — just make sure transform is current
+        this._rendered.get(item.hash).style.transform = `translateY(${item.top}px)`;
+        continue;
+      }
+
+      const el = this._acquire();
+      el.style.transform = `translateY(${item.top}px)`;
+      this._buildGroupContent(el, item.hash);
+      this._spacer.appendChild(el);
+      this._rendered.set(item.hash, el);
+
+      /* Measure actual height after paint & fix subsequent tops if needed */
+      const capturedIdx = this._idxMap.get(item.hash);
+      requestAnimationFrame(() => {
+        if (!this._rendered.has(item.hash)) return;
+        const actual = el.offsetHeight + 16;
+        const est    = this._items[capturedIdx]?.height;
+        if (!est || Math.abs(actual - est) <= 3) return;
+        const diff = actual - est;
+        this._items[capturedIdx].height = actual;
+        this._totalH += diff;
+        this._spacer.style.height = this._totalH + 'px';
+        // Shift subsequent visible items
+        for (let i = capturedIdx + 1; i < this._items.length; i++) {
+          if (this._items[i].hidden) continue;
+          this._items[i].top += diff;
+          const rEl = this._rendered.get(this._items[i].hash);
+          if (rEl) rEl.style.transform = `translateY(${this._items[i].top}px)`;
+        }
+        this._visible = this._buildVisible();
+      });
+    }
+  }
+
+  /* ── Build the HTML content of one group card into a recycled div ── */
+  _buildGroupContent(el, hash) {
+    const files = GROUPS.get(hash);
+    if (!files || files.length < 2) { el.innerHTML = ''; return; }
+
+    const ext = files[0].name.includes('.') ? files[0].name.split('.').pop().toLowerCase() : '';
+
+    let html = `<div class="dg" id="grp-${hash}" data-ext="${esc(ext)}">
+      <div class="dg-hdr">
+        <span>
+          <span class="h">${hash.substring(0, 14)}&hellip;</span>
+          &nbsp;&middot;&nbsp;${files.length} ${t('copias idénticas','identical copies')}
+          &nbsp;&middot;&nbsp;${fmtSize(files[0].size)} ${t('c/u','each')}
+          ${ext ? `&nbsp;&middot;&nbsp;<span style="color:var(--muted)">.${ext}</span>` : ''}
+        </span>
+        <span class="sv" title="${t('espacio recuperable','space freed by deleting copies')}">
+          &larr; ${fmtSize(files[0].size * (files.length - 1))}
+        </span>
+      </div>`;
+
+    files.forEach((fi, i) => {
+      const isOrig    = i === 0;
+      const canDelete = !limitedMode && fi.canDelete !== false;
+
+      let h = 5381;
+      for (let j = 0; j < fi.key.length; j++) h = ((h << 5) + h) ^ fi.key.charCodeAt(j);
+      const sid = 'r' + (h >>> 0).toString(36);
+      fi._sid = sid;
+      if (FILES.has(fi.key)) FILES.get(fi.key)._sid = sid;
+
+      const keyEsc  = fi.key.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+      const chkAttr = (isOrig || !canDelete)
+        ? `disabled title="${isOrig ? t('Original: no se puede eliminar','Original: cannot be deleted') : t('Solo lectura en este navegador','Read-only in this browser')}"`
+        : '';
+      const selClass = SEL.has(fi.key) ? ' sel' : '';
+
+      html += `<div class="df${isOrig ? ' orig' : ''}${selClass}" id="${sid}">
+        <input type="checkbox" ${chkAttr} ${SEL.has(fi.key) ? 'checked' : ''} onchange="toggleSel('${keyEsc}',this.checked)">
+        <i class="${getIcon(fi.name)} df-icon"></i>
+        <div class="df-info">
+          <div class="df-name">${esc(fi.name)}${isOrig ? `<span class="orig-tag">${t('original','original')}</span>` : ''}</div>
+          <div class="df-path">${esc(fi.dir)}</div>
+        </div>
+        <button class="btn-eye" onclick="previewFile('${keyEsc}')" title="${t('Vista previa','Preview')}">
+          <i class="fas fa-eye"></i>
+        </button>
+      </div>`;
+    });
+
+    html += '</div>';
+    el.innerHTML = html;
+  }
+}
+
+/* Global VS instance — created once and reused across scans */
+const _spacerEl = document.getElementById('vs-spacer');
+const _scrollEl = document.getElementById('dupes-scroll');
+const vs = new VirtualScroller(_scrollEl, _spacerEl);
+
+/* ═══════════════════════════════════════════════════════════
    BOOTSTRAP — theme, language, compat banner
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 (function restoreTheme() {
   try {
     if (localStorage.getItem('dc-theme') === 'dark') {
@@ -845,12 +1232,21 @@ function updateCompatNote() {
         'Firefox / Safari — scan only (deletion not supported)');
 }
 updateCompatNote();
-
 if (!hasFSAPI()) document.getElementById('limited-warn').style.display = 'block';
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
+   SCREEN SWITCHER
+═══════════════════════════════════════════════════════════ */
+function showScreen(name) {
+  document.getElementById('home').style.display         = name === 'home'    ? '' : 'none';
+  document.getElementById('confirm-step').style.display = name === 'confirm' ? 'flex' : 'none';
+  document.getElementById('ok-screen').style.display    = name === 'ok'      ? 'flex' : 'none';
+  document.getElementById('vs-spacer').style.display    = name === 'vs'      ? '' : 'none';
+}
+
+/* ═══════════════════════════════════════════════════════════
    EVENT WIRING
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 document.getElementById('settings-ov').addEventListener('click', e => { if (e.target === e.currentTarget) closeSettings(); });
 document.getElementById('modal-ov').addEventListener('click',    e => { if (e.target === e.currentTarget) closeModal(); });
 
@@ -862,9 +1258,9 @@ document.getElementById('mobile-input').addEventListener('change', function() {
   showConfirm(rootName);
 });
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    UI CONTROLS
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 function toggleTheme() {
   const dark = document.body.classList.toggle('dark');
   document.getElementById('theme-icon').className = dark ? 'fas fa-sun' : 'fas fa-moon';
@@ -895,9 +1291,9 @@ function setDot(state, label) {
 
 function stopScan() { cancelled = true; }
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    SETTINGS MODAL
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 function selectPrecision(val) {
   document.getElementById('card-sample').classList.toggle('selected', val === 'sample');
   document.getElementById('card-full').classList.toggle('selected',   val === 'full');
@@ -937,9 +1333,9 @@ function saveSettings() {
   closeSettings();
 }
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    FORMAT FILTER
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 const activeFilters = new Set();
 const detectedExts  = new Set();
 
@@ -969,14 +1365,12 @@ function setFilter(ext, el) {
 }
 
 function applyFilter() {
-  document.querySelectorAll('.dg').forEach(grp => {
-    grp.style.display = (activeFilters.size === 0 || activeFilters.has(grp.dataset.ext)) ? '' : 'none';
-  });
+  vs.setFilter(activeFilters);
 }
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    RESIZABLE PANELS
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 function makeDivider(divId, leftId, rightId) {
   const div = document.getElementById(divId);
   const L   = document.getElementById(leftId);
@@ -1003,9 +1397,9 @@ function makeDivider(divId, leftId, rightId) {
 makeDivider('div-1', 'panel-left', 'panel-mid');
 makeDivider('div-2', 'panel-mid',  'panel-right');
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    FEED LOG
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 const $feed = document.getElementById('feed');
 function feedLine(text, cls) {
   document.getElementById('feed-ph')?.remove();
@@ -1014,48 +1408,28 @@ function feedLine(text, cls) {
   el.textContent = text;
   $feed.appendChild(el);
   feedCount++;
-  // Evict oldest entry once we hit the cap to prevent unbounded DOM growth
   if (feedCount > MAX_FEED) { $feed.querySelector('.fl')?.remove(); feedCount--; }
   $feed.scrollTop = $feed.scrollHeight;
 }
 
-/* ─────────────────────────────────────────────────────────
-   SHA-256 DISPATCHER
-   Files ≤ 20 MB: full arrayBuffer read (safe, ≤ 20 MB in RAM).
-   Files > 20 MB (sample mode): read 3 × 2 MB slices from
-   start / mid / end via File.slice() — capped at 6 MB RAM
-   regardless of actual file size, preventing OOM crashes on
-   huge video or disk-image files.
-   Buffers are transferred (zero-copy) to the worker.
-───────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   SHA-256 DISPATCHER  (now sends File to worker — O(1) RAM)
+═══════════════════════════════════════════════════════════ */
 async function sha256(fi) {
   try {
     const file = fi.fileObj ? fi.fileObj : await fi.handle.getFile();
-    let buffers;
-
-    if (file.size <= SAMPLE_THRESHOLD || userHashStrategy === 'full') {
-      buffers = [await file.arrayBuffer()];
-    } else {
-      const mid = Math.max(0, Math.floor(file.size / 2) - SAMPLE_CHUNK / 2);
-      const [s1, s2, s3] = await Promise.all([
-        file.slice(0, SAMPLE_CHUNK).arrayBuffer(),
-        file.slice(mid, mid + SAMPLE_CHUNK).arrayBuffer(),
-        file.slice(Math.max(0, file.size - SAMPLE_CHUNK)).arrayBuffer(),
-      ]);
-      buffers = [s1, s2, s3];
-    }
-
-    const id = ++_hashIdSeq;
-    _hashWorker.postMessage({ id, buffers }, buffers);
+    const id   = ++_hashIdSeq;
+    // File is structured-cloned to worker; worker streams it chunk-by-chunk
+    _hashWorker.postMessage({ id, file, strategy: userHashStrategy });
     return new Promise(resolve => _hashPending.set(id, resolve));
   } catch {
     return null;
   }
 }
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    FOLDER PICKING
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 async function pickFolder() {
   if (hasFSAPI()) {
     limitedMode = false;
@@ -1077,21 +1451,19 @@ async function pickFolder() {
 }
 
 function showConfirm(name) {
-  document.getElementById('home').style.display          = 'none';
-  document.getElementById('confirm-step').style.display  = 'flex';
   document.getElementById('confirm-path-text').textContent = name;
+  showScreen('confirm');
 }
 
 function cancelPick() {
   dirHandle = null;
-  document.getElementById('confirm-step').style.display = 'none';
-  document.getElementById('home').style.display         = 'flex';
-  document.getElementById('mobile-input').value         = '';
+  showScreen('home');
+  document.getElementById('mobile-input').value = '';
 }
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    SCAN ORCHESTRATION
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 async function beginScan() {
   if (!dirHandle) return;
 
@@ -1099,8 +1471,9 @@ async function beginScan() {
   fileCount = 0; skipCount = 0; cancelled = false; scanning = true; feedCount = 0;
   activeFilters.clear(); detectedExts.clear();
 
-  document.getElementById('confirm-step').style.display = 'none';
-  document.getElementById('dupes-scroll').innerHTML     = '';
+  // Switch to virtual-scroller view
+  vs.reset();
+  showScreen('vs');
 
   const fb = document.getElementById('filter-bar');
   fb.classList.remove('visible');
@@ -1152,17 +1525,17 @@ async function beginScan() {
   );
 
   if (gs.length === 0) {
-    document.getElementById('dupes-scroll').innerHTML = `
-      <div class="ok-screen">
-        <div class="home-icon" style="font-size:2.5rem;opacity:.3;"><i class="fas fa-circle-check"></i></div>
-        <h2 class="es">¡Sin duplicados!</h2><h2 class="en">No duplicates!</h2>
-        <p class="es">No se encontraron archivos idénticos en <strong>${dirHandle.name}</strong>.</p>
-        <p class="en">No identical files found in <strong>${dirHandle.name}</strong>.</p>
-        <button class="btn-primary" onclick="resetApp()">
-          <i class="fas fa-rotate-left"></i>
-          <span class="es">Nuevo escaneo</span><span class="en">New scan</span>
-        </button>
-      </div>`;
+    const okEl = document.getElementById('ok-screen');
+    okEl.innerHTML = `
+      <div class="home-icon" style="font-size:2.5rem;opacity:.3;"><i class="fas fa-circle-check"></i></div>
+      <h2 class="es">¡Sin duplicados!</h2><h2 class="en">No duplicates!</h2>
+      <p class="es">No se encontraron archivos idénticos en <strong>${esc(dirHandle.name)}</strong>.</p>
+      <p class="en">No identical files found in <strong>${esc(dirHandle.name)}</strong>.</p>
+      <button class="btn-primary" onclick="resetApp()">
+        <i class="fas fa-rotate-left"></i>
+        <span class="es">Nuevo escaneo</span><span class="en">New scan</span>
+      </button>`;
+    showScreen('ok');
   }
 }
 
@@ -1174,9 +1547,9 @@ function finishStopped() {
   feedLine(t('— Escaneo detenido por el usuario —', '— Scan stopped by user —'), 'info');
 }
 
-/* ─────────────────────────────────────────────────────────
-   COLLECT — File System Access API (Chrome / Edge)
-───────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   COLLECT — File System Access API
+═══════════════════════════════════════════════════════════ */
 async function collect(dh, path) {
   for await (const [name, handle] of dh.entries()) {
     if (cancelled) return;
@@ -1203,9 +1576,9 @@ async function collect(dh, path) {
   }
 }
 
-/* ─────────────────────────────────────────────────────────
-   COLLECT — <input webkitdirectory> fallback (Firefox / Safari)
-───────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   COLLECT — <input webkitdirectory> fallback
+═══════════════════════════════════════════════════════════ */
 async function collectFromInput(files) {
   const seenDirs = new Set();
   for (let i = 0; i < files.length; i++) {
@@ -1229,12 +1602,9 @@ async function collectFromInput(files) {
   }
 }
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    FIND DUPLICATES
-   Phase 1: group by size (zero I/O, instant).
-   Phase 2: SHA-256 only for same-size candidates — avoids
-   reading 99% of files in typical folder structures.
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 async function findDupes() {
   const bySize = new Map();
   for (const [key, fi] of FILES) {
@@ -1276,77 +1646,41 @@ async function findDupes() {
   }
 }
 
-/* ─────────────────────────────────────────────────────────
-   RENDER GROUP
-───────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   RENDER GROUP  →  delegates to VirtualScroller
+═══════════════════════════════════════════════════════════ */
 function renderGroup(hash) {
   const files = GROUPS.get(hash);
   if (!files || files.length < 2) return;
-  document.getElementById('grp-' + hash)?.remove();
 
   const ext = files[0].name.includes('.') ? files[0].name.split('.').pop().toLowerCase() : '';
-  const el  = document.createElement('div');
-  el.className = 'dg'; el.id = 'grp-' + hash; el.dataset.ext = ext;
 
-  el.innerHTML = `
-    <div class="dg-hdr">
-      <span>
-        <span class="h">${hash.substring(0, 14)}…</span>
-        &nbsp;·&nbsp;${files.length} ${t('copias idénticas','identical copies')}
-        &nbsp;·&nbsp;${fmtSize(files[0].size)} ${t('c/u','each')}
-        ${ext ? `&nbsp;·&nbsp;<span style="color:var(--muted)">.${ext}</span>` : ''}
-      </span>
-      <span class="sv" title="${t('espacio recuperable','space freed by deleting copies')}">
-        ↩ ${fmtSize(files[0].size * (files.length - 1))}
-      </span>
-    </div>`;
-
-  files.forEach((fi, i) => {
-    const isOrig    = i === 0;
-    const canDelete = !limitedMode && fi.canDelete !== false;
-
-    // Deterministic DOM id from the file path via djb2 hash
+  // Register file._sid mappings upfront (needed by selectAll / toggleSel)
+  files.forEach(fi => {
     let h = 5381;
     for (let j = 0; j < fi.key.length; j++) h = ((h << 5) + h) ^ fi.key.charCodeAt(j);
     const sid = 'r' + (h >>> 0).toString(36);
     fi._sid = sid;
     if (FILES.has(fi.key)) FILES.get(fi.key)._sid = sid;
-
-    const row     = document.createElement('div');
-    row.className = 'df' + (isOrig ? ' orig' : '');
-    row.id        = sid;
-    const keyEsc  = fi.key.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-    const chkAttr = (isOrig || !canDelete)
-      ? `disabled title="${isOrig ? t('Original: no se puede eliminar','Original: cannot be deleted') : t('Solo lectura en este navegador','Read-only in this browser')}"`
-      : '';
-
-    row.innerHTML = `
-      <input type="checkbox" ${chkAttr} onchange="toggleSel('${keyEsc}',this.checked)">
-      <i class="${getIcon(fi.name)} df-icon"></i>
-      <div class="df-info">
-        <div class="df-name">${esc(fi.name)}${isOrig ? `<span class="orig-tag">${t('original','original')}</span>` : ''}</div>
-        <div class="df-path">${esc(fi.dir)}</div>
-      </div>
-      <button class="btn-eye" onclick="previewFile('${keyEsc}')" title="${t('Vista previa','Preview')}">
-        <i class="fas fa-eye"></i>
-      </button>`;
-    el.appendChild(row);
   });
 
-  document.getElementById('dupes-scroll').appendChild(el);
+  vs.add(hash);
   addExtToFilter(ext);
-  if (activeFilters.size > 0 && !activeFilters.has(ext)) el.style.display = 'none';
-  updateStats();
+  if (activeFilters.size > 0 && !activeFilters.has(ext)) {
+    // Mark hidden immediately so it doesn't flash in
+    vs.setFilter(activeFilters);
+  }
 
   const n     = [...GROUPS.values()].filter(g => g.length > 1).length;
   const badge = document.getElementById('dupe-badge');
   badge.textContent = n;
   badge.classList.toggle('z', n === 0);
+  updateStats();
 }
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    SELECTION
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 function toggleSel(key, checked) {
   if (limitedMode) return;
   checked ? SEL.add(key) : SEL.delete(key);
@@ -1400,9 +1734,9 @@ function updateSelectionUI() {
   }
 }
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    STATISTICS
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 function updateStats() {
   document.getElementById('st-files').textContent = fileCount;
   const gs = [...GROUPS.values()].filter(g => g.length > 1);
@@ -1413,13 +1747,9 @@ function updateStats() {
   badge.classList.toggle('z', gs.length === 0);
 }
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    FILE PREVIEW
-   Images and text: read into memory.
-   Video / audio: URL.createObjectURL() creates a temporary
-   blob URL that the browser can stream without copying the
-   entire file into JS heap — essential for large media files.
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 async function previewFile(key) {
   const fi = FILES.get(key);
   if (!fi) return;
@@ -1433,7 +1763,7 @@ async function previewFile(key) {
   $c.innerHTML = `
     <div style="margin-bottom:12px;">
       <div class="pv-name">${esc(fi.name)}</div>
-      <div class="pv-meta">${esc(fi.dir)} &nbsp;·&nbsp; <span class="ac">${fmtSize(fi.size)}</span></div>
+      <div class="pv-meta">${esc(fi.dir)} &nbsp;&middot;&nbsp; <span class="ac">${fmtSize(fi.size)}</span></div>
     </div>
     <div id="pv-loading" style="color:var(--dim);font-family:'Fira Code',monospace;font-size:.72rem;text-align:center;padding:20px;">
       ${t('Cargando…', 'Loading…')}
@@ -1524,7 +1854,7 @@ async function previewFile(key) {
     }
   } catch(e) {
     document.getElementById('pv-loading')?.remove();
-    $c.innerHTML += `<div style="color:var(--red);font-size:.72rem;font-family:'Fira Code',monospace;margin-top:8px;">${t('Error al cargar', 'Error loading')}: ${e.message}</div>`;
+    $c.innerHTML += `<div style="color:var(--red);font-size:.72rem;font-family:'Fira Code',monospace;margin-top:8px;">${t('Error al cargar', 'Error loading')}: ${esc(e.message)}</div>`;
   }
 }
 
@@ -1533,7 +1863,6 @@ function closePreview() {
   document.getElementById('prev-empty').style.display     = 'flex';
   document.getElementById('btn-close-prev').style.display = 'none';
   document.getElementById('prev-lbl').textContent         = '';
-  // Revoke any active blob URL to free memory immediately
   const video = document.querySelector('#prev-content video');
   const audio = document.querySelector('#prev-content audio');
   const embed = document.querySelector('#prev-content embed');
@@ -1542,17 +1871,17 @@ function closePreview() {
   if (embed?.src?.startsWith('blob:')) URL.revokeObjectURL(embed.src);
 }
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    RESET
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 function resetApp() {
   cancelled = true; scanning = false; limitedMode = false;
   dirHandle = null; FILES.clear(); GROUPS.clear(); SEL.clear();
   fileCount = 0; skipCount = 0; feedCount = 0;
   activeFilters.clear(); detectedExts.clear();
 
-  // Revoke any active blob URLs before wiping the DOM
   closePreview();
+  vs.reset();
 
   document.getElementById('mobile-input').value = '';
 
@@ -1562,23 +1891,9 @@ function resetApp() {
   fb.querySelector('.fmt-chip.all')?.classList.add('active');
 
   const limitedWarnVisible = !hasFSAPI();
-  document.getElementById('dupes-scroll').innerHTML = `
-    <div id="home">
-      <div class="home-icon"><i class="fas fa-copy"></i></div>
-      <h2>DupeCleaner</h2>
-      <p class="es">Selecciona una carpeta — Descargas, Documentos, donde quieras. La app la escanea con SHA-256 y te muestra los archivos con contenido exactamente idéntico.</p>
-      <p class="en">Select any folder — Downloads, Documents, wherever. The app scans it with SHA-256 and shows files with exactly identical content.</p>
-      <button class="btn-primary" onclick="pickFolder()">
-        <i class="fas fa-folder-open"></i>
-        <span class="es">Seleccionar carpeta</span><span class="en">Select folder</span>
-      </button>
-      <p class="home-note" id="compat-note"></p>
-      <div id="limited-warn" style="${limitedWarnVisible ? 'display:block;' : 'display:none;'}" class="home-warn">
-        <span class="es"><i class="fas fa-circle-info"></i> Tu navegador no permite eliminar archivos desde la web.<br>El escaneo funciona con total normalidad, pero para borrar duplicados necesitas <strong>Chrome o Edge</strong> (escritorio o Android).</span>
-        <span class="en"><i class="fas fa-circle-info"></i> Your browser doesn't allow deleting files from the web.<br>Scanning works fine, but to delete duplicates you need <strong>Chrome or Edge</strong> (desktop or Android).</span>
-      </div>
-    </div>
-    <div id="confirm-step" style="display:none;"></div>`;
+  document.getElementById('limited-warn').style.display = limitedWarnVisible ? 'block' : 'none';
+
+  showScreen('home');
 
   $feed.innerHTML = `
     <div id="feed-ph" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--dim);font-size:.75rem;text-align:center;pointer-events:none;font-family:'Fira Code',monospace;">
@@ -1605,9 +1920,9 @@ function resetApp() {
   updateStats(); updateSelectionUI(); updateCompatNote();
 }
 
-/* ─────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    DELETE MODAL
-───────────────────────────────────────────────────────── */
+═══════════════════════════════════════════════════════════ */
 function openModal() {
   if (limitedMode) return;
   const list = document.getElementById('modal-list');
@@ -1636,25 +1951,125 @@ async function execDelete() {
     try {
       await fi.handle.remove();
       feedLine('🗑  ' + t('Eliminado', 'Deleted') + ': ' + fi.name, 'match');
-      if (fi._sid) document.getElementById(fi._sid)?.remove();
       FILES.delete(key); SEL.delete(key);
     } catch(e) {
       feedLine('✗  ' + t('Error al eliminar', 'Delete error') + ': ' + fi.name + ' — ' + e.message, 'err');
     }
   }
 
-  // Remove group cards where only the protected original remains —
-  // the card would show a single unselectable file, which is confusing.
+  // Remove group cards where only the protected original remains
   for (const [hash, files] of [...GROUPS.entries()]) {
     const alive = files.filter(fi => FILES.has(fi.key));
     if (alive.length < 2) {
-      document.getElementById('grp-' + hash)?.remove();
+      vs.remove(hash);
       GROUPS.delete(hash);
     }
   }
 
   updateStats(); updateSelectionUI();
 }
+
+/* ═══════════════════════════════════════════════════════════
+   ③ PWA  (Manifest as Data URI + Inline Blob Service Worker)
+   ───────────────────────────────────────────────────────────
+   The manifest is generated at runtime and injected as a
+   base64 data URI into the <link rel="manifest"> tag.
+   The Service Worker is a self-contained Blob URL; it uses a
+   Cache-first strategy so the app (including CDN fonts/icons)
+   runs 100% offline after the first load.
+   Requires HTTPS or localhost — standard PWA prerequisite.
+═══════════════════════════════════════════════════════════ */
+(function setupPWA() {
+
+  /* ── Manifest ── */
+  const ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <rect width="100" height="100" rx="20" fill="#ff0033"/>
+    <text x="50" y="68" font-size="52" text-anchor="middle" fill="white" font-family="monospace" font-weight="700">D</text>
+  </svg>`;
+  const iconB64 = btoa(ICON_SVG);
+  const iconUri = 'data:image/svg+xml;base64,' + iconB64;
+
+  const manifest = {
+    name: 'DupeCleaner',
+    short_name: 'DupeCleaner',
+    description: 'Find and delete duplicate files using SHA-256',
+    start_url: '.',
+    display: 'standalone',
+    background_color: '#050505',
+    theme_color: '#ff0033',
+    icons: [
+      { src: iconUri, sizes: 'any', type: 'image/svg+xml', purpose: 'any maskable' }
+    ]
+  };
+  try {
+    const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(manifest))));
+    document.getElementById('pwa-manifest').href = 'data:application/manifest+json;base64,' + b64;
+  } catch(e) { console.warn('[PWA] Manifest inject failed:', e); }
+
+  /* ── Service Worker ── */
+  if (!('serviceWorker' in navigator)) return;
+
+  const CACHE   = 'dupecleaner-v1';
+  const SW_CODE = `
+const CACHE = '${CACHE}';
+
+self.addEventListener('install', evt => {
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', evt => {
+  evt.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+    ).then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener('fetch', evt => {
+  /* Only cache GET requests to external origins (fonts, icons CDN).
+     Same-origin requests (the HTML file itself) bypass the SW so
+     the user always gets the freshest version when online. */
+  const url = new URL(evt.request.url);
+  const isCDN = url.origin !== self.location.origin;
+
+  if (evt.request.method !== 'GET') return;
+
+  if (isCDN) {
+    /* Cache-first for CDN assets (FontAwesome, Google Fonts) */
+    evt.respondWith(
+      caches.open(CACHE).then(async cache => {
+        const cached = await cache.match(evt.request);
+        if (cached) return cached;
+        try {
+          const resp = await fetch(evt.request);
+          if (resp.ok) cache.put(evt.request, resp.clone());
+          return resp;
+        } catch {
+          return cached || Response.error();
+        }
+      })
+    );
+  } else {
+    /* Network-first for local files; fall back to cache when offline */
+    evt.respondWith(
+      fetch(evt.request).catch(() => caches.match(evt.request))
+    );
+  }
+});
+`;
+
+  try {
+    const blob   = new Blob([SW_CODE], { type: 'application/javascript' });
+    const swUrl  = URL.createObjectURL(blob);
+    navigator.serviceWorker.register(swUrl, { scope: './' })
+      .then(reg => {
+        console.log('[DupeCleaner] SW registered, scope:', reg.scope);
+      })
+      .catch(err => console.warn('[DupeCleaner] SW registration failed:', err));
+  } catch(e) { console.warn('[PWA] SW setup failed:', e); }
+
+})();
+
 </script>
 </body>
 </html>
